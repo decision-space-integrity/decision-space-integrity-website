@@ -16,6 +16,9 @@ styles.css      styling (one file)
 robots.txt      crawl directives + sitemap pointer
 sitemap.xml     canonical URL list for search engines
 _headers        Cloudflare Pages edge headers (security)
+assets/papers/  preprint PDF
+assets/og/       social preview image (Open Graph / Twitter Card)
+assets/icons/    favicon + Apple touch icon
 ```
 
 ## Preview locally
@@ -91,3 +94,32 @@ repo (a single `User-agent: *` group). To change it: Cloudflare dashboard → th
 above — that is a Cloudflare edge behavior, not a change to this repo. If the goal is to keep AI
 crawlers out, prefer enabling the managed block over editing this file, since the managed block is
 maintained as crawler names change.
+
+## Rich previews
+
+When the site is shared in iMessage, Slack, LinkedIn, WhatsApp, or X, the link unfurls into a card
+built from the page metadata and a social image:
+
+- **`assets/og/dsi-og-image.png`** (1200×630) is the Open Graph and Twitter Card image. Every page
+  references it via `og:image` and `twitter:image`.
+- Every page sets `twitter:card = summary_large_image` plus per-page `twitter:title` / `twitter:description`
+  mirroring its Open Graph tags.
+- Favicons (`assets/icons/favicon.svg` + 32/16 PNG fallbacks) and an `apple-touch-icon.png` (180×180)
+  are linked from every page. All icon and OG assets are **same-origin**, so the `_headers` CSP
+  (`img-src 'self' data:`) already allows them — no CSP change and no JavaScript were needed.
+
+The image and icons are generated from scripts in `.fonttmp/` (not committed) using the site's own
+fonts and palette; re-run them if the brand assets change.
+
+### Testing previews after deploy
+
+Preview caches are aggressive — a card can take hours or days to refresh, and a stale iMessage card
+is often Apple-side caching rather than a site problem. After deploying:
+
+- Confirm the assets serve: `…/assets/og/dsi-og-image.png`, `…/assets/icons/favicon.svg`,
+  `…/assets/icons/apple-touch-icon.png` (each should return `200` with an image content-type).
+- Validate the unfurl with the [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/),
+  [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/), and an X Card validator.
+- For iMessage, send the link to a **new** conversation/thread; to force a cache-busted re-fetch you
+  can temporarily test `https://decisionspaceintegrity.com/?v=preview1` — do not use query-string
+  variants as official URLs, they are only a cache test.

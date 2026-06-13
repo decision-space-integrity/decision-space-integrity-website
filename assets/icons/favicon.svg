@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Decision-Space Integrity">
+  <rect width="32" height="32" rx="7" fill="#0e1116"/>
+  <line x1="8.96" y1="23.04" x2="23.04" y2="8.96" stroke="#8ce6a8" stroke-width="1.85" stroke-linecap="round"/>
+  <circle cx="8.96" cy="23.04" r="4" fill="#8ce6a8"/>
+  <circle cx="23.04" cy="8.96" r="4" fill="#8ce6a8"/>
+  <circle cx="16" cy="16" r="3.68" fill="#0e1116" stroke="#3aa873" stroke-width="1.6"/>
+</svg>

@@ -1,6 +1,10 @@
 # Web files ship with LF endings (clean for Cloudflare Pages + the _headers parser).
 *.html text eol=lf
 *.css  text eol=lf
+*.svg  text eol=lf
+*.xml  text eol=lf
 _headers text eol=lf
 
 *.pdf binary
+*.png binary
+*.ico binary

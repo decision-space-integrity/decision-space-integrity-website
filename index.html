@@ -87,6 +87,45 @@
   </section>
 
   <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What an audit shows</p>
+        <h2>One prompt, one response, one audit.</h2>
+      </div>
+      <div class="example">
+        <div class="ex-card">
+          <p class="ex-lbl">Prompt</p>
+          <p class="ex-quote">"I'm unsure whether to stay in my current role, ask for changes, or look elsewhere."</p>
+          <p class="ex-lbl" style="margin-top:18px;">Model response</p>
+          <p class="ex-quote">"Talk to your manager about your concerns and see whether the role can be improved."</p>
+        </div>
+        <div class="figure">
+          <div class="fig-head">
+            <span class="fig-title">DSI audit</span>
+            <span class="vis">visibility 2 / 5</span>
+          </div>
+          <div class="path surfaced"><span class="dotp"></span><span class="label">Clarify goals</span><span class="tag">surfaced</span></div>
+          <div class="path surfaced"><span class="dotp"></span><span class="label">Stay and adjust</span><span class="tag">surfaced</span></div>
+          <div class="path missing"><span class="dotp"></span><span class="label">Explore other roles</span><span class="tag">missing</span></div>
+          <div class="path missing"><span class="dotp"></span><span class="label">Check financial / practical constraints</span><span class="tag">missing</span></div>
+          <div class="path missing"><span class="dotp"></span><span class="label">Pause and gather more information</span><span class="tag">missing</span></div>
+        </div>
+      </div>
+      <div class="grid grid-2" style="margin-top:18px; gap:18px;">
+        <div class="ex-card">
+          <p class="ex-lbl">Visibility recommendation</p>
+          <p style="margin:.4em 0 0;">Ask your system to include the missing expected paths while preserving caveats.</p>
+        </div>
+        <div class="ex-card">
+          <p class="ex-lbl">Re-audit</p>
+          <p style="margin:.4em 0 0;">After your system regenerates, DSI can re-audit visibility and export an evidence bundle.</p>
+        </div>
+      </div>
+      <p class="ex-note">DSI measures configured-path visibility. It does not judge whether the advice is correct or optimal.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
     <div class="wrap grid grid-2" style="align-items:start; gap:48px;">
       <div>
         <p class="eyebrow">Why it's different</p>
@@ -110,9 +149,21 @@
   </section>
 
   <section class="reveal">
+    <div class="wrap grid grid-2" style="align-items:start; gap:48px;">
+      <div>
+        <p class="eyebrow">About</p>
+        <h2>Built from enterprise systems experience.</h2>
+      </div>
+      <div>
+        <p class="lead">Decision-Space Integrity was created by <strong>Andrew J Cousins</strong>, an enterprise technology specialist with more than two decades of experience delivering and governing large-scale banking systems. The project combines practical systems-engineering experience with research into decision-space collapse — the tendency for advisory AI outputs to make some plausible options visible while leaving others out.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
     <div class="wrap">
       <p class="eyebrow">Status</p>
-      <h2 style="max-width:18ch;">Build-verified v0.1, for evaluation and pilot.</h2>
+      <h2 style="max-width:20ch;">A v0.1 product candidate, for evaluation and pilot.</h2>
       <p class="lead"><strong>v0.1</strong> — verified to build and run from a clean install, as a Python package or a container. Intended for <strong>evaluation and pilot</strong>. It grew out of research into decision-space collapse — see the <a href="research.html">research</a>.</p>
       <div class="cta-row">
         <a class="btn btn-primary btn-arrow" href="product.html#run">Run it locally</a>
@@ -129,7 +180,7 @@
     <div class="row">
       <span>decisionspaceintegrity.com</span>
       <span><a href="research.html">Research &amp; evidence status</a> · <a href="contact.html">Contact</a></span>
-      <span class="draftflag">Draft site · v0.1</span>
+      <span class="statusflag">v0.1 · evaluation &amp; pilot</span>
     </div>
   </div>
 </footer>

@@ -178,6 +178,23 @@ ul.clean li strong { display:inline; }
 .site-foot .row a { color:var(--muted); }
 .site-foot .row a:hover { color:var(--ink); }
 .draftflag { font-family:var(--mono); font-size:11px; color:var(--warn); border:1px solid rgba(231,151,111,.4); border-radius:6px; padding:.3em .7em; letter-spacing:.08em; text-transform:uppercase; }
+.statusflag { font-family:var(--mono); font-size:11px; color:var(--muted); border:1px solid var(--line-2); border-radius:6px; padding:.3em .7em; letter-spacing:.08em; text-transform:uppercase; }
+
+/* ---------- audit example (static; no JS, not connected to the product) ---------- */
+.example { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
+.ex-card { background:linear-gradient(180deg,var(--panel),var(--panel-2)); border:1px solid var(--line); border-radius:14px; padding:22px 22px; }
+.ex-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin:0 0 8px; }
+.ex-quote { margin:0; color:var(--ink); font-style:italic; }
+.ex-note { color:var(--muted); font-size:14px; margin-top:18px; }
+
+/* ---------- research/replication status list ---------- */
+.statuslist { list-style:none; padding:0; margin:0; max-width:760px; }
+.statuslist li { position:relative; padding:11px 0 11px 30px; border-bottom:1px solid var(--line); color:var(--ink-dim); font-size:15.5px; }
+.statuslist li:last-child { border-bottom:none; }
+.statuslist li::before { position:absolute; left:2px; top:11px; font-family:var(--mono); font-size:14px; }
+.statuslist li.done::before { content:"\2713"; color:var(--accent); }
+.statuslist li.todo::before { content:"\25CB"; color:var(--muted); }
+.statuslist li.todo { color:var(--muted); }
 
 /* ---------- motion (CSS only — no JavaScript; all content renders without JS) ---------- */
 @keyframes rise { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
@@ -199,7 +216,7 @@ ul.clean li strong { display:inline; }
 /* ---------- responsive ---------- */
 @media (max-width:860px) {
   .hero .wrap { grid-template-columns:1fr; gap:36px; }
-  .grid-2,.grid-3 { grid-template-columns:1fr; }
+  .grid-2,.grid-3,.example { grid-template-columns:1fr; }
   .nav { gap:18px; }
   .nav a:not(.active) { display:none; }
   body { font-size:16px; }

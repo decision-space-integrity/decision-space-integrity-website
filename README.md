@@ -58,3 +58,19 @@ script, so no executable JavaScript is introduced and the policy is unchanged.
 **Next step:** after the domain is live on Cloudflare Pages, verify the property in
 [Google Search Console](https://search.google.com/search-console) and submit
 `https://decisionspaceintegrity.com/sitemap.xml`.
+
+### Cloudflare managed robots.txt
+
+Cloudflare has a zone-level **AI Crawl Control / "Managed robots.txt"** feature that, when enabled,
+**overlays** the `robots.txt` in this repo: it prepends a Cloudflare-managed block (content signals
+plus `Disallow: /` for AI crawlers such as `GPTBot`, `ClaudeBot`, `Google-Extended`, `CCBot`,
+`Bytespider`) and appends the repo file below it. When that happens the served `robots.txt` differs
+from the committed one — search-engine indexing (Googlebot/Bingbot) and the `Sitemap:` line still
+work, but the live file contains two `User-agent: *` groups.
+
+This setting is **disabled** for this zone, so the live `robots.txt` is served verbatim from this
+repo (a single `User-agent: *` group). To change it: Cloudflare dashboard → the zone →
+**AI Crawl Control / Manage robots.txt**. If it is re-enabled in future, expect the overlay described
+above — that is a Cloudflare edge behavior, not a change to this repo. If the goal is to keep AI
+crawlers out, prefer enabling the managed block over editing this file, since the managed block is
+maintained as crawler names change.

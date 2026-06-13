@@ -8,3 +8,5 @@ _headers text eol=lf
 *.pdf binary
 *.png binary
 *.ico binary
+*.jpg binary
+*.jpeg binary

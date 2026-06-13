@@ -13,13 +13,15 @@ research.html   Research
 paper.html      Preprint hub (Decision-Space Collapse)
 applications.html  Applications (positioning)
 contact.html    Contact
+articles/       Articles index (articles/index.html) + article pages
 styles.css      styling (one file)
 robots.txt      crawl directives + sitemap pointer
 sitemap.xml     canonical URL list for search engines
 _headers        Cloudflare Pages edge headers (security)
-assets/papers/  preprint PDF
+assets/papers/   preprint PDF
 assets/og/       social preview image (Open Graph / Twitter Card)
 assets/icons/    favicon + Apple touch icon
+assets/articles/ article cover images
 ```
 
 ## Preview locally
@@ -48,8 +50,9 @@ The site is fully responsive and renders with JavaScript disabled.
 The site ships with the static files search engines expect:
 
 - **`robots.txt`** — allows all crawlers and points to the sitemap.
-- **`sitemap.xml`** — lists the six canonical URLs (`/`, `/product.html`, `/research.html`,
-  `/paper.html`, `/applications.html`, `/contact.html`), all on `https://decisionspaceintegrity.com`.
+- **`sitemap.xml`** — lists the eight canonical URLs (`/`, `/product.html`, `/research.html`,
+  `/paper.html`, `/applications.html`, `/articles`, `/articles/ai-brilliance-human-capability`,
+  `/contact.html`), all on `https://decisionspaceintegrity.com`.
 - **`paper.html`** — a dedicated hub for the *Decision-Space Collapse in Advisory Language Models*
   preprint (PDF, public replication repository, and OSF DOI), linked from `research.html`.
 - **Canonical URLs** — every page declares `<link rel="canonical">` plus a unique title and meta
@@ -74,6 +77,8 @@ Once the domain is live on Cloudflare Pages, in
    - `https://decisionspaceintegrity.com/research.html`
    - `https://decisionspaceintegrity.com/paper.html`
    - `https://decisionspaceintegrity.com/applications.html`
+   - `https://decisionspaceintegrity.com/articles`
+   - `https://decisionspaceintegrity.com/articles/ai-brilliance-human-capability`
    - `https://decisionspaceintegrity.com/contact.html`
 4. **Monitor** whether queries such as *Decision-Space Integrity*, *Decision-Space Collapse*, and
    *Andrew J Cousins DSI* begin surfacing the site over the following weeks.

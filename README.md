@@ -10,8 +10,11 @@ A static site: plain HTML + one CSS file. **No frameworks, no JavaScript, no bui
 index.html      Home
 product.html    Product
 research.html   Research
+paper.html      Preprint hub (Decision-Space Collapse)
 contact.html    Contact
 styles.css      styling (one file)
+robots.txt      crawl directives + sitemap pointer
+sitemap.xml     canonical URL list for search engines
 _headers        Cloudflare Pages edge headers (security)
 ```
 
@@ -35,3 +38,23 @@ Cloudflare serves `index.html` at the root and applies `_headers` at the edge. I
 relative `.html` paths, which Cloudflare also serves as clean URLs (e.g. `/product`).
 
 The site is fully responsive and renders with JavaScript disabled.
+
+## Search indexing
+
+The site ships with the static files search engines expect:
+
+- **`robots.txt`** — allows all crawlers and points to the sitemap.
+- **`sitemap.xml`** — lists the five canonical URLs (`/`, `/product.html`, `/research.html`,
+  `/paper.html`, `/contact.html`), all on `https://decisionspaceintegrity.com`.
+- **`paper.html`** — a dedicated hub for the *Decision-Space Collapse in Advisory Language Models*
+  preprint (PDF, public replication repository, and OSF DOI), linked from `research.html`.
+- **Canonical URLs** — every page declares `<link rel="canonical">` plus a unique title and meta
+  description, so search engines index the `https://decisionspaceintegrity.com` form.
+
+`paper.html` also embeds a JSON-LD `ScholarlyArticle` block (non-executable structured data, read by
+crawlers). The `_headers` Content-Security-Policy keeps `script-src 'none'` — JSON-LD is data, not a
+script, so no executable JavaScript is introduced and the policy is unchanged.
+
+**Next step:** after the domain is live on Cloudflare Pages, verify the property in
+[Google Search Console](https://search.google.com/search-console) and submit
+`https://decisionspaceintegrity.com/sitemap.xml`.

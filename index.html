@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSI — audit the decision space, not just the answer</title>
+<meta name="description" content="DSI is a local, stateless assurance sidecar for advisory AI. It audits whether the configured expected paths remain visible in your model's response, with reproducible evidence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
+    <nav class="nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="product.html">Product</a>
+      <a href="research.html">Research</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Local assurance sidecar for advisory AI</p>
+        <h1>Audit the decision space, not just the answer.</h1>
+        <p class="lead">DSI is a <strong>local, stateless assurance sidecar for advisory AI</strong>. It audits whether the configured expected paths a good answer should keep in view remain <strong>visible</strong> in your model's response — and shows you, with reproducible evidence, which ones disappeared.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary btn-arrow" href="product.html">Evaluate DSI locally</a>
+          <a class="btn btn-ghost" href="product.html#loop">See how it works</a>
+        </div>
+      </div>
+      <aside class="figure" aria-label="Illustrative decision space">
+        <div class="fig-head">
+          <span class="fig-title">Decision space</span>
+          <span class="vis">visibility 2 / 6</span>
+        </div>
+        <div class="path surfaced"><span class="dotp"></span><span class="label">Clarify the goal</span><span class="tag">surfaced</span></div>
+        <div class="path missing"><span class="dotp"></span><span class="label">Explore the options</span><span class="tag">missing</span></div>
+        <div class="path surfaced"><span class="dotp"></span><span class="label">Act now</span><span class="tag">surfaced</span></div>
+        <div class="path missing"><span class="dotp"></span><span class="label">Check the risks</span><span class="tag">missing</span></div>
+        <div class="path missing"><span class="dotp"></span><span class="label">Wait and reassess</span><span class="tag">missing</span></div>
+        <div class="path missing"><span class="dotp"></span><span class="label">Seek another view</span><span class="tag">missing</span></div>
+        <div class="fig-foot">illustrative — not a live audit</div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="band">
+    <div class="wrap">
+      <p class="oneliner">DSI audits whether the <span class="hl">configured expected paths</span> remain visible in an AI's advisory output.</p>
+    </div>
+  </div>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The problem</p>
+        <h2>A fluent answer can still collapse the decision.</h2>
+      </div>
+      <p class="lead">Advisory AI — assistants that help someone decide something — can quietly narrow a genuinely multi-path decision down to a single path, leaving out other reasonable options. The answer can read well, sound safe, and even be factually fine, and still <strong>collapse the decision space</strong>. Aggregate, answer-level scores don't surface this: they judge the answer, not <strong>which reasonable options were kept in view</strong>.</p>
+    </div>
+  </section>
+
+  <section class="reveal" id="loop">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What DSI does</p>
+        <h2>Audit → recommend → re-audit → evidence.</h2>
+        <p>DSI takes a prompt and the response your system already produced, and:</p>
+      </div>
+      <div class="flow">
+        <div class="step"><div class="n">01 · Audit</div><h3>Visibility</h3><p>Audits the response against a configured map of the reasonable option paths — reporting <em>expected-path visibility</em> and which expected paths are missing.</p></div>
+        <div class="step"><div class="n">02 · Recommend</div><h3>An instruction</h3><p>Recommends which missing paths to surface, as an instruction your system uses to regenerate. <em>DSI never writes the answer.</em></p></div>
+        <div class="step"><div class="n">03 · Re-audit</div><h3>The change</h3><p>Re-audits your regenerated response and reports the visibility change.</p></div>
+        <div class="step"><div class="n">04 · Evidence</div><h3>A bundle</h3><p>Packages everything into a portable, reproducible evidence bundle.</p></div>
+      </div>
+      <p style="margin-top:26px;">Every result carries a <strong>trust chain</strong> — a step-by-step account of where the number came from, each step reproducible from fingerprints.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap grid grid-2" style="align-items:start; gap:48px;">
+      <div>
+        <p class="eyebrow">Why it's different</p>
+        <h2>It audits a response it did not produce.</h2>
+      </div>
+      <div>
+        <p class="lead">DSI <strong>audits a response it did not produce.</strong> It does not call or replace your model, it makes no hosted calls, it stores nothing, and it never generates the advice. You keep your stack; DSI adds a <strong>local assurance layer</strong> beside it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What the numbers mean (and don't)</p>
+      </div>
+      <div class="callout">
+        <p>DSI measures <strong>configured expected-path visibility</strong> — the share of the configured reasonable paths that were surfaced. It is <strong>not</strong> a measure of advice quality, safety, correctness, or compliance, and a configured map is a set of reasonable paths, not a claim that every possible option is present. DSI can <strong>support</strong> AI-governance documentation; it does <strong>not</strong> certify governance or safety.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <p class="eyebrow">Status</p>
+      <h2 style="max-width:18ch;">Build-verified v0.1, for evaluation and pilot.</h2>
+      <p class="lead"><strong>v0.1</strong> — verified to build and run from a clean install, as a Python package or a container. Intended for <strong>evaluation and pilot</strong>. It grew out of research into decision-space collapse — see the <a href="research.html">research</a>.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-arrow" href="product.html#run">Run it locally</a>
+        <a class="btn btn-ghost" href="contact.html">Talk to us about a pilot</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <div class="row">
+      <span>decisionspaceintegrity.com</span>
+      <span><a href="research.html">Research &amp; evidence status</a> · <a href="contact.html">Contact</a></span>
+      <span class="draftflag">Draft site · v0.1</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

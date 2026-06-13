@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSI — research, evidence status &amp; IP</title>
+<meta name="description" content="The decision-space collapse phenomenon, DSI's measurement method, and an honest account of evidence status and intellectual property. Offered for evaluation and external review.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="product.html">Product</a>
+      <a href="research.html" class="active">Research</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" style="padding-bottom:40px;">
+    <div class="wrap" style="display:block;">
+      <p class="eyebrow">Research &amp; evidence</p>
+      <h1 style="max-width:16ch;">Decision-space collapse.</h1>
+      <p class="lead" style="max-width:62ch;">When an advisory model answers a genuinely multi-path question, it can <strong>collapse the decision space</strong> — converging on one path and omitting other reasonable options the user would want to weigh. The answer can be fluent and even correct on its own terms while quietly removing alternatives from view. DSI exists to <strong>measure that visibility</strong> and make it inspectable.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap grid grid-2" style="align-items:start; gap:48px;">
+      <div>
+        <p class="eyebrow">The method</p>
+        <h2>Compare, report, fingerprint.</h2>
+      </div>
+      <div>
+        <p class="lead">DSI compares an AI's advisory response against a <strong>configured map of reasonable option paths</strong> for the domain, reports which were surfaced and which were missing, and records the result as reproducible, fingerprinted evidence. The measurement is <strong>configured-path visibility</strong> — defined by a named domain configuration, classifier, and scorer — not a judgement of advice quality or safety. The same response audited under the same configuration yields the same numbers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The research</p>
+        <h2>The research that led to the product.</h2>
+        <p>DSI originated from research into <strong>decision-space collapse</strong> — the tendency of advisory language models to narrow the visible set of options presented to users. That research produced a preprint, replication materials, and a public evaluation repository.</p>
+      </div>
+      <div class="card" style="max-width:780px;">
+        <span class="idx">PREPRINT · OPEN MATERIALS</span>
+        <h3 style="margin-top:10px;">Decision-Space Collapse in Advisory Language Models</h3>
+        <p class="muted" style="margin-bottom:2px;">Measuring Trajectory Omission, Framing Sensitivity, and Recovery Through Decision-Space Integrity.</p>
+        <div class="cta-row" style="margin-top:18px;">
+          <a class="btn btn-ghost" href="https://doi.org/10.17605/OSF.IO/KW25A" target="_blank" rel="noopener">Read the preprint on OSF</a>
+          <a class="btn btn-ghost" href="https://github.com/decision-space-integrity/dsi-collapse-evaluation" target="_blank" rel="noopener">Replication repository</a>
+        </div>
+        <p class="mono" style="font-size:12px; color:var(--faint); margin-top:16px;">OSF · DOI 10.17605/OSF.IO/KW25A</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Evidence status — honest</p>
+        <h2>What is established, and what is not.</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <span class="idx">INTERNAL REPRODUCTION</span>
+          <p style="margin-top:12px;">The phenomenon and the audit/recovery measurement have been reproduced internally and frozen as internal reports. <em>Internal only — not yet externally replicated.</em></p>
+        </div>
+        <div class="card">
+          <span class="idx">HUMAN VALIDATION · IN PREPARATION</span>
+          <p style="margin-top:12px;">A human-annotation study to validate the classifier's evidence is <strong>designed, with its framework, rubric, and tooling built</strong> — but the <strong>study itself has not yet been run</strong> (no annotations collected). The product reports its classifier status honestly as <strong>"challenge-tested only — not yet independently validated."</strong></p>
+        </div>
+        <div class="card">
+          <span class="idx">REPRODUCIBILITY</span>
+          <p style="margin-top:12px;">Every audit is bound to fingerprints and version identifiers, so a reviewer can reproduce and bound any number the product reports.</p>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:26px;">
+        <p>We would rather state this plainly than overclaim. DSI is offered for <strong>evaluation and external review</strong>, and we welcome scrutiny of the method and the numbers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <p class="eyebrow">Intellectual property</p>
+      <h2 style="max-width:20ch;">Applications filed, not granted.</h2>
+      <p class="lead">The work is the subject of <strong>patent applications filed in the UK, subject to prosecution</strong> — <em>not yet granted</em>. Nothing here should be read as a grant or a defined claim scope.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <p class="eyebrow">For reviewers</p>
+      <h2 style="max-width:18ch;">We'd value your challenge.</h2>
+      <p class="lead">If you evaluate advisory AI, audit its outputs, or research evaluation methodology, we'd value your challenge. The product runs locally with a short setup, the numbers are reproducible from the evidence bundles, and the limitations above are stated up front.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-arrow" href="contact.html">Read the evaluation guide</a>
+        <a class="btn btn-ghost" href="contact.html">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <div class="row">
+      <span>decisionspaceintegrity.com</span>
+      <span><a href="product.html">Product</a> · <a href="contact.html">Contact</a></span>
+      <span class="draftflag">Draft site · v0.1</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

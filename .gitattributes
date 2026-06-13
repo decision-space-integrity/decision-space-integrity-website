@@ -1,0 +1,4 @@
+# Web files ship with LF endings (clean for Cloudflare Pages + the _headers parser).
+*.html text eol=lf
+*.css  text eol=lf
+_headers text eol=lf

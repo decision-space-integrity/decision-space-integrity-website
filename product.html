@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSI — the product: a local decision-space assurance sidecar</title>
+<meta name="description" content="The shipped v0.1 product: a local, stateless decision-space assurance sidecar. Audit, visibility recommendation, re-audit, evidence bundle, and a trust chain — runnable as a package or a container.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="product.html" class="active">Product</a>
+      <a href="research.html">Research</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" style="padding-bottom:48px;">
+    <div class="wrap" style="display:block;">
+      <p class="eyebrow">The product · v0.1</p>
+      <h1 style="max-width:16ch;">A local, stateless assurance sidecar.</h1>
+      <p class="lead" style="max-width:60ch;">A <strong>local, stateless decision-space assurance sidecar</strong> for advisory AI. You send it a prompt and the response your system produced; it returns an assurance result and a portable evidence bundle. It runs entirely on your machine; in the primary pattern it makes <strong>no provider call</strong> and <strong>retains nothing</strong> between requests.</p>
+    </div>
+  </section>
+
+  <section class="reveal" id="loop">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The assurance loop</p>
+        <h2>Four steps, on a response you supply.</h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="card"><span class="idx">01 · AUDIT</span><h3>Audit</h3><p>The response is assessed against a configured map of reasonable option paths for the domain. You get <em>expected-path visibility</em>, the surfaced paths, and the missing expected ones (with required ones flagged).</p></div>
+        <div class="card"><span class="idx">02 · RECOMMEND</span><h3>Visibility recommendation</h3><p>Where a configured policy warrants it, DSI recommends which paths to surface and supplies an <strong>instruction for your system to regenerate</strong>. DSI does not generate the response.</p></div>
+        <div class="card"><span class="idx">03 · RE-AUDIT</span><h3>Re-audit</h3><p>Supply your regenerated response and DSI reports the <strong>visibility change</strong> (before → after). This is a visibility re-audit, not a quality or safety improvement.</p></div>
+        <div class="card"><span class="idx">04 · EVIDENCE</span><h3>Evidence bundle</h3><p>A portable, fingerprinted, reproducible record with a stable audit identifier.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The trust chain</p>
+        <h2>Where did this come from?</h2>
+        <p>Every result answers that question in seven steps. Each step is reproducible from the fingerprints in the bundle, so a third party can reproduce and bound any number DSI reports.</p>
+      </div>
+      <div class="chain">
+        <div class="link"><div class="num">1</div><div class="body"><h3>Configured expected map</h3></div></div>
+        <div class="link"><div class="num">2</div><div class="body"><h3>Context projected</h3></div></div>
+        <div class="link"><div class="num">3</div><div class="body"><h3>Response classified</h3></div></div>
+        <div class="link"><div class="num">4</div><div class="body"><h3>Visibility analysed</h3></div></div>
+        <div class="link"><div class="num">5</div><div class="body"><h3>Visibility recommendation</h3></div></div>
+        <div class="link"><div class="num">6</div><div class="body"><h3>Re-audit</h3></div></div>
+        <div class="link"><div class="num">7</div><div class="body"><h3>Evidence available</h3></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" id="run">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How you run it</p>
+        <h2>A package, or a container.</h2>
+      </div>
+      <ul class="clean">
+        <li><strong>Python package:</strong> <span class="runline"><span class="c">pip install</span> the API/dashboard extra</span> and run one command; open the local dashboard, paste a prompt + response, and audit it.</li>
+        <li><strong>Container:</strong> <span class="runline"><span class="c">docker run</span> the image</span>; same dashboard and API, nothing written to disk.</li>
+        <li><strong>Interfaces:</strong> a small HTTP API (audit · control-loop · evidence) and a local dashboard. No provider keys, no database, no cloud dependency.</li>
+      </ul>
+      <p style="margin-top:24px;">Both paths are <strong>verified to build and run from a clean install</strong> — the package and the image were each built and run from scratch.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What DSI is not</p>
+      </div>
+      <div class="grid grid-2 not-grid">
+        <div class="card"><h3>Not a generator</h3><p>It audits a supplied response and recommends what <em>your</em> system should surface; it never writes the advice.</p></div>
+        <div class="card"><h3>Not a safety or compliance certification</h3><p>It reports <em>configured expected-path visibility</em>, not quality, safety, correctness, or compliance.</p></div>
+        <div class="card"><h3>Not a monitoring platform</h3><p>It is stateless and keeps no history; if you want trends or retention, export the evidence bundles to a system you already run.</p></div>
+        <div class="card"><h3>Not a replacement for your stack</h3><p>It does not replace your model, retrieval, or policy stack. It sits beside them.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <p class="eyebrow">Claim boundary</p>
+      <div class="callout">
+        <p>DSI measures <strong>configured expected-path visibility</strong> under a named domain configuration, classifier, and scorer. A high number does not prove an answer is good; a low one does not prove it is bad. DSI <strong>supports</strong> governance documentation; it does <strong>not</strong> certify governance or safety.</p>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-arrow" href="contact.html">Evaluate locally</a>
+        <a class="btn btn-ghost" href="contact.html">Request a pilot</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <div class="row">
+      <span>decisionspaceintegrity.com</span>
+      <span><a href="research.html">Research &amp; evidence status</a> · <a href="contact.html">Contact</a></span>
+      <span class="draftflag">Draft site · v0.1</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

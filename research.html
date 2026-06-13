@@ -6,6 +6,12 @@
 <title>Research — decision-space collapse &amp; Decision-Space Integrity</title>
 <meta name="description" content="Research on decision-space collapse, trajectory omission, framing sensitivity, and Decision-Space Integrity.">
 <link rel="canonical" href="https://decisionspaceintegrity.com/research.html">
+<meta name="author" content="Andrew J Cousins">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Decision-Space Integrity">
+<meta property="og:title" content="Research — Decision-Space Collapse and Decision-Space Integrity">
+<meta property="og:description" content="Research on decision-space collapse, trajectory omission, framing sensitivity, and Decision-Space Integrity.">
+<meta property="og:url" content="https://decisionspaceintegrity.com/research.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -74,6 +80,47 @@
   <section class="reveal">
     <div class="wrap">
       <div class="section-head">
+        <p class="eyebrow">Claim boundary</p>
+        <h2>What this research does — and does not — claim.</h2>
+      </div>
+      <div class="claimbox">
+        <span class="lbl">Claim boundary</span>
+        <p>This work measures visibility of configured expected paths in model outputs. It does not measure advice quality, factual correctness, user outcomes, or regulatory compliance.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Research timeline</p>
+        <h2>How the work has unfolded.</h2>
+      </div>
+      <p class="yr">2026</p>
+      <ul class="timeline">
+        <li>
+          <span class="t-date">May 2026</span>
+          <p class="t-body">Decision-Space Integrity measurement framework and research spine established.</p>
+        </li>
+        <li>
+          <span class="t-date">June 2026</span>
+          <p class="t-body"><em>Decision-Space Collapse in Advisory Language Models</em> preprint released on OSF.</p>
+        </li>
+        <li>
+          <span class="t-date">June 2026</span>
+          <p class="t-body">Public replication repository published.</p>
+        </li>
+        <li>
+          <span class="t-date">June 2026</span>
+          <p class="t-body">DSI product v0.1 released for evaluation and pilot.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
         <p class="eyebrow">Research and replication status</p>
         <h2>What's available, and what's pending.</h2>
       </div>
@@ -81,10 +128,42 @@
         <li class="done">Public replication repository available</li>
         <li class="done">6,480-output empirical study completed</li>
         <li class="done">Reproduction and intervention-recovery reports available</li>
-        <li class="done">Build-verified local product candidate</li>
+        <li class="done">DSI product v0.1 available for evaluation (verified to build and run from a clean install)</li>
         <li class="todo">Human annotation packet prepared; independent validation not yet complete</li>
         <li class="todo">arXiv link to be added when available</li>
       </ul>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Replication</p>
+        <h2>What you can reproduce, and what is held back.</h2>
+        <p>The public replication repository is the place to scrutinise the method. It carries the materials needed to reproduce the reported measurements — and we are explicit about what is <em>not</em> published.</p>
+      </div>
+      <div class="repcols">
+        <div class="card">
+          <span class="idx">AVAILABLE</span>
+          <ul class="clean" style="margin-top:12px;">
+            <li>Public replication repository</li>
+            <li>Prompt matrix</li>
+            <li>Expected-map artifacts</li>
+            <li>Reproduction instructions</li>
+          </ul>
+        </div>
+        <div class="card no">
+          <span class="idx" style="color:var(--warn);">NOT AVAILABLE</span>
+          <ul class="clean" style="margin-top:12px;">
+            <li>Private product code</li>
+            <li>Unpublished research</li>
+            <li>Proprietary datasets</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-ghost" href="https://github.com/decision-space-integrity/dsi-collapse-evaluation" target="_blank" rel="noopener">Public replication repository</a>
+      </div>
     </div>
   </section>
 
@@ -110,6 +189,58 @@
       </div>
       <div class="callout" style="margin-top:26px;">
         <p>We would rather state this plainly than overclaim. DSI is offered for <strong>evaluation and external review</strong>, and we welcome scrutiny of the method and the numbers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Research FAQ</p>
+        <h2>Common questions, answered plainly.</h2>
+      </div>
+      <div class="faq">
+        <details class="faq-item">
+          <summary>What is decision-space collapse?</summary>
+          <div class="ans"><p>Decision-space collapse is a failure mode in which an advisory language model answers a genuinely multi-path question by making some reasonable option paths visible while leaving others out. The answer can read well — and even be factually fine — while quietly narrowing the set of options the user gets to weigh.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>What is DSI?</summary>
+          <div class="ans"><p>Decision-Space Integrity (DSI) is a measurement framework, and a local product, for auditing whether the configured expected paths for a domain remain visible in a supplied model response. It reports configured expected-path visibility, omission, framing sensitivity, and recovery — as reproducible, fingerprinted evidence.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>How is this different from existing AI evaluation?</summary>
+          <div class="ans"><p>Most AI evaluation scores the answer that was produced — its quality, helpfulness, or safety. DSI asks a different question: of the reasonable option paths a good answer could have kept in view, which are actually visible in this response? It measures configured expected-path visibility and omission, which answer-level scores are not designed to surface. DSI is meant to complement those methods, not replace them.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Does DSI measure correctness?</summary>
+          <div class="ans"><p>No. DSI does not measure advice quality, factual correctness, user outcomes, or regulatory compliance. It measures the visibility of configured expected paths in a supplied response.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Does DSI certify AI systems?</summary>
+          <div class="ans"><p>No. DSI does not certify AI systems. It can support governance documentation by providing decision-space evidence, but it issues no certification of governance, safety, or compliance.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Does DSI guarantee safety?</summary>
+          <div class="ans"><p>No. DSI is not a safety guarantee and not a safety review. It reports configured expected-path visibility — one input a reviewer might consider, not an assurance of safe outcomes.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Can DSI tell users what decision to make?</summary>
+          <div class="ans"><p>No. DSI never writes the advice and never recommends a decision. It audits a response your system produced and, where configured, recommends which missing paths to make visible — leaving the generation to your system and the decision to the user.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Author</p>
+        <h2>Who is behind this work?</h2>
+      </div>
+      <div class="authorcard">
+        <p class="who">Andrew J Cousins</p>
+        <p>Andrew J Cousins is a technology leader, systems architect, and independent researcher focused on AI evaluation, AI assurance, decision-space visibility, and governance of advisory language models.</p>
       </div>
     </div>
   </section>

@@ -55,9 +55,26 @@ The site ships with the static files search engines expect:
 crawlers). The `_headers` Content-Security-Policy keeps `script-src 'none'` — JSON-LD is data, not a
 script, so no executable JavaScript is introduced and the policy is unchanged.
 
-**Next step:** after the domain is live on Cloudflare Pages, verify the property in
-[Google Search Console](https://search.google.com/search-console) and submit
-`https://decisionspaceintegrity.com/sitemap.xml`.
+### Post-deployment checklist (Google Search Console)
+
+Once the domain is live on Cloudflare Pages, in
+[Google Search Console](https://search.google.com/search-console):
+
+1. **Verify domain ownership** — add `decisionspaceintegrity.com` as a *Domain* property and
+   complete the DNS TXT verification (Cloudflare dashboard → DNS → add the TXT record Google gives you).
+2. **Submit the sitemap** — Search Console → *Sitemaps* → enter `sitemap.xml` → Submit
+   (full URL: `https://decisionspaceintegrity.com/sitemap.xml`).
+3. **Request indexing** for each canonical URL via the *URL Inspection* tool → *Request indexing*:
+   - `https://decisionspaceintegrity.com/`
+   - `https://decisionspaceintegrity.com/product.html`
+   - `https://decisionspaceintegrity.com/research.html`
+   - `https://decisionspaceintegrity.com/paper.html`
+   - `https://decisionspaceintegrity.com/contact.html`
+4. **Monitor** whether queries such as *Decision-Space Integrity*, *Decision-Space Collapse*, and
+   *Andrew J Cousins DSI* begin surfacing the site over the following weeks.
+
+Sitemap submission and indexing requests are manual dashboard actions — they require the Google
+account that owns the verified property and cannot be automated from this repo.
 
 ### Cloudflare managed robots.txt
 

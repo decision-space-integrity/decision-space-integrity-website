@@ -276,6 +276,12 @@ ul.clean li strong { display:inline; }
 .artcard p { font-size:14.5px; margin:0; }
 @media (max-width:560px) { .artcard { grid-template-columns:1fr; } .artcard img { height:170px; } }
 
+/* ---------- product "Where DSI fits" stack positioning ---------- */
+.stack-diagram { display:flex; flex-direction:column; gap:8px; max-width:560px; margin:6px 0 0; }
+.stack-layer { border:1px solid var(--line); background:var(--panel); border-radius:10px; padding:14px 18px; font-size:15px; color:var(--ink-dim); text-align:center; }
+.stack-layer-dsi { border-color:var(--accent-deep); background:var(--accent-ghost); color:#fcfbf5; font-weight:560; box-shadow:0 0 0 1px var(--accent-deep) inset; }
+.stack-note { max-width:64ch; margin:20px 0 0; color:var(--muted); font-size:14.5px; border-left:3px solid var(--line-2); padding-left:16px; }
+
 /* ---------- motion (CSS only — no JavaScript; all content renders without JS) ---------- */
 @keyframes rise { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
 .hero .eyebrow, .hero h1, .hero .lead, .hero .cta-row, .hero .figure { animation:rise .8s var(--ease) both; }

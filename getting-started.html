@@ -59,45 +59,47 @@
     </div>
   </section>
 
-  <section class="band">
+  <section>
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Quick start</p>
-      <h2 style="max-width:26ch;">Install, then run the test suite.</h2>
-      <p class="lead" style="max-width:64ch;">The fastest path is to install the package into a virtual environment and run the suite. The one-command launcher creates the environment, installs, and serves; the manual path is below it.</p>
-      <pre class="codeblock"><span class="c"># one command — creates a venv, installs, and serves (then open http://127.0.0.1:8000/)</span>
-./run_local.sh            <span class="c"># macOS / Linux        Windows:  .\run_local.ps1</span>
+      <h2 style="max-width:26ch;">Run DSI locally in minutes.</h2>
+      <p class="lead" style="max-width:64ch;">DSI installs as an ordinary Python package. One command creates a virtual environment, installs it, and starts the local server; the manual steps are below if you prefer to run them yourself.</p>
+      <p style="max-width:64ch;"><strong>What you'll see:</strong> the test suite passing, then a local server at <span class="mono">http://127.0.0.1:8000/</span> serving the audit dashboard.</p>
+      <pre class="codeblock"><span class="c"># one command: venv + install + serve</span>
+./run_local.sh                 <span class="c"># Windows: .\run_local.ps1</span>
 
-<span class="c"># or, manually:</span>
-git clone &lt;dsi-product&gt;   <span class="c"># the private product repository</span>
+<span class="c"># or step by step:</span>
+git clone &lt;dsi-product&gt;
 cd dsi-product
 python -m venv .venv
-. .venv/bin/activate      <span class="c"># Windows PowerShell:  .venv\Scripts\Activate.ps1</span>
-pip install -e ".[api]"   <span class="c"># core + API/dashboard;  plain  pip install -e .  for the core only</span>
-python -m pytest          <span class="c"># full suite (incl. golden + statelessness tests)</span></pre>
+. .venv/bin/activate           <span class="c"># Windows: .venv\Scripts\Activate.ps1</span>
+pip install -e ".[api]"        <span class="c"># core only: pip install -e .</span>
+python -m pytest               <span class="c"># run the test suite</span></pre>
     </div>
   </section>
 
-  <section class="band band-alt">
+  <section class="tint">
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Run the local API</p>
       <h2 style="max-width:26ch;">Serve the dashboard and API.</h2>
       <p class="lead" style="max-width:64ch;">One command starts the local server (dashboard at <span class="mono">/</span>, interactive OpenAPI at <span class="mono">/docs</span>). It prints whether API authentication is enabled.</p>
-      <pre class="codeblock">python -m dsi serve              <span class="c"># binds 127.0.0.1:8000; prints auth ENABLED / DISABLED</span>
+      <pre class="codeblock">python -m dsi serve             <span class="c"># serves on 127.0.0.1:8000</span>
 curl http://127.0.0.1:8000/health
 curl http://127.0.0.1:8000/version</pre>
       <p style="max-width:64ch;">Docker is also supported: <span class="mono">docker build -t dsi-product:local .</span> then run it bound to <span class="mono">127.0.0.1:8000</span>. See the runbook in the product repository for the full install / verify / package guide.</p>
     </div>
   </section>
 
-  <section class="band">
+  <section>
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Minimal audit</p>
       <h2 style="max-width:26ch;">Submit a prompt and response.</h2>
       <p class="lead" style="max-width:64ch;">You send the prompt and the response your system already produced; DSI returns an assurance result. Worked request, response, and evidence payloads ship in the repository's <span class="mono">examples/</span> directory.</p>
-      <pre class="codeblock"><span class="c"># audit a supplied (prompt, response[, domain])  — add  -H "X-API-Key: $DSI_API_KEY"  if auth is on</span>
+      <pre class="codeblock"><span class="c"># audit a supplied prompt + response</span>
 curl -X POST http://127.0.0.1:8000/v1/audit \
      -H "Content-Type: application/json" \
      --data @examples/audit_request.json</pre>
+      <p style="max-width:64ch;">If API authentication is enabled, add a <span class="mono">-H "X-API-Key: …"</span> header. The example files below are ready to use as request bodies.</p>
       <ul class="clean" style="max-width:64ch;">
         <li><span class="mono">examples/audit_request.json</span> · <span class="mono">audit_response.json</span> — a single audit.</li>
         <li><span class="mono">examples/control_loop_request.json</span> · <span class="mono">control_loop_response.json</span> — audit, control decision, and re-audit visibility delta.</li>
@@ -106,7 +108,7 @@ curl -X POST http://127.0.0.1:8000/v1/audit \
     </div>
   </section>
 
-  <section class="band band-alt">
+  <section class="tint">
     <div class="wrap" style="display:block;">
       <p class="eyebrow">What the audit returns</p>
       <h2 style="max-width:28ch;">Visibility outputs, with evidence.</h2>
@@ -123,7 +125,7 @@ curl -X POST http://127.0.0.1:8000/v1/audit \
     </div>
   </section>
 
-  <section class="band">
+  <section>
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Deployment modes</p>
       <h2 style="max-width:30ch;">The same spine, your choice of retention.</h2>
@@ -136,7 +138,7 @@ curl -X POST http://127.0.0.1:8000/v1/audit \
     </div>
   </section>
 
-  <section class="band band-alt">
+  <section class="tint">
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Repository structure</p>
       <h2 style="max-width:26ch;">What is in the product repository.</h2>
@@ -147,17 +149,17 @@ curl -X POST http://127.0.0.1:8000/v1/audit \
 ├── run_local.sh · run_local.ps1
 ├── src/
 │   └── dsi/
-│       ├── core/          <span class="c"># audit spine, expected maps, classification, scoring</span>
-│       ├── api/           <span class="c"># local FastAPI server (audit / control-loop / evidence)</span>
-│       ├── ui/            <span class="c"># server-rendered dashboard</span>
-│       └── version.py     <span class="c"># single source of truth for the version</span>
-├── examples/              <span class="c"># request, response, and evidence-bundle examples</span>
-├── docs/                  <span class="c"># runbook, deployment modes, release readiness</span>
-└── tests/                 <span class="c"># contract, unit, golden, and statelessness tests</span></pre>
+│       ├── core/          <span class="c"># audit spine, maps, scoring</span>
+│       ├── api/           <span class="c"># local API server</span>
+│       ├── ui/            <span class="c"># dashboard</span>
+│       └── version.py     <span class="c"># version source of truth</span>
+├── examples/              <span class="c"># request / response / evidence</span>
+├── docs/                  <span class="c"># runbook, deployment modes</span>
+└── tests/                 <span class="c"># contract, unit, golden, stateless</span></pre>
     </div>
   </section>
 
-  <section class="band">
+  <section>
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Where to start</p>
       <h2 style="max-width:24ch;">Four ways in.</h2>
@@ -171,7 +173,7 @@ curl -X POST http://127.0.0.1:8000/v1/audit \
     </div>
   </section>
 
-  <section class="band band-alt">
+  <section class="tint">
     <div class="wrap" style="display:block;">
       <div class="callout" style="max-width:70ch;">
         <p style="margin:0;">DSI audits supplied AI advisory outputs against configured expected maps. It is a visibility and evidence layer — not a language model, recommender, policy engine, governance workflow system, or safety-certification tool.</p>

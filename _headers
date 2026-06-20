@@ -5,3 +5,12 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; base-uri 'self'; frame-ancestors 'none'; form-action 'self'
+
+# Example-audit page only: allow its own first-party script (IntersectionObserver
+# reveal + count-up). Remove the inherited CSP, then re-set it identically EXCEPT
+# script-src 'none' -> 'self'. No 'unsafe-inline'/'unsafe-eval'; inline-script XSS
+# stays blocked. Every other path keeps script-src 'none'. Matches /example-audit
+# and /example-audit.html.
+/example-audit*
+  ! Content-Security-Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; base-uri 'self'; frame-ancestors 'none'; form-action 'self'

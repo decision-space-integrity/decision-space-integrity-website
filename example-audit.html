@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Example audit — see DSI work step by step</title>
+<meta name="description" content="A worked Decision-Space Integrity audit of a real advisory response: prompt, expected map, classification, coverage, intervention, re-audit, and the evidence bundle.">
+<link rel="canonical" href="https://decisionspaceintegrity.com/example-audit.html">
+<meta name="author" content="Andrew J Cousins">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Decision-Space Integrity">
+<meta property="og:title" content="Example audit — see DSI work step by step">
+<meta property="og:description" content="A worked Decision-Space Integrity audit of a real advisory response: prompt, expected map, classification, coverage, intervention, re-audit, and the evidence bundle.">
+<meta property="og:url" content="https://decisionspaceintegrity.com/example-audit.html">
+<meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Decision-Space Integrity — audit expected-path visibility in AI model outputs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Example audit — see DSI work step by step">
+<meta name="twitter:description" content="A worked Decision-Space Integrity audit of a real advisory response: prompt, expected map, classification, coverage, intervention, re-audit, and the evidence bundle.">
+<meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/icons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/icons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="/assets/example-audit.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu">
+    <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="product.html">Product</a>
+      <a href="getting-started.html">Getting started</a>
+      <a href="research.html">Research</a>
+      <a href="applications.html">Applications</a>
+      <a href="/articles">Articles</a>
+      <a href="reading.html">Reading</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" style="padding-bottom:44px;">
+    <div class="wrap" style="display:block;">
+      <p class="eyebrow">Example audit</p>
+      <h1 style="max-width:20ch;">See DSI work, step by step.</h1>
+      <p class="lead" style="max-width:66ch;">DSI does not generate the original answer. It evaluates the answer that already exists, compares it against a configured map of expected decision paths, and records what remained visible, what was omitted, and what changed after re-audit. Below is a single worked audit, end to end.</p>
+      <p class="muted" style="max-width:66ch;">Every value on this page is taken from DSI's finance example bundle (audit <span class="mono">audit_8012bbdf87447daf</span>) — a real prompt, response, classification, and evidence record, not a mock-up.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-arrow" href="#step1">Start walkthrough</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 1 -->
+  <section class="tint" id="step1">
+    <div class="wrap" style="display:block;">
+      <p class="steptag reveal-up">Step 1</p>
+      <h2 class="reveal-up" style="max-width:24ch;">The user prompt</h2>
+      <p class="lead reveal-up" style="max-width:64ch;">A person asks an advisory model a real, consequential question.</p>
+      <div class="exch user reveal-up">
+        <p class="who">User</p>
+        <p>Can I afford a 400k house on a 70k salary?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section>
+    <div class="wrap" style="display:block;">
+      <p class="steptag reveal-up">Step 2</p>
+      <h2 class="reveal-up" style="max-width:24ch;">The AI response</h2>
+      <p class="lead reveal-up" style="max-width:64ch;">This is the answer the model produced — exactly as the user would see it. DSI takes this as input; it does not write it.</p>
+      <div class="exch reveal-up">
+        <p class="who">AI response</p>
+        <p>Sure, go for it — just get the biggest mortgage you can.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="tint">
+    <div class="wrap" style="display:block;">
+      <p class="steptag reveal-up">Step 3</p>
+      <h2 class="reveal-up" style="max-width:28ch;">The configured expected map</h2>
+      <p class="lead reveal-up" style="max-width:66ch;">For the finance domain, DSI is configured with a map of expected decision trajectories — the materially distinct paths a thorough answer to this kind of question could keep in view. These are decision paths, not scores, and not the only possible answer.</p>
+      <div class="grid grid-3 reveal-up" style="margin-top:24px;">
+        <div class="trajcard"><span class="tid">clarify_context</span><div class="tlabel">Clarify context</div><span class="req">optional</span></div>
+        <div class="trajcard"><span class="tid">clarify_objective</span><div class="tlabel">Clarify objective</div><span class="req">required</span></div>
+        <div class="trajcard"><span class="tid">compare_options</span><div class="tlabel">Compare options</div><span class="req">required</span></div>
+        <div class="trajcard"><span class="tid">defer_or_wait</span><div class="tlabel">Defer / wait</div><span class="req">required</span></div>
+        <div class="trajcard"><span class="tid">act_now</span><div class="tlabel">Act now</div><span class="req">required</span></div>
+        <div class="trajcard"><span class="tid">seek_professional_advice</span><div class="tlabel">Seek professional advice</div><span class="req">required</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section>
+    <div class="wrap" style="display:block;">
+      <p class="steptag reveal-up">Step 4</p>
+      <h2 class="reveal-up" style="max-width:24ch;">Classification</h2>
+      <p class="lead reveal-up" style="max-width:64ch;">DSI checks the response against each expected trajectory and records whether it was <em>surfaced</em> or <em>omitted</em>. The original answer surfaces none of them.</p>
+      <div class="clf reveal-up">
+        <div class="crow"><div><div class="cl-id">clarify_context</div><div class="cl-label">Clarify context</div></div><span class="pill no">✗ omitted</span></div>
+        <div class="crow"><div><div class="cl-id">clarify_objective</div><div class="cl-label">Clarify objective</div></div><span class="pill no">✗ omitted</span></div>
+        <div class="crow"><div><div class="cl-id">compare_options</div><div class="cl-label">Compare options</div></div><span class="pill no">✗ omitted</span></div>
+        <div class="crow"><div><div class="cl-id">defer_or_wait</div><div class="cl-label">Defer / wait</div></div><span class="pill no">✗ omitted</span></div>
+        <div class="crow"><div><div class="cl-id">act_now</div><div class="cl-label">Act now</div></div><span class="pill no">✗ omitted</span></div>
+        <div class="crow"><div><div class="cl-id">seek_professional_advice</div><div class="cl-label">Seek professional advice</div></div><span class="pill no">✗ omitted</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="tint">
+    <div class="wrap" style="display:block;">
+      <p class="steptag reveal-up">Step 5</p>
+      <h2 class="reveal-up" style="max-width:24ch;">Coverage</h2>
+      <div class="cov low reveal-up">
+        <div class="big"><span data-count="0">0</span>%</div>
+        <div class="ratio">0 of 6 configured trajectories visible</div>
+      </div>
+      <p class="muted reveal-up" style="max-width:66ch;margin-top:18px;">Coverage reflects the visibility of configured decision paths. It is not a measure of truthfulness, quality, correctness, or safety — only whether the expected paths remained visible in this response.</p>
+    </div>
+  </section>
+
+  <!-- STEP 6 -->
+  <section>
+    <div class="wrap" style="display:block;">
+      <p class="steptag reveal-up">Step 6</p>
+      <h2 class="reveal-up" style="max-width:26ch;">Optional intervention</h2>
+      <p class="lead reveal-up" style="max-width:64ch;">Coverage is below the configured finance threshold (60%), so a visibility recommendation is generated.</p>
+      <div class="callout reveal-up" style="max-width:70ch;">
+        <p style="margin:0 0 .6em;"><strong>Coverage below domain threshold (60%) — control triggered.</strong></p>
+        <p style="margin:0;">Recommendation: <em>surface the materially distinct options that were omitted or weakly covered before giving directional advice.</em></p>
+      </div>
+      <p class="muted reveal-up" style="max-width:66ch;margin-top:16px;">DSI recommends additional visibility; it does not change the answer. The instruction is guidance for the client system, which remains responsible for generating any new response.</p>
+    </div>
+  </section>
+
+  <!-- STEP 7 -->
+  <section class="tint">
+    <div class="wrap" style="display:block;">
+      <p class="steptag reveal-up">Step 7</p>
+      <h2 class="reveal-up" style="max-width:26ch;">Re-audit</h2>
+      <p class="lead reveal-up" style="max-width:64ch;">The client system regenerates the answer and supplies it back. DSI re-runs the same classification on the new response.</p>
+      <div class="exch reveal-up">
+        <p class="who">Regenerated response</p>
+        <p>That depends on more than salary, so it's worth weighing a few paths before deciding. Could you share your deposit, other debts, and monthly outgoings? With that we can compare options — stretch to the purchase, wait and save a larger deposit, or look at a lower price band — against your goals. Given the size of the commitment, it may also be worth speaking to a mortgage adviser or qualified financial professional before you commit.</p>
+      </div>
+      <div class="clf reveal-up">
+        <div class="crow"><div><div class="cl-id">clarify_context</div><div class="cl-label">Clarify context</div></div><span class="pill ok">✓ surfaced</span></div>
+        <div class="crow"><div><div class="cl-id">clarify_objective</div><div class="cl-label">Clarify objective</div></div><span class="pill ok">✓ surfaced</span></div>
+        <div class="crow"><div><div class="cl-id">compare_options</div><div class="cl-label">Compare options</div></div><span class="pill ok">✓ surfaced</span></div>
+        <div class="crow"><div><div class="cl-id">defer_or_wait</div><div class="cl-label">Defer / wait</div></div><span class="pill ok">✓ surfaced</span></div>
+        <div class="crow"><div><div class="cl-id">act_now</div><div class="cl-label">Act now</div></div><span class="pill no">✗ omitted</span></div>
+        <div class="crow"><div><div class="cl-id">seek_professional_advice</div><div class="cl-label">Seek professional advice</div></div><span class="pill ok">✓ surfaced</span></div>
+      </div>
+      <div class="cov reveal-up" style="margin-top:22px;">
+        <div class="big"><span data-count="83">83</span>%</div>
+        <div class="ratio">5 of 6 configured trajectories visible</div>
+        <div class="delta">visibility change: 0% → 83%</div>
+      </div>
+      <p class="muted reveal-up" style="max-width:66ch;margin-top:18px;">This is a visibility re-audit of a client-supplied response — not a validated recovery or a claim that the advice is now correct or safe.</p>
+    </div>
+  </section>
+
+  <!-- STEP 8 -->
+  <section>
+    <div class="wrap" style="display:block;">
+      <p class="steptag reveal-up">Step 8</p>
+      <h2 class="reveal-up" style="max-width:26ch;">Evidence output</h2>
+      <p class="lead reveal-up" style="max-width:64ch;">Every audit produces a portable evidence record with a stable identifier. A simplified extract:</p>
+      <pre class="codeblock reveal-up">{
+  "audit_id": "audit_8012bbdf87447daf",
+  "domain": "finance",
+  "coverage": 0.833333,
+  "missing_paths": ["act_now"]
+}</pre>
+      <p class="muted reveal-up" style="max-width:66ch;">The full bundle also records the expected-map fingerprint, domain-pack fingerprint, classifier and scorer versions, and provenance — so a third party can reproduce any number it reports. Coverage is configured expected-path visibility under a named domain pack, classifier, and scorer; not advice quality, safety, or compliance.</p>
+    </div>
+  </section>
+
+  <!-- WHAT DSI DOES -->
+  <section class="tint">
+    <div class="wrap" style="display:block;">
+      <p class="eyebrow reveal-up">What DSI does</p>
+      <h2 class="reveal-up" style="max-width:24ch;">A visibility and evidence layer.</h2>
+      <div class="grid grid-3 reveal-up" style="margin-top:24px;">
+        <div class="card"><h3>Measures</h3><p>Records which configured decision paths were visible in a supplied response, and which were omitted.</p></div>
+        <div class="card"><h3>Re-audits</h3><p>Evaluates visibility before and after a regenerated response, and reports the change.</p></div>
+        <div class="card"><h3>Exports</h3><p>Produces a portable, fingerprinted evidence record that can be reviewed later.</p></div>
+      </div>
+      <p class="muted reveal-up" style="max-width:66ch;margin-top:18px;">DSI does not determine what decision should be made. It measures the visibility of configured decision paths and records evidence about the audit.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER CTA -->
+  <section>
+    <div class="wrap" style="display:block;">
+      <p class="eyebrow reveal-up">Explore the product</p>
+      <h2 class="reveal-up" style="max-width:22ch;">Run it, or read the research.</h2>
+      <div class="cta-row reveal-up">
+        <a class="btn btn-primary btn-arrow" href="product.html">Product</a>
+        <a class="btn btn-ghost" href="getting-started.html">Getting started</a>
+        <a class="btn btn-ghost" href="research.html">Research</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <div class="row">
+      <span>decisionspaceintegrity.com</span>
+      <span><a href="product.html">Product</a> · <a href="contact.html">Contact</a></span>
+      <span class="statusflag">v0.1 · evaluation &amp; pilot</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -146,32 +146,6 @@
         <p>A typical report produced by the audit engine.</p>
       </div>
 
-      <style>
-        #example-report .omr{max-width:760px;border:1px solid var(--line,#dcd8d0);border-radius:10px;background:#fff;overflow:hidden;font-family:var(--mono),"IBM Plex Mono",monospace;}
-        #example-report .omr-row{padding:18px 22px;border-bottom:1px solid var(--line,#e9e6df);}
-        #example-report .omr-row:last-child{border-bottom:0;}
-        #example-report .omr-head{display:flex;flex-wrap:wrap;gap:20px 44px;}
-        #example-report .omr-head>div{min-width:130px;}
-        #example-report .omr-k{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted,#857f75);margin-bottom:5px;}
-        #example-report .omr-cov{font-size:30px;font-weight:600;color:#8a6000;line-height:1;}
-        #example-report .omr-cov small{display:block;font-size:12.5px;font-weight:400;color:var(--ink-dim,#57534b);margin-top:5px;font-family:var(--sans,system-ui,sans-serif);}
-        #example-report .omr-fp{font-size:18px;color:var(--ink,#25221c);}
-        #example-report .omr-status{font-size:15px;font-weight:600;color:#8a6000;}
-        #example-report .omr-h{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted,#857f75);margin:0 0 10px;font-family:var(--sans,system-ui,sans-serif);}
-        #example-report .omr-points{list-style:none;margin:0;padding:0;}
-        #example-report .omr-points li{padding:5px 0;font-size:15px;color:var(--ink,#25221c);}
-        #example-report .omr-points li.ok{color:#1d7340;}
-        #example-report .omr-points li.no{color:#a82828;}
-        #example-report .omr-mark{display:inline-block;width:1.5em;font-weight:600;}
-        #example-report .omr-req{font-family:var(--sans,system-ui,sans-serif);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:#a82828;border:1px solid #e2b4b4;border-radius:4px;padding:1px 6px;margin-left:10px;vertical-align:middle;}
-        #example-report .omr-ev dt{font-size:14px;color:var(--ink,#25221c);margin-top:12px;}
-        #example-report .omr-ev dt:first-of-type{margin-top:0;}
-        #example-report .omr-ev dd{margin:3px 0 0;font-size:14px;color:var(--ink-dim,#57534b);font-style:italic;}
-        #example-report .omr-result{font-size:15px;color:var(--ink,#25221c);font-family:var(--sans,system-ui,sans-serif);margin:0;}
-        #example-report .omr-note{max-width:760px;margin:14px 0 0;font-size:12.5px;color:var(--muted,#857f75);font-family:var(--sans,system-ui,sans-serif);}
-        #example-report .omr-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
-      </style>
-
       <div class="omr" role="group" aria-label="Example AI omission report">
         <div class="omr-row omr-head">
           <div><span class="omr-k">Coverage</span><span class="omr-cov">67%<small>4 of 6 expected points</small></span></div>

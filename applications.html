@@ -72,6 +72,48 @@
     </div>
   </section>
 
+  <section class="reveal" id="policy-report">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Example application</p>
+        <h2>Example policy assurance report.</h2>
+        <p>Comparing an AI-generated policy summary against expected policy obligations.</p>
+      </div>
+
+      <div class="omr" role="group" aria-label="Example policy omission report">
+        <div class="omr-row omr-head">
+          <div><span class="omr-k">Coverage</span><span class="omr-cov">83%<small>5 of 6 expected obligations</small></span></div>
+          <div><span class="omr-k">Fingerprint</span><span class="omr-fp">A3F2-71CD</span></div>
+          <div><span class="omr-k">Status</span><span class="omr-status">Review recommended</span></div>
+        </div>
+        <div class="omr-row">
+          <h3 class="omr-h">Expected policy obligations</h3>
+          <ul class="omr-points">
+            <li class="ok"><span class="omr-mark" aria-hidden="true">✓</span><span class="omr-vh">Surfaced: </span>Password rotation</li>
+            <li class="ok"><span class="omr-mark" aria-hidden="true">✓</span><span class="omr-vh">Surfaced: </span>MFA requirement</li>
+            <li class="ok"><span class="omr-mark" aria-hidden="true">✓</span><span class="omr-vh">Surfaced: </span>Logging requirements</li>
+            <li class="ok"><span class="omr-mark" aria-hidden="true">✓</span><span class="omr-vh">Surfaced: </span>Account lockout</li>
+            <li class="ok"><span class="omr-mark" aria-hidden="true">✓</span><span class="omr-vh">Surfaced: </span>Privileged access</li>
+            <li class="no"><span class="omr-mark" aria-hidden="true">✗</span><span class="omr-vh">Omitted: </span>Third-party access review<span class="omr-req">required</span></li>
+          </ul>
+        </div>
+        <div class="omr-row">
+          <h3 class="omr-h">Evidence</h3>
+          <dl class="omr-ev">
+            <dt>Third-party access review</dt>
+            <dd>“Access granted to external contractors must be reviewed every 90 days.”</dd>
+          </dl>
+        </div>
+        <div class="omr-row">
+          <h3 class="omr-h">Result</h3>
+          <p class="omr-result">1 required policy obligation was omitted. Evidence attached.</p>
+        </div>
+      </div>
+
+      <p class="omr-note">Example report for illustration. Coverage measures expected-point visibility only. It does not certify answer quality, safety, compliance, or correctness.</p>
+    </div>
+  </section>
+
   <section class="reveal">
     <div class="wrap">
       <div class="section-head">

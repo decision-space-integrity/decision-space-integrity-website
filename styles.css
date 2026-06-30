@@ -141,9 +141,34 @@ ul.clean li strong { display:inline; }
 
 /* ---------- the one-line band ---------- */
 .band { background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-.band .wrap { padding:38px 0; }
+.band .wrap { padding:38px clamp(20px,5vw,40px); }
 .band .oneliner { font-family:var(--mono); font-size:clamp(.95rem,2.1vw,1.25rem); color:var(--ink); letter-spacing:.01em; }
 .band .oneliner .hl { color:var(--accent); }
+
+/* ---------- omission report component (shared: homepage + applications) ---------- */
+.omr { max-width:760px; border:1px solid var(--line,#dcd8d0); border-radius:10px; background:#fff; overflow:hidden; font-family:var(--mono),"IBM Plex Mono",monospace; }
+.omr-row { padding:18px 22px; border-bottom:1px solid var(--line,#e9e6df); }
+.omr-row:last-child { border-bottom:0; }
+.omr-head { display:flex; flex-wrap:wrap; gap:20px 44px; }
+.omr-head > div { min-width:130px; }
+.omr-k { display:block; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted,#857f75); margin-bottom:5px; }
+.omr-cov { font-size:30px; font-weight:600; color:#8a6000; line-height:1; }
+.omr-cov small { display:block; font-size:12.5px; font-weight:400; color:var(--ink-dim,#57534b); margin-top:5px; font-family:var(--sans,system-ui,sans-serif); }
+.omr-fp { font-size:18px; color:var(--ink,#25221c); }
+.omr-status { font-size:15px; font-weight:600; color:#8a6000; }
+.omr-h { font-size:12px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted,#857f75); margin:0 0 10px; font-family:var(--sans,system-ui,sans-serif); }
+.omr-points { list-style:none; margin:0; padding:0; }
+.omr-points li { padding:5px 0; font-size:15px; color:var(--ink,#25221c); }
+.omr-points li.ok { color:#1d7340; }
+.omr-points li.no { color:#a82828; }
+.omr-mark { display:inline-block; width:1.5em; font-weight:600; }
+.omr-req { font-family:var(--sans,system-ui,sans-serif); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:#a82828; border:1px solid #e2b4b4; border-radius:4px; padding:1px 6px; margin-left:10px; vertical-align:middle; }
+.omr-ev dt { font-size:14px; color:var(--ink,#25221c); margin-top:12px; }
+.omr-ev dt:first-of-type { margin-top:0; }
+.omr-ev dd { margin:3px 0 0; font-size:14px; color:var(--ink-dim,#57534b); font-style:italic; }
+.omr-result { font-size:15px; color:var(--ink,#25221c); font-family:var(--sans,system-ui,sans-serif); margin:0; }
+.omr-note { max-width:760px; margin:14px 0 0; font-size:12.5px; color:var(--muted,#857f75); font-family:var(--sans,system-ui,sans-serif); }
+.omr-vh { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
 /* ---------- flow (audit -> recommend -> re-audit -> evidence) ---------- */
 .flow { display:flex; flex-wrap:wrap; gap:10px; align-items:stretch; }

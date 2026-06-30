@@ -1,0 +1,44 @@
+name: Validate site
+
+# The public site is validated on every change: no un-negated overclaims, no broken links / missing assets,
+# and (advisory) valid HTML. The reserved-terminology boundary is enforced from the private side before
+# publishing (a public denylist would itself leak the terms), so it is intentionally not run here.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: claim + links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # NOTE: the reserved-terminology denylist is deliberately NOT carried in this public repo —
+      # a public denylist would itself publish the reserved terms. That boundary is enforced before
+      # publishing from the private side (the product repo's check_reserved_terms.py / pre-publish scan).
+      - name: Claim-discipline scan (no un-negated certify/guarantee/prove-safety/human-validated)
+        run: python scripts/check_claim_discipline.py .
+      - name: Broken links + missing assets
+        run: python scripts/check_links.py
+
+  html:
+    name: HTML validation (advisory)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install html5validator
+      - name: validate HTML (advisory until clean)
+        run: html5validator --root . --blacklist scripts
+        continue-on-error: true

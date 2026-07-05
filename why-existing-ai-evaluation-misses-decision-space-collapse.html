@@ -56,8 +56,8 @@
   <section class="hero" style="padding-bottom:40px;">
     <div class="wrap">
       <p class="eyebrow">Positioning</p>
-      <h1 style="max-width:20ch;">Why existing AI evaluation misses decision-space collapse.</h1>
-      <p class="lead" style="max-width:62ch;">Every widely-used AI evaluation measures a real and useful property. None of them measure whether an answer quietly left <strong>reasonable options out of view</strong>. That specific gap is <a href="what-is-decision-space-integrity.html">decision-space collapse</a> — and it is what Decision-Space Integrity was built to make measurable.</p>
+      <h1 style="max-width:22ch;">Existing AI evaluation measures a different property.</h1>
+      <p class="lead" style="max-width:62ch;">Every widely-used AI evaluation measures a real and useful property. None of them measure whether an answer quietly left <strong>reasonable options out of view</strong>. That specific property is <a href="what-is-decision-space-integrity.html">decision-space collapse</a> — and it is what Decision-Space Integrity was built to make measurable, alongside the tools you already run.</p>
     </div>
   </section>
 
@@ -76,40 +76,24 @@
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">The comparison</p>
-        <h2>What each approach measures — and what it does not.</h2>
+        <h2>Each approach measures a different property.</h2>
+        <p>Read across, not down: each row is a distinct, useful question. Decision-Space Integrity adds one the others do not ask.</p>
       </div>
-      <div class="grid grid-2" style="gap:22px; align-items:start;">
-        <div class="card">
-          <h3>Hallucination / factuality</h3>
-          <p><strong>Measures:</strong> whether statements are true and grounded.</p>
-          <p><strong>Does not measure:</strong> whether reasonable options were omitted. A fully accurate answer can still collapse the decision space.</p>
-        </div>
-        <div class="card">
-          <h3>Toxicity / safety filters</h3>
-          <p><strong>Measures:</strong> whether output contains harmful or disallowed content.</p>
-          <p><strong>Does not measure:</strong> whether a clean, polite answer quietly narrowed the options a user can see.</p>
-        </div>
-        <div class="card">
-          <h3>RAG evaluation</h3>
-          <p><strong>Measures:</strong> whether retrieved context was relevant and the answer was faithful to it.</p>
-          <p><strong>Does not measure:</strong> whether the set of reasonable option paths for the decision was kept in view.</p>
-        </div>
-        <div class="card">
-          <h3>Benchmark scoring</h3>
-          <p><strong>Measures:</strong> aggregate performance across many items, as a single score.</p>
-          <p><strong>Does not measure:</strong> per-response omission — which expected points a specific answer surfaced or left out.</p>
-        </div>
-        <div class="card">
-          <h3>Guardrails</h3>
-          <p><strong>Measures &amp; acts:</strong> blocks or rewrites outputs that break a rule.</p>
-          <p><strong>Does not measure:</strong> omission of reasonable options — and it changes the answer, whereas DSI audits a response it did not produce.</p>
-        </div>
-        <div class="card">
-          <h3>Decision-Space Integrity</h3>
-          <p><strong>Measures:</strong> which configured expected paths are surfaced, omitted, or recovered, with source evidence and a reproducible fingerprint.</p>
-          <p><strong>Does not measure:</strong> advice quality, factual correctness, safety, or compliance — those are the questions above.</p>
-        </div>
-      </div>
+      <table class="cmp">
+        <caption>What each approach primarily measures</caption>
+        <thead>
+          <tr><th scope="col">Approach</th><th scope="col">Primarily measures</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Hallucination / factuality evaluation</th><td>Factual correctness — whether statements are true and grounded.</td></tr>
+          <tr><th scope="row">Toxicity evaluation</th><td>Harmful or offensive content.</td></tr>
+          <tr><th scope="row">Guardrails</th><td>Policy compliance — blocking or rewriting outputs that break a rule.</td></tr>
+          <tr><th scope="row">RAG evaluation</th><td>Retrieval quality and factual grounding in the retrieved context.</td></tr>
+          <tr><th scope="row">Benchmark scoring</th><td>Aggregate performance across many items, as a single score.</td></tr>
+          <tr class="self"><th scope="row">Decision-Space Integrity</th><td>Visibility of configured decision paths — which are surfaced, omitted, or recovered, with source evidence and a reproducible fingerprint.</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:18px;">None of this ranks the approaches. They answer different questions, and most teams will want several of them. DSI is designed to sit alongside the tools above and report the one property they do not: whether the reasonable option paths stayed in view.</p>
     </div>
   </section>
 

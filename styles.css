@@ -394,3 +394,13 @@ pre.codeblock .c { color:var(--faint); }
 .js .reveal-up { opacity:0; transform:translateY(14px); }
 .js .reveal-up.in { opacity:1; transform:none; }
 @media (prefers-reduced-motion: reduce) { .js .reveal-up, .js .reveal-up.in { opacity:1; transform:none; transition:none; } }
+
+/* comparison table — "existing approach → primarily measures" (positioning/evidence pages) */
+.cmp { width:100%; border-collapse:collapse; margin:22px 0 0; font-size:.98rem; }
+.cmp caption { text-align:left; font-family:var(--mono); font-size:12px; letter-spacing:.04em; color:var(--muted); padding-bottom:12px; }
+.cmp th, .cmp td { text-align:left; padding:14px 16px; border-bottom:1px solid var(--line); vertical-align:top; }
+.cmp thead th { font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--line-2); }
+.cmp tbody th { font-weight:560; color:var(--ink); }
+.cmp tr.self th, .cmp tr.self td { color:#fcfbf5; }
+.cmp tr.self { background:var(--accent-ghost); }
+.cmp tr:last-child th, .cmp tr:last-child td { border-bottom:none; }

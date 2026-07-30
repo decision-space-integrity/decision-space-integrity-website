@@ -70,7 +70,7 @@
         <div class="card"><h3>Local-first</h3><p>You own the model call; DSI audits a supplied prompt/response pair. No external service is required to run it.</p></div>
         <div class="card"><h3>Stateless by default</h3><p>No database is created and no audit history is retained unless you deliberately configure persistence. Evidence bundles are portable artefacts you choose to keep.</p></div>
         <div class="card"><h3>No telemetry</h3><p>No usage reporting, no remote logging, no hidden ingestion. DSI phones nothing home.</p></div>
-        <div class="card"><h3>Deterministic</h3><p>The same inputs produce the same audit and the same audit identifier; the only non-deterministic field in a bundle is the export timestamp.</p></div>
+        <div class="card"><h3>Deterministic</h3><p>Under the same product version, configured expected map, pack, and instrument settings, the same inputs produce the same audit and the same audit identifier. The evidence-bundle export timestamp is the only intentionally variable field.</p></div>
       </div>
     </div>
   </section>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release notes — Decision-Space Integrity 0.2.1</title>
+<meta name="description" content="Public release notes for Decision-Space Integrity Product 0.2.1: deployment diagnostics, first-class Regression Audit, a readiness endpoint, and a context-admission fix. Classifier and scorer unchanged.">
+<link rel="canonical" href="https://decisionspaceintegrity.com/release-notes.html">
+<meta name="author" content="Andrew J Cousins">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Decision-Space Integrity">
+<meta property="og:title" content="Release notes — Decision-Space Integrity 0.2.1">
+<meta property="og:description" content="What changed in DSI Product 0.2.1: deployment diagnostics, first-class Regression Audit, a readiness endpoint, and a context-admission fix. Classifier and scorer unchanged.">
+<meta property="og:url" content="https://decisionspaceintegrity.com/release-notes.html">
+<meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Decision-Space Integrity — audit expected-path visibility in AI model outputs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Release notes — Decision-Space Integrity 0.2.1">
+<meta name="twitter:description" content="What changed in DSI Product 0.2.1: deployment diagnostics, first-class Regression Audit, a readiness endpoint, and a context-admission fix.">
+<meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
+<meta name="twitter:image:alt" content="Decision-Space Integrity — audit expected-path visibility in AI model outputs">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/icons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/icons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu">
+    <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="what-is-decision-space-integrity.html">What is DSI?</a>
+      <a href="product.html">Product</a>
+      <a href="getting-started.html">Getting started</a>
+      <a href="research.html">Research</a>
+      <a href="applications.html">Applications</a>
+      <a href="/articles">Articles</a>
+      <a href="reading.html">Reading</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" style="padding-bottom:40px;">
+    <div class="wrap" style="display:block;">
+      <p class="eyebrow">Release notes · v0.2.1</p>
+      <h1 style="max-width:20ch;">DSI Product 0.2.1</h1>
+      <p class="lead" style="max-width:62ch;">A hardening release: installation, diagnostics, packaging, and a context-admission fix, with <strong>Regression Audit</strong> as a first-class capability. No conceptual redesign — this builds on 0.2.0 without a public API break. Still <strong>evaluation &amp; pilot</strong>, still <strong>local-first</strong>.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Added</p>
+      </div>
+      <ul class="clean">
+        <li><strong>Deployment doctor</strong> — <span class="runline"><span class="c">dsi doctor</span></span>, a read-only readiness check you run first. "Ready for audits" means installation readiness only.</li>
+        <li><strong>Installation validation</strong> — <span class="runline"><span class="c">dsi validate-install</span></span> runs a real, domain-consistent audit end to end (audit → evidence card → regression).</li>
+        <li><strong>Readiness endpoint</strong> — <span class="runline"><span class="c">GET /ready</span></span> (503 when not ready); an enriched <span class="runline"><span class="c">GET /version</span></span>.</li>
+        <li><strong>Regression Audit</strong> — first formal release: an instrument-relative comparison of paired outputs, with instrument-limited verdicts and provenance.</li>
+        <li><strong>Clean-install verification</strong> — the built package is installed in an isolated environment and checked to run from documentation alone.</li>
+        <li><strong>Consolidated documentation</strong> — getting-started, deployment profiles, and security &amp; operations guidance.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Fixed</p>
+      </div>
+      <ul class="clean">
+        <li><strong>Embedded decision phrasing.</strong> Indirect questions such as <em>"I don't know if I should stay or look elsewhere"</em> are now recognised as decisions and audited against the full applicable set, matching their direct form <em>"Should I stay or look elsewhere?"</em> — rather than being reduced to a single clarification path.</li>
+        <li><strong>Install validation consistency.</strong> The end-to-end check now audits with a prompt matched to the selected domain, rather than pairing an arbitrary prompt with an arbitrary domain.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Compatibility</p>
+      </div>
+      <ul class="clean">
+        <li><strong>Classifier version unchanged; scorer version unchanged.</strong> The fix changed how the applicable set is constructed, not the matching or the scoring.</li>
+        <li><strong>Public output schema unchanged.</strong></li>
+        <li>Re-running the frozen evaluation set showed <strong>no change</strong> to any measured denominator or coverage figure.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <p class="eyebrow">Known limitations</p>
+      <div class="callout">
+        <p>The lexical classifier is <strong>challenge-tested (challenge-only)</strong>; human review is recommended. Regression Audit verdicts are <strong>instrument-relative</strong> — they report a change in configured expected-path visibility, not that one build is better, safer, or of higher quality. DSI is <strong>not</strong> intended for autonomous high-stakes decision making or response blocking, and is <strong>not</strong> human-validated.</p>
+        <p style="margin-top:.8em;">This work measures visibility of configured expected paths in model outputs. It does not measure advice quality, factual correctness, user outcomes, or regulatory compliance.</p>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-arrow" href="getting-started.html">Install and evaluate</a>
+        <a class="btn btn-ghost" href="product.html">See the product</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <div class="row">
+      <span>decisionspaceintegrity.com</span>
+      <span><a href="research.html">Research &amp; evidence status</a> · <a href="contact.html">Contact</a></span>
+      <span class="statusflag">v0.2.1 · evaluation &amp; pilot</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

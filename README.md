@@ -7,22 +7,31 @@ A static site: plain HTML + one CSS file. **No frameworks, no JavaScript, no bui
 ## Pages
 
 ```
-index.html      Home
-product.html    Product
-research.html   Research
-paper.html      Preprint hub (Decision-Space Collapse)
-applications.html  Applications (positioning)
-contact.html    Contact
-articles/       Articles index (articles/index.html) + article pages
-styles.css      styling (one file)
-robots.txt      crawl directives + sitemap pointer
-sitemap.xml     canonical URL list for search engines
-_headers        Cloudflare Pages edge headers (security)
-assets/papers/   preprint PDF
-assets/og/       social preview image (Open Graph / Twitter Card)
-assets/icons/    favicon + Apple touch icon
-assets/articles/ article cover images
+index.html                                 Home (Product Status panel + Why it matters)
+what-is-decision-space-integrity.html      Canonical explainer ("What is DSI?") + FAQPage
+product.html                               Product (Audit · Regression Audit · Evidence)
+getting-started.html                       Getting started — the evaluator install path
+deployment.html                            Deployment profiles (core · API · dashboard · Docker)
+security.html                              Security & operations
+release-notes.html                         Release notes (0.2.1)
+applications.html                          Applications (positioning)
+research.html                              Research & evidence status
+evidence.html                              Evidence index (research-programme map)
+paper.html                                 Preprint hub (Decision-Space Collapse)
+decision-space-integrity-compared-with-existing-ai-evaluation.html   Positioning comparison
+andrew-j-cousins.html                      Author (Person JSON-LD)
+example-audit.html                         Worked audit walkthrough (real reproducible bundle)
+reading.html                               Further reading (external literature)
+contact.html                               Contact
+articles/                                  Articles index (articles/index.html) + article pages
+styles.css                                 styling (one file)
+robots.txt                                 crawl directives + sitemap pointer
+sitemap.xml                                canonical URL list for search engines
+_headers                                   Cloudflare Pages edge headers (security)
+assets/papers/ · assets/og/ · assets/icons/ · assets/articles/    PDF · social card · favicons · covers
 ```
+
+> The canonical page list is `sitemap.xml`; keep it authoritative and update it when pages are added or removed.
 
 ## Preview locally
 
@@ -50,9 +59,13 @@ The site is fully responsive and renders with JavaScript disabled.
 The site ships with the static files search engines expect:
 
 - **`robots.txt`** — allows all crawlers and points to the sitemap.
-- **`sitemap.xml`** — lists the eight canonical URLs (`/`, `/product.html`, `/research.html`,
-  `/paper.html`, `/applications.html`, `/articles`, `/articles/ai-brilliance-human-capability`,
-  `/contact.html`), all on `https://decisionspaceintegrity.com`.
+- **`sitemap.xml`** — the authoritative list of canonical URLs on `https://decisionspaceintegrity.com` (currently
+  including `/`, `/what-is-decision-space-integrity.html`, `/product.html`, `/getting-started.html`,
+  `/deployment.html`, `/security.html`, `/release-notes.html`, `/applications.html`, `/research.html`,
+  `/evidence.html`, `/paper.html`,
+  `/decision-space-integrity-compared-with-existing-ai-evaluation.html`, `/andrew-j-cousins.html`,
+  `/example-audit.html`, `/reading.html`, `/articles`, `/articles/ai-brilliance-human-capability`,
+  `/contact.html`).
 - **`paper.html`** — a dedicated hub for the *Decision-Space Collapse in Advisory Language Models*
   preprint (PDF, public replication repository, and OSF DOI), linked from `research.html`.
 - **Canonical URLs** — every page declares `<link rel="canonical">` plus a unique title and meta
@@ -71,15 +84,16 @@ Once the domain is live on Cloudflare Pages, in
    complete the DNS TXT verification (Cloudflare dashboard → DNS → add the TXT record Google gives you).
 2. **Submit the sitemap** — Search Console → *Sitemaps* → enter `sitemap.xml` → Submit
    (full URL: `https://decisionspaceintegrity.com/sitemap.xml`).
-3. **Request indexing** for each canonical URL via the *URL Inspection* tool → *Request indexing*:
-   - `https://decisionspaceintegrity.com/`
+3. **Request indexing** via the *URL Inspection* tool → *Request indexing* for each canonical URL in
+   `sitemap.xml`. Prioritise the new / changed 0.2.1 pages:
+   - `https://decisionspaceintegrity.com/getting-started.html`
+   - `https://decisionspaceintegrity.com/deployment.html`
+   - `https://decisionspaceintegrity.com/security.html`
+   - `https://decisionspaceintegrity.com/release-notes.html`
    - `https://decisionspaceintegrity.com/product.html`
-   - `https://decisionspaceintegrity.com/research.html`
-   - `https://decisionspaceintegrity.com/paper.html`
    - `https://decisionspaceintegrity.com/applications.html`
-   - `https://decisionspaceintegrity.com/articles`
-   - `https://decisionspaceintegrity.com/articles/ai-brilliance-human-capability`
-   - `https://decisionspaceintegrity.com/contact.html`
+   - `https://decisionspaceintegrity.com/what-is-decision-space-integrity.html`
+   - `https://decisionspaceintegrity.com/evidence.html`
 4. **Monitor** whether queries such as *Decision-Space Integrity*, *Decision-Space Collapse*, and
    *Andrew J Cousins DSI* begin surfacing the site over the following weeks.
 

@@ -131,11 +131,37 @@
   <section class="reveal">
     <div class="wrap">
       <div class="section-head">
+        <p class="eyebrow">Also supported</p>
+        <h2>Regression comparison.</h2>
+      </div>
+      <div class="card" style="max-width:780px;">
+        <p>Compare two sets of paired outputs — for example a baseline and a candidate over the same prompt set — and report which expected points changed in visibility between them, under one fixed instrument. Useful when a model version, a prompt, or a configuration changes and you want reproducible evidence of what moved.</p>
+        <p style="margin:14px 0 0;">The comparison is <strong>instrument-relative</strong>: it reports a change in expected-path visibility, not that one output set is better, safer, or of higher quality.</p>
+        <p style="margin:18px 0 0;"><span class="statusflag">Current</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How it's used</p>
+        <h2>Offline, shadow, supervised.</h2>
+      </div>
+      <div class="card" style="max-width:780px;">
+        <p>DSI is run offline, or as a shadow alongside an existing system — it observes and records; it does not sit in the response path, and it does not block, route, or enforce. Flagged results are for human review.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
         <p class="eyebrow">Important scope note</p>
       </div>
       <div class="claimbox">
         <span class="lbl">Scope</span>
-        <p>These examples describe potential areas of exploration. The current DSI implementation focuses on expected-path visibility in advisory model outputs.</p>
+        <p>The current implementation audits supplied outputs against configured expected points — for advisory answers, and for expected-point documents such as policy summaries — and compares paired outputs under one fixed instrument (Regression Audit). The classifier is challenge-tested; human review is recommended.</p>
         <p style="margin-top:.8em;">This work measures visibility of configured expected paths in model outputs. It does not measure advice quality, factual correctness, user outcomes, or regulatory compliance.</p>
       </div>
     </div>

@@ -64,7 +64,7 @@
     <div class="wrap" style="display:block;">
       <p class="eyebrow">1 · Install &amp; verify</p>
       <h2 style="max-width:26ch;">Install the wheel, then run the doctor.</h2>
-      <p class="lead" style="max-width:64ch;">DSI installs as an ordinary Python package (3.10+). <a href="https://github.com/decision-space-integrity/dsi-product/releases/tag/v0.2.1" target="_blank" rel="noopener">Download the 0.2.1 release artefacts</a>, then run <span class="mono">dsi doctor</span> first — a read-only readiness check — then <span class="mono">dsi validate-install</span>, which runs a real, domain-consistent audit end to end.</p>
+      <p class="lead" style="max-width:64ch;">DSI installs as an ordinary Python package (3.10+). <a href="contact.html">Request the 0.2.1 evaluation build</a> (a wheel + source archive, provided for evaluation and pilots), then run <span class="mono">dsi doctor</span> first — a read-only readiness check — then <span class="mono">dsi validate-install</span>, which runs a real, domain-consistent audit end to end.</p>
       <pre class="codeblock">python -m venv .venv
 . .venv/bin/activate            <span class="c"># Windows: .venv\Scripts\Activate.ps1</span>
 python -m pip install ./dsi_product-0.2.1-py3-none-any.whl
@@ -156,7 +156,7 @@ print(result.to_jsonable()["coverage"])   <span class="c"># mfa surfaced, loggin
       <p class="eyebrow">Developer build</p>
       <h2 style="max-width:28ch;">Or build from source.</h2>
       <p class="lead" style="max-width:64ch;">Evaluators install the wheel (above). If you want to build from source or run the test suite:</p>
-      <pre class="codeblock">git clone https://github.com/decision-space-integrity/dsi-product
+      <pre class="codeblock">git clone &lt;your evaluation repository access&gt;
 cd dsi-product
 python -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"          <span class="c"># editable install with dev extras</span>

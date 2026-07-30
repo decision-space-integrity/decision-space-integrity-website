@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Getting started — run DSI locally</title>
-<meta name="description" content="Install and run Decision-Space Integrity locally. Quick start, API example, deployment modes, repository structure, and evidence bundle walkthrough.">
+<title>Getting started — evaluate DSI locally in about 15 minutes</title>
+<meta name="description" content="Install DSI 0.2.1 from a wheel, verify it with dsi doctor and validate-install, run your first audit and Regression Audit, and read the evidence — the tested evaluator path.">
 <link rel="canonical" href="https://decisionspaceintegrity.com/getting-started.html">
 <meta name="author" content="Andrew J Cousins">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Decision-Space Integrity">
-<meta property="og:title" content="Getting started — run DSI locally">
-<meta property="og:description" content="Install and run Decision-Space Integrity locally. Quick start, API example, deployment modes, repository structure, and evidence bundle walkthrough.">
+<meta property="og:title" content="Getting started — evaluate DSI locally in about 15 minutes">
+<meta property="og:description" content="Install DSI 0.2.1 from a wheel, verify with dsi doctor and validate-install, run your first audit and Regression Audit, and read the evidence.">
 <meta property="og:url" content="https://decisionspaceintegrity.com/getting-started.html">
 <meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Decision-Space Integrity — audit expected-path visibility in AI model outputs">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Getting started — run DSI locally">
-<meta name="twitter:description" content="Install and run Decision-Space Integrity locally. Quick start, API example, deployment modes, repository structure, and evidence bundle walkthrough.">
+<meta name="twitter:title" content="Getting started — evaluate DSI locally in about 15 minutes">
+<meta name="twitter:description" content="Install DSI 0.2.1 from a wheel, verify with dsi doctor and validate-install, run your first audit and Regression Audit, and read the evidence.">
 <meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/icons/favicon-32x32.png" sizes="32x32" type="image/png">
@@ -54,134 +54,120 @@
 
   <section class="hero" style="padding-bottom:40px;">
     <div class="wrap" style="display:block;">
-      <p class="eyebrow">Getting started</p>
-      <h1 style="max-width:20ch;">Run the audit spine locally.</h1>
-      <p class="lead" style="max-width:66ch;">DSI is a local advisory-assurance sidecar. It audits a supplied prompt and response against a configured expected map, then returns coverage, omission, intervention, and evidence outputs. This page shows the quickest way to inspect the product, run an audit, and understand the repository structure. It runs entirely on your machine; in the primary pattern it makes no provider call and retains nothing between requests.</p>
+      <p class="eyebrow">Getting started · v0.2.1</p>
+      <h1 style="max-width:22ch;">Evaluate DSI locally in about 15 minutes.</h1>
+      <p class="lead" style="max-width:66ch;">Install the package, verify the install, run a first audit and a Regression Audit, and read the evidence — everything below is the <strong>tested evaluator path</strong>, and every command is exercised by the project's clean-install checks. It runs entirely on your machine; in the primary pattern it makes <strong>no provider call</strong> and retains <strong>nothing</strong> between requests. Choose a <a href="deployment.html">deployment profile</a> first if you like.</p>
     </div>
   </section>
 
   <section>
     <div class="wrap" style="display:block;">
-      <p class="eyebrow">Quick start</p>
-      <h2 style="max-width:26ch;">Run DSI locally in minutes.</h2>
-      <p class="lead" style="max-width:64ch;">DSI installs as an ordinary Python package. One command creates a virtual environment, installs it, and starts the local server; the manual steps are below if you prefer to run them yourself.</p>
-      <p style="max-width:64ch;"><strong>What you'll see:</strong> the test suite passing, then a local server at <span class="mono">http://127.0.0.1:8000/</span> serving the audit dashboard.</p>
-      <pre class="codeblock"><span class="c"># one command: venv + install + serve</span>
-./run_local.sh                 <span class="c"># Windows: .\run_local.ps1</span>
+      <p class="eyebrow">1 · Install &amp; verify</p>
+      <h2 style="max-width:26ch;">Install the wheel, then run the doctor.</h2>
+      <p class="lead" style="max-width:64ch;">DSI installs as an ordinary Python package (3.10+). Run <span class="mono">dsi doctor</span> first — a read-only readiness check — then <span class="mono">dsi validate-install</span>, which runs a real, domain-consistent audit end to end.</p>
+      <pre class="codeblock">python -m venv .venv
+. .venv/bin/activate            <span class="c"># Windows: .venv\Scripts\Activate.ps1</span>
+pip install dsi_product-0.2.1-py3-none-any.whl
 
-<span class="c"># or step by step:</span>
-git clone &lt;dsi-product&gt;
-cd dsi-product
-python -m venv .venv
-. .venv/bin/activate           <span class="c"># Windows: .venv\Scripts\Activate.ps1</span>
-pip install -e ".[api]"        <span class="c"># core only: pip install -e .</span>
-python -m pytest               <span class="c"># run the test suite</span></pre>
+dsi doctor                      <span class="c"># read-only readiness check (run this first)</span>
+dsi validate-install            <span class="c"># real audit -> evidence card -> regression, end to end</span></pre>
+      <p style="max-width:64ch;"><span class="mono">dsi doctor</span> reports "READY FOR AUDITS" when the install is set up correctly. That means <strong>installation</strong> readiness — not product validation, safety, or any certification.</p>
     </div>
   </section>
 
   <section class="tint">
     <div class="wrap" style="display:block;">
-      <p class="eyebrow">Run the local API</p>
-      <h2 style="max-width:26ch;">Serve the dashboard and API.</h2>
-      <p class="lead" style="max-width:64ch;">One command starts the local server (dashboard at <span class="mono">/</span>, interactive OpenAPI at <span class="mono">/docs</span>). It prints whether API authentication is enabled.</p>
-      <pre class="codeblock">python -m dsi serve             <span class="c"># serves on 127.0.0.1:8000</span>
+      <p class="eyebrow">2 · Serve the local API</p>
+      <h2 style="max-width:26ch;">Start the sidecar and dashboard.</h2>
+      <p class="lead" style="max-width:64ch;">Install the API extra and serve locally (dashboard at <span class="mono">/</span>, OpenAPI at <span class="mono">/docs</span>). It binds to <span class="mono">127.0.0.1</span> by default and prints whether API authentication is enabled.</p>
+      <pre class="codeblock">pip install "dsi-product[api] @ &lt;the 0.2.1 wheel&gt;"
+python -m dsi serve             <span class="c"># serves on 127.0.0.1:8000</span>
+
 curl http://127.0.0.1:8000/health
+curl http://127.0.0.1:8000/ready     <span class="c"># 503 until ready</span>
 curl http://127.0.0.1:8000/version</pre>
-      <p style="max-width:64ch;">Docker is also supported: <span class="mono">docker build -t dsi-product:local .</span> then run it bound to <span class="mono">127.0.0.1:8000</span>. See the runbook in the product repository for the full install / verify / package guide.</p>
     </div>
   </section>
 
   <section>
     <div class="wrap" style="display:block;">
-      <p class="eyebrow">Minimal audit</p>
-      <h2 style="max-width:26ch;">Submit a prompt and response.</h2>
-      <p class="lead" style="max-width:64ch;">You send the prompt and the response your system already produced; DSI returns an assurance result. Worked request, response, and evidence payloads ship in the repository's <span class="mono">examples/</span> directory.</p>
-      <pre class="codeblock"><span class="c"># audit a supplied prompt + response</span>
-curl -X POST http://127.0.0.1:8000/v1/audit \
+      <p class="eyebrow">3 · Your first audit</p>
+      <h2 style="max-width:28ch;">Audit a supplied prompt and response.</h2>
+      <p class="lead" style="max-width:64ch;">You send the prompt and the response your system produced; DSI returns configured expected-path visibility.</p>
+      <pre class="codeblock">curl -X POST http://127.0.0.1:8000/v1/audit \
      -H "Content-Type: application/json" \
-     --data @examples/audit_request.json</pre>
-      <p style="max-width:64ch;">If API authentication is enabled, add a <span class="mono">-H "X-API-Key: …"</span> header. The example files below are ready to use as request bodies.</p>
-      <ul class="clean" style="max-width:64ch;">
-        <li><span class="mono">examples/audit_request.json</span> · <span class="mono">audit_response.json</span> — a single audit.</li>
-        <li><span class="mono">examples/control_loop_request.json</span> · <span class="mono">control_loop_response.json</span> — audit, control decision, and re-audit visibility delta.</li>
-        <li><span class="mono">examples/evidence_bundle.json</span> — the portable evidence bundle (with a deterministic <span class="mono">audit_id</span>).</li>
-      </ul>
+     -d '{"prompt":"Should I stay in my role or look elsewhere?",
+          "response":"You could update your CV and review external roles.",
+          "domain":"career"}'</pre>
+      <p style="max-width:64ch;">Prefer no server? Audit in-process against your own expected points — deterministic, no domain pack:</p>
+      <pre class="codeblock"><span class="c"># explicit expected-point audit (document / checklist style)</span>
+from dsi.core.audit import audit_response
+result = audit_response(
+    expected=[
+        {"id":"mfa","label":"Multi-factor authentication","required":True,
+         "cues":["MFA","multi-factor authentication"]},
+        {"id":"logging","label":"Access logging","required":True,
+         "cues":["access logging","audit logs"]},
+    ],
+    output="The policy requires MFA for privileged users.",
+    domain="policy",
+)
+print(result.to_jsonable()["coverage"])   <span class="c"># mfa surfaced, logging omitted</span></pre>
+      <p class="muted" style="max-width:64ch;">The result is configured expected-point <em>visibility</em> — not proof of policy compliance.</p>
     </div>
   </section>
 
   <section class="tint">
     <div class="wrap" style="display:block;">
-      <p class="eyebrow">What the audit returns</p>
-      <h2 style="max-width:28ch;">Visibility outputs, with evidence.</h2>
-      <ul class="clean" style="max-width:64ch;">
-        <li>expected-map fingerprint</li>
-        <li>per-trajectory classifications (surfaced / partial / omitted / discouraged)</li>
-        <li>coverage score</li>
-        <li>omitted paths (required paths flagged)</li>
-        <li>an intervention recommendation, if triggered (a regeneration instruction — DSI does not generate the response)</li>
-        <li>a re-audit visibility delta, if control-loop mode is used and you supply the regenerated response</li>
-        <li>a portable evidence bundle (JSON or Markdown)</li>
-      </ul>
-      <p class="muted" style="max-width:66ch;margin-top:16px;">These outputs measure configured expected-path visibility. They do not measure advice quality, factual correctness, safety, regulatory compliance, or user outcomes.</p>
+      <p class="eyebrow">4 · Your first Regression Audit</p>
+      <h2 style="max-width:28ch;">Compare two paired output sets.</h2>
+      <p class="lead" style="max-width:64ch;">Regression Audit compares paired outputs under the same instrument and reports <strong>instrument-relative</strong> changes in expected-path visibility. Worked baseline/candidate examples ship in the repository.</p>
+      <pre class="codeblock">dsi regression-audit \
+    examples/regression_audit/D_stable/baseline.json \
+    examples/regression_audit/D_stable/candidate.json
+<span class="c"># exit 0 = no regression · 1 = regression detected · 2 = malformed input</span></pre>
+      <p class="muted" style="max-width:64ch;">It reports a change in visibility between paired outputs. It does not conclude that one build is objectively better, safer, or of higher quality.</p>
     </div>
   </section>
 
   <section>
     <div class="wrap" style="display:block;">
-      <p class="eyebrow">Deployment modes</p>
-      <h2 style="max-width:30ch;">The same spine, your choice of retention.</h2>
-      <div class="grid grid-3" style="margin-top:24px;">
-        <div class="card"><span class="idx">A · STATELESS</span><h3>Stateless audit</h3><p>Evidence is returned to the caller and not retained by DSI. Lowest footprint; privacy-sensitive environments.</p></div>
-        <div class="card"><span class="idx">B · PERSISTENT</span><h3>Persistent audit</h3><p>Evidence may be retained for review or operational monitoring. Persistence is a deployment choice over the same measurement spine, not a new capability.</p></div>
-        <div class="card"><span class="idx">C · GOVERNANCE</span><h3>Governance evidence</h3><p>Evidence can be exported to an existing governance or audit system. DSI supplies evidence; external systems manage governance.</p></div>
-      </div>
-      <p class="muted" style="max-width:66ch;margin-top:18px;">DSI does not require ownership of evidence persistence. Evidence may be caller-managed, DSI-managed, or externally managed — the measurement spine is unchanged in every case.</p>
+      <p class="eyebrow">5 · Read the evidence</p>
+      <h2 style="max-width:28ch;">Visibility outputs, with provenance.</h2>
+      <ul class="clean" style="max-width:64ch;">
+        <li>per-trajectory status — <strong>surfaced / partially surfaced / omitted / discouraged</strong></li>
+        <li>a <strong>coverage</strong> score (surfaced ÷ expected)</li>
+        <li>the <strong>omitted</strong> paths (required ones flagged)</li>
+        <li>a provenance footer — expected-map fingerprint, domain-pack fingerprint, classifier version, scoring version, audit-core version, and the claim caveat</li>
+        <li>a portable <strong>evidence bundle</strong> (JSON or Markdown) with a deterministic <span class="mono">audit_id</span></li>
+      </ul>
+      <p class="muted" style="max-width:66ch;margin-top:14px;">The classifier is <strong>challenge-tested (challenge-only)</strong> and human review is recommended. These outputs measure configured expected-path visibility — not advice quality, factual correctness, safety, regulatory compliance, or user outcomes.</p>
     </div>
   </section>
 
   <section class="tint">
     <div class="wrap" style="display:block;">
-      <p class="eyebrow">Repository structure</p>
-      <h2 style="max-width:26ch;">What is in the product repository.</h2>
-      <pre class="tree">dsi-product/
-├── README.md
-├── pyproject.toml
-├── Dockerfile · docker-compose.yml
-├── run_local.sh · run_local.ps1
-├── src/
-│   └── dsi/
-│       ├── core/          <span class="c"># audit spine, maps, scoring</span>
-│       ├── api/           <span class="c"># local API server</span>
-│       ├── ui/            <span class="c"># dashboard</span>
-│       └── version.py     <span class="c"># version source of truth</span>
-├── examples/              <span class="c"># request / response / evidence</span>
-├── docs/                  <span class="c"># runbook, deployment modes</span>
-└── tests/                 <span class="c"># contract, unit, golden, stateless</span></pre>
+      <p class="eyebrow">Developer build</p>
+      <h2 style="max-width:28ch;">Or build from source.</h2>
+      <p class="lead" style="max-width:64ch;">Evaluators install the wheel (above). If you want to build from source or run the test suite:</p>
+      <pre class="codeblock">git clone &lt;the product repository&gt;
+cd dsi-product
+python -m venv .venv && . .venv/bin/activate
+pip install -e ".[dev]"          <span class="c"># editable install with dev extras</span>
+python -m pytest                 <span class="c"># run the full suite</span></pre>
+      <p style="max-width:64ch;">Docker is also supported: <span class="mono">docker build -t dsi-product:local .</span>, then run it bound to <span class="mono">127.0.0.1:8000</span>. See <a href="deployment.html">deployment</a> and <a href="security.html">security &amp; operations</a>.</p>
     </div>
   </section>
 
   <section>
-    <div class="wrap" style="display:block;">
-      <p class="eyebrow">Where to start</p>
-      <h2 style="max-width:24ch;">Four ways in.</h2>
-      <div class="grid grid-2" style="margin-top:24px;">
-        <div class="card"><h3>Run the product</h3><p>Install and serve locally (above). The full install / verify / package runbook is in the product repository.</p></div>
-        <div class="card"><h3>Understand deployment</h3><p>Stateless, persistent, or governance-evidence — over one unchanged spine. Documented in the product repository's deployment-modes guide.</p></div>
-        <div class="card"><h3>Inspect evidence</h3><p>Worked evidence bundles ship in <span class="mono">examples/</span>; the export patterns are documented in the product repository.</p></div>
-        <div class="card"><h3>Read the research</h3><p>The phenomenon, the measurement framework, and the evidence status. <a href="research.html">Research &amp; evidence →</a></p></div>
-      </div>
-      <p class="muted" style="max-width:66ch;margin-top:18px;">The public site summarises these documents; the full deployment runbook, deployment-modes guide, and export examples are available in the private product repository.</p>
-    </div>
-  </section>
-
-  <section class="tint">
     <div class="wrap" style="display:block;">
       <div class="callout" style="max-width:70ch;">
-        <p style="margin:0;">DSI audits supplied AI advisory outputs against configured expected maps. It is a visibility and evidence layer — not a language model, recommender, policy engine, governance workflow system, or safety-certification tool.</p>
+        <p style="margin:0;">DSI audits supplied AI responses against configured expected maps. It is a visibility and evidence layer — not a language model, recommender, policy engine, governance workflow, or safety-certification tool.</p>
       </div>
       <div class="cta-row">
         <a class="btn btn-primary btn-arrow" href="contact.html">Evaluate locally</a>
         <a class="btn btn-ghost" href="product.html">How DSI fits</a>
+        <a class="btn btn-ghost" href="release-notes.html">What's new in 0.2.1</a>
       </div>
     </div>
   </section>

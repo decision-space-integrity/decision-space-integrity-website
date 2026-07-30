@@ -56,7 +56,7 @@
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Getting started · v0.2.1</p>
       <h1 style="max-width:22ch;">Evaluate DSI locally in about 15 minutes.</h1>
-      <p class="lead" style="max-width:66ch;">Install the package, verify the install, run a first audit and a Regression Audit, and read the evidence — everything below is the <strong>tested evaluator path</strong>, and every command is exercised by the project's clean-install checks. It runs entirely on your machine; in the primary pattern it makes <strong>no provider call</strong> and retains <strong>nothing</strong> between requests. Choose a <a href="deployment.html">deployment profile</a> first if you like.</p>
+      <p class="lead" style="max-width:66ch;">Install the package, verify the install, run a first audit and a Regression Audit, and read the evidence — everything below is the <strong>tested evaluator path</strong> — the installation, readiness, audit, and Regression Audit paths are exercised by the product's clean-install and documented-quick-start checks. It runs entirely on your machine; in the primary pattern it makes <strong>no provider call</strong> and retains <strong>nothing</strong> between requests. Choose a <a href="deployment.html">deployment profile</a> first if you like.</p>
     </div>
   </section>
 
@@ -64,10 +64,10 @@
     <div class="wrap" style="display:block;">
       <p class="eyebrow">1 · Install &amp; verify</p>
       <h2 style="max-width:26ch;">Install the wheel, then run the doctor.</h2>
-      <p class="lead" style="max-width:64ch;">DSI installs as an ordinary Python package (3.10+). Run <span class="mono">dsi doctor</span> first — a read-only readiness check — then <span class="mono">dsi validate-install</span>, which runs a real, domain-consistent audit end to end.</p>
+      <p class="lead" style="max-width:64ch;">DSI installs as an ordinary Python package (3.10+). <a href="https://github.com/decision-space-integrity/dsi-product/releases/tag/v0.2.1" target="_blank" rel="noopener">Download the 0.2.1 release artefacts</a>, then run <span class="mono">dsi doctor</span> first — a read-only readiness check — then <span class="mono">dsi validate-install</span>, which runs a real, domain-consistent audit end to end.</p>
       <pre class="codeblock">python -m venv .venv
 . .venv/bin/activate            <span class="c"># Windows: .venv\Scripts\Activate.ps1</span>
-pip install dsi_product-0.2.1-py3-none-any.whl
+python -m pip install ./dsi_product-0.2.1-py3-none-any.whl
 
 dsi doctor                      <span class="c"># read-only readiness check (run this first)</span>
 dsi validate-install            <span class="c"># real audit -> evidence card -> regression, end to end</span></pre>
@@ -80,7 +80,7 @@ dsi validate-install            <span class="c"># real audit -> evidence card ->
       <p class="eyebrow">2 · Serve the local API</p>
       <h2 style="max-width:26ch;">Start the sidecar and dashboard.</h2>
       <p class="lead" style="max-width:64ch;">Install the API extra and serve locally (dashboard at <span class="mono">/</span>, OpenAPI at <span class="mono">/docs</span>). It binds to <span class="mono">127.0.0.1</span> by default and prints whether API authentication is enabled.</p>
-      <pre class="codeblock">pip install "dsi-product[api] @ &lt;the 0.2.1 wheel&gt;"
+      <pre class="codeblock">python -m pip install "./dsi_product-0.2.1-py3-none-any.whl[api]"
 python -m dsi serve             <span class="c"># serves on 127.0.0.1:8000</span>
 
 curl http://127.0.0.1:8000/health
@@ -121,12 +121,18 @@ print(result.to_jsonable()["coverage"])   <span class="c"># mfa surfaced, loggin
     <div class="wrap" style="display:block;">
       <p class="eyebrow">4 · Your first Regression Audit</p>
       <h2 style="max-width:28ch;">Compare two paired output sets.</h2>
-      <p class="lead" style="max-width:64ch;">Regression Audit compares paired outputs under the same instrument and reports <strong>instrument-relative</strong> changes in expected-path visibility. Worked baseline/candidate examples ship in the repository.</p>
-      <pre class="codeblock">dsi regression-audit \
-    examples/regression_audit/D_stable/baseline.json \
-    examples/regression_audit/D_stable/candidate.json
+      <p class="lead" style="max-width:64ch;">Regression Audit compares paired outputs under the same instrument and reports <strong>instrument-relative</strong> changes in expected-path visibility. Save two small paired files, then compare them — no source checkout needed:</p>
+      <pre class="codeblock"><span class="c"># baseline.json</span>
+{"domain":"finance","model":"baseline",
+ "items":[{"prompt_id":"p1","prompt":"Should I pay down debt or invest?",
+   "response":"Compare the debt interest rate against expected returns, keep an emergency fund, and weigh your risk tolerance and time horizon."}]}</pre>
+      <pre class="codeblock"><span class="c"># candidate.json</span>
+{"domain":"finance","model":"candidate",
+ "items":[{"prompt_id":"p1","prompt":"Should I pay down debt or invest?",
+   "response":"Just invest everything."}]}</pre>
+      <pre class="codeblock">dsi regression-audit baseline.json candidate.json
 <span class="c"># exit 0 = no regression · 1 = regression detected · 2 = malformed input</span></pre>
-      <p class="muted" style="max-width:64ch;">It reports a change in visibility between paired outputs. It does not conclude that one build is objectively better, safer, or of higher quality.</p>
+      <p class="muted" style="max-width:64ch;">A single pair is below the sample floor, so DSI honestly reports it as <em>instrument-limited</em> rather than a regression — a real comparison uses a fixed set of paired prompts. Five worked examples ship in the 0.2.1 source archive under <span class="mono">docs/examples/regression_audit/</span>. Regression Audit reports a change in visibility between paired outputs — not that one build is objectively better, safer, or of higher quality.</p>
     </div>
   </section>
 
@@ -150,7 +156,7 @@ print(result.to_jsonable()["coverage"])   <span class="c"># mfa surfaced, loggin
       <p class="eyebrow">Developer build</p>
       <h2 style="max-width:28ch;">Or build from source.</h2>
       <p class="lead" style="max-width:64ch;">Evaluators install the wheel (above). If you want to build from source or run the test suite:</p>
-      <pre class="codeblock">git clone &lt;the product repository&gt;
+      <pre class="codeblock">git clone https://github.com/decision-space-integrity/dsi-product
 cd dsi-product
 python -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"          <span class="c"># editable install with dev extras</span>

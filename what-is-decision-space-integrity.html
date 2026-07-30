@@ -41,7 +41,13 @@
     {"@type": "Question", "name": "How is DSI different from hallucination detection?",
      "acceptedAnswer": {"@type": "Answer", "text": "Hallucination detection asks whether what was said is true. DSI asks whether what should have been in view is present. A response can be entirely accurate and still omit reasonable options — that omission is what DSI measures."}},
     {"@type": "Question", "name": "What does DSI measure, and what does it not measure?",
-     "acceptedAnswer": {"@type": "Answer", "text": "DSI measures configured expected-path visibility: which expected points are surfaced, which are omitted, and whether a follow-up regeneration recovers them. It does not measure advice quality, factual correctness, user outcomes, or regulatory compliance, and it does not certify safety or governance."}}
+     "acceptedAnswer": {"@type": "Answer", "text": "DSI measures configured expected-path visibility: which expected points are surfaced, which are omitted, and whether a follow-up regeneration recovers them. It does not measure advice quality, factual correctness, user outcomes, or regulatory compliance, and it does not certify safety or governance."}},
+    {"@type": "Question", "name": "What is Regression Audit?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Regression Audit compares two sets of paired outputs — for example a baseline and a candidate over the same prompt set — under one fixed instrument, and reports which configured expected points changed in visibility. It is instrument-relative: it reports a change, not that one build is better, safer, or of higher quality. It is useful when a model version, a prompt, or a configuration changes."}},
+    {"@type": "Question", "name": "Does DSI call an LLM?",
+     "acceptedAnswer": {"@type": "Answer", "text": "No. In the primary pattern DSI makes no model-provider call. You own the model call; DSI audits the response your system already produced, entirely on your own infrastructure."}},
+    {"@type": "Question", "name": "Why is the classifier described as challenge-tested only?",
+     "acceptedAnswer": {"@type": "Answer", "text": "The evidence classifier has been tested against adversarial and challenging cases, but an independent human-annotation study has not yet been run. DSI therefore reports its status honestly as challenge-tested and recommends human review, rather than claiming an independently validated detector."}}
   ]
 }
 </script>
@@ -218,6 +224,18 @@
         <details class="faq-item">
           <summary>Can DSI be used for AI-governance documentation?</summary>
           <p>It can <strong>support</strong> AI-governance documentation by producing reproducible omission evidence. It does <strong>not</strong> certify governance, safety, or compliance.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What is Regression Audit?</summary>
+          <p>It compares two sets of paired outputs — a baseline and a candidate over the same prompt set — under one fixed instrument, and reports which configured expected points changed in visibility. It is <strong>instrument-relative</strong>: it reports a change, not that one build is better, safer, or of higher quality. It is useful when a model version, a prompt, or a configuration changes.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does DSI call an LLM?</summary>
+          <p>No. In the primary pattern DSI makes no model-provider call. You own the model call; DSI audits the response your system already produced, entirely on your own infrastructure.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Why is the classifier "challenge-tested only"?</summary>
+          <p>It has been tested against adversarial and challenging cases, but an independent human-annotation study has not yet been run. DSI reports its status honestly as challenge-tested and recommends human review, rather than claiming an independently validated detector.</p>
         </details>
       </div>
     </div>

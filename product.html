@@ -114,6 +114,17 @@
   <section class="reveal">
     <div class="wrap">
       <div class="section-head">
+        <p class="eyebrow">Regression Audit</p>
+        <h2>Compare two builds under one instrument.</h2>
+      </div>
+      <p class="lead" style="max-width:64ch;">Give DSI paired outputs — a baseline and a candidate over the same prompt set — and it reports which configured expected paths changed in visibility between them, under the same fixed instrument. Useful when a model version, prompt, or configuration changes and you want reproducible evidence of what moved. It reads paired output sets and returns a per-trajectory verdict with provenance.</p>
+      <p class="stack-note">Regression Audit reports <strong>instrument-relative</strong> changes in expected-path visibility. It does not conclude that one build is objectively better, safer, or of higher quality, and it marks behaviours it cannot reliably measure as <em>instrument-limited</em> rather than a regression.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
         <p class="eyebrow">The trust chain</p>
         <h2>Where did this come from?</h2>
         <p>Every result answers that question in seven steps. Each step is reproducible from the fingerprints in the bundle, so a third party can reproduce and bound any number DSI reports.</p>
@@ -139,9 +150,10 @@
       <ul class="clean">
         <li><strong>Python package:</strong> <span class="runline"><span class="c">pip install</span> the API/dashboard extra</span> and run one command; open the local dashboard, paste a prompt + response, and audit it.</li>
         <li><strong>Container:</strong> <span class="runline"><span class="c">docker run</span> the image</span>; same dashboard and API, nothing written to disk.</li>
-        <li><strong>Interfaces:</strong> a small HTTP API (audit · control-loop · evidence) and a local dashboard. No provider keys, no database, no cloud dependency.</li>
+        <li><strong>Interfaces:</strong> a small HTTP API (audit · control-loop · evidence, with <span class="runline"><span class="c">/health</span></span>, <span class="runline"><span class="c">/ready</span></span>, <span class="runline"><span class="c">/version</span></span>) and a local dashboard. No provider keys, no database, no cloud dependency.</li>
+        <li><strong>Verify:</strong> <span class="runline"><span class="c">dsi doctor</span></span> checks the install is ready to run audits; <span class="runline"><span class="c">dsi validate-install</span></span> runs a real audit end to end.</li>
       </ul>
-      <p style="margin-top:24px;">Both paths are <strong>verified to build and run from a clean install</strong> — the package and the image were each built and run from scratch.</p>
+      <p style="margin-top:24px;">Both paths are <strong>verified to build and run from a clean install</strong>. See the four supported <a href="deployment.html">deployment profiles</a>, the <a href="security.html">security &amp; operations</a> notes, and <a href="getting-started.html">getting started</a>.</p>
     </div>
   </section>
 

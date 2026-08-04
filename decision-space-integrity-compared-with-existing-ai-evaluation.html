@@ -27,17 +27,19 @@
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&amp;family=Hanken+Grotesk:wght@380;480;560;620&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap">
     <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
-    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu">
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
-    <nav class="nav">
+    <nav id="sitenav" class="nav" aria-label="Site">
       <a href="index.html">Home</a>
       <a href="what-is-decision-space-integrity.html">What is DSI?</a>
       <a href="product.html">Product</a>
@@ -51,13 +53,13 @@
   </div>
 </header>
 
-<main>
+<main id="main">
 
   <section class="hero" style="padding-bottom:40px;">
     <div class="wrap">
       <p class="eyebrow">Positioning</p>
       <h1 style="max-width:22ch;">Existing AI evaluation measures a different property.</h1>
-      <p class="lead" style="max-width:62ch;">Every widely-used AI evaluation measures a real and useful property. None of them measure whether an answer quietly left <strong>reasonable options out of view</strong>. That specific property is <a href="what-is-decision-space-integrity.html">decision-space collapse</a> — and it is what Decision-Space Integrity was built to make measurable, alongside the tools you already run.</p>
+      <p class="lead" style="max-width:62ch;">Every widely-used AI evaluation measures a real and useful property. Most mainstream evaluation families are not designed to audit whether an answer quietly left <strong>reasonable decision paths out of view</strong> — DSI makes that property the primary audited object. That specific property is <a href="what-is-decision-space-integrity.html">decision-space collapse</a> — and it is what Decision-Space Integrity was built to make measurable, alongside the tools you already run.</p>
     </div>
   </section>
 
@@ -93,7 +95,7 @@
           <tr class="self"><th scope="row">Decision-Space Integrity</th><td>Visibility of configured decision paths — which are surfaced, omitted, or recovered, with source evidence and a reproducible fingerprint.</td></tr>
         </tbody>
       </table>
-      <p style="margin-top:18px;">None of this ranks the approaches. They answer different questions, and most teams will want several of them. DSI is designed to sit alongside the tools above and report the one property they do not: whether the reasonable option paths stayed in view.</p>
+      <p style="margin-top:18px;">None of this ranks the approaches. They answer different questions, and most teams will want several of them. DSI is designed to sit alongside the tools above and report a property they are not designed to audit: whether the reasonable option paths stayed in view.</p>
     </div>
   </section>
 

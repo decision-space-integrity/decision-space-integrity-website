@@ -1,0 +1,12 @@
+{
+ "manifest": "dsi-site-release-manifest-v1",
+ "note": "Pinned public release identity. Every audit id, classifier identity and current-version chip published on the site must match this manifest (scripts/check_release_provenance.py). Update this file ONLY as part of an atomic website release for a tagged product version.",
+ "current_version": "v0.2.1",
+ "classifier_version": "expected-map-lexical-precision-v3",
+ "public_audit_ids": [
+  "audit_67914c8bf3e23965"
+ ],
+ "superseded_audit_ids": [
+  "audit_00fcd1713d34cbda"
+ ]
+}

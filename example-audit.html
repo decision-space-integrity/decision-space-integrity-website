@@ -26,18 +26,20 @@
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&amp;family=Hanken+Grotesk:wght@380;480;560;620&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <script src="/assets/example-audit.js"></script>
 </head>
 <body>
 
+
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap">
     <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
-    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu">
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
-    <nav class="nav">
+    <nav id="sitenav" class="nav" aria-label="Site">
       <a href="index.html">Home</a>
       <a href="what-is-decision-space-integrity.html">What is DSI?</a>
       <a href="product.html">Product</a>
@@ -51,14 +53,14 @@
   </div>
 </header>
 
-<main>
+<main id="main">
 
   <section class="hero" style="padding-bottom:44px;">
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Example audit</p>
       <h1 style="max-width:20ch;">See DSI work, step by step.</h1>
       <p class="lead" style="max-width:66ch;">DSI does not generate the original answer. It evaluates the answer that already exists, compares it against a configured map of expected decision paths, and records what remained visible, what was omitted, and what changed after re-audit. Below is a single worked audit, end to end.</p>
-      <p class="muted" style="max-width:66ch;">Every value on this page is taken from DSI's finance example bundle (audit <span class="mono">audit_00fcd1713d34cbda</span>) — a real prompt, response, classification, and evidence record, not a mock-up.</p>
+      <p class="muted" style="max-width:66ch;">Every value on this page is taken from DSI's finance example bundle (audit <span class="mono">audit_67914c8bf3e23965</span>) — a real prompt, response, classification, and evidence record, not a mock-up.</p>
       <div class="cta-row">
         <a class="btn btn-primary btn-arrow" href="#step1">Start walkthrough</a>
       </div>
@@ -186,7 +188,7 @@
       <h2 class="reveal-up" style="max-width:26ch;">Evidence output</h2>
       <p class="lead reveal-up" style="max-width:64ch;">Every audit produces a portable evidence record with a stable identifier. A simplified extract:</p>
       <pre class="codeblock reveal-up">{
-  "audit_id": "audit_00fcd1713d34cbda",
+  "audit_id": "audit_67914c8bf3e23965",
   "domain": "finance",
   "coverage": 0.833333,
   "missing_paths": ["act_now"]

@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Release notes — Decision-Space Integrity 0.2.1</title>
-<meta name="description" content="Public release notes for Decision-Space Integrity Product 0.2.1: deployment diagnostics, first-class Regression Audit, a readiness endpoint, and a context-admission fix. Classifier and scorer unchanged.">
+<meta name="description" content="Public release notes for Decision-Space Integrity Product 0.2.1: deployment diagnostics, first-class Regression Audit, a readiness endpoint, and a context-admission fix. Ships classifier v3, which rebases audit identities.">
 <link rel="canonical" href="https://decisionspaceintegrity.com/release-notes.html">
 <meta name="author" content="Andrew J Cousins">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Decision-Space Integrity">
 <meta property="og:title" content="Release notes — Decision-Space Integrity 0.2.1">
-<meta property="og:description" content="What changed in DSI Product 0.2.1: deployment diagnostics, first-class Regression Audit, a readiness endpoint, and a context-admission fix. Classifier and scorer unchanged.">
+<meta property="og:description" content="What changed in DSI Product 0.2.1: deployment diagnostics, first-class Regression Audit, a readiness endpoint, and a context-admission fix. Ships classifier v3, which rebases audit identities.">
 <meta property="og:url" content="https://decisionspaceintegrity.com/release-notes.html">
 <meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta property="og:image:width" content="1200">
@@ -27,17 +27,19 @@
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&amp;family=Hanken+Grotesk:wght@380;480;560;620&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap">
     <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
-    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu">
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
-    <nav class="nav">
+    <nav id="sitenav" class="nav" aria-label="Site">
       <a href="index.html">Home</a>
       <a href="what-is-decision-space-integrity.html">What is DSI?</a>
       <a href="product.html">Product</a>
@@ -51,7 +53,7 @@
   </div>
 </header>
 
-<main>
+<main id="main">
 
   <section class="hero" style="padding-bottom:40px;">
     <div class="wrap" style="display:block;">
@@ -95,7 +97,7 @@
         <p class="eyebrow">Compatibility</p>
       </div>
       <ul class="clean">
-        <li><strong>Classifier version unchanged; scorer version unchanged.</strong> The fix changed how the applicable set is constructed, not the matching or the scoring.</li>
+        <li><strong>D-CTX-1 did not change classifier or scorer logic</strong> — the fix changed how the applicable set is constructed, not the matching or the scoring. <strong>Separately, v0.2.1 ships classifier expected-map-lexical-precision-v3, which rebases audit identities:</strong> audit ids from v0.2.0 bundles do not carry forward.</li>
         <li><strong>Public output schema unchanged.</strong></li>
         <li>The frozen 54-prompt compatibility replay showed <strong>zero</strong> denominator or coverage changes.</li>
       </ul>

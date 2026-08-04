@@ -2,7 +2,7 @@
 
 Website for **DSI** — a local, stateless decision-space assurance sidecar for advisory AI.
 
-A static site: plain HTML + one CSS file. **No frameworks, no JavaScript, no build step.**
+A static site: plain HTML + one CSS file. **No frameworks, no build step; one progressive-enhancement script** (`assets/example-audit.js`, animations only — every page is complete without it).
 
 ## Pages
 

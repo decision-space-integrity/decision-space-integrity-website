@@ -1,7 +1,7 @@
 name: Validate site
 
 # The public site is validated on every change: no un-negated overclaims, no broken links / missing assets,
-# and (advisory) valid HTML. The reserved-terminology boundary is enforced from the private side before
+# valid HTML (blocking). The reserved-terminology boundary is enforced from the private side before
 # publishing (a public denylist would itself leak the terms), so it is intentionally not run here.
 
 on:
@@ -17,8 +17,8 @@ jobs:
     name: claim + links
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.12"
       # NOTE: the reserved-terminology denylist is deliberately NOT carried in this public repo —
@@ -28,17 +28,17 @@ jobs:
         run: python scripts/check_claim_discipline.py .
       - name: Broken links + missing assets
         run: python scripts/check_links.py
+      - name: Release provenance (audit ids / classifier / version vs pinned manifest)
+        run: python scripts/check_release_provenance.py
 
   html:
-    name: HTML validation (advisory)
+    name: HTML validation (blocking)
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.12"
-      - run: pip install html5validator
-      - name: validate HTML (advisory until clean)
+      - run: pip install html5validator==0.4.2
+      - name: validate HTML (blocking)
         run: html5validator --root . --blacklist scripts
-        continue-on-error: true

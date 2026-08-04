@@ -27,18 +27,46 @@
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&amp;family=Hanken+Grotesk:wght@380;480;560;620&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://decisionspaceintegrity.com/#organization",
+      "name": "Decision-Space Integrity",
+      "url": "https://decisionspaceintegrity.com/",
+      "founder": {
+        "@type": "Person",
+        "name": "Andrew J Cousins",
+        "url": "https://decisionspaceintegrity.com/andrew-j-cousins.html"
+      },
+      "sameAs": ["https://github.com/decision-space-integrity"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://decisionspaceintegrity.com/#website",
+      "name": "Decision-Space Integrity",
+      "url": "https://decisionspaceintegrity.com/",
+      "publisher": {"@id": "https://decisionspaceintegrity.com/#organization"}
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
+
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap">
     <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
-    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu">
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
-    <nav class="nav">
-      <a href="index.html" class="active">Home</a>
+    <nav id="sitenav" class="nav" aria-label="Site">
+      <a href="index.html" class="active" aria-current="page">Home</a>
       <a href="what-is-decision-space-integrity.html">What is DSI?</a>
       <a href="product.html">Product</a>
       <a href="getting-started.html">Getting started</a>
@@ -51,7 +79,7 @@
   </div>
 </header>
 
-<main>
+<main id="main">
 
   <section class="hero">
     <div class="wrap">
@@ -175,7 +203,7 @@
         <div class="step"><div class="n">03 · Re-audit</div><h3>The change</h3><p>Re-audits your regenerated response and reports the visibility change.</p></div>
         <div class="step"><div class="n">04 · Evidence</div><h3>A bundle</h3><p>Packages everything into a portable, reproducible evidence bundle.</p></div>
       </div>
-      <p style="margin-top:26px;">Every result carries a <strong>trust chain</strong> — a step-by-step account of where the number came from, each step reproducible from fingerprints.</p>
+      <p style="margin-top:26px;">Every result carries a <strong>trust chain</strong> — a step-by-step account of where the number came from; fingerprints bind the artefacts and configuration needed to reproduce each step — they do not themselves re-run the computation.</p>
     </div>
   </section>
 

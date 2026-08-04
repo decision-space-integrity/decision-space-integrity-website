@@ -408,3 +408,7 @@ pre.codeblock .c { color:var(--faint); }
 .cmp tr.self th, .cmp tr.self td { color:#fcfbf5; }
 .cmp tr.self { background:var(--accent-ghost); }
 .cmp tr:last-child th, .cmp tr:last-child td { border-bottom:none; }
+
+/* Skip link (visually hidden until keyboard focus) */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#111;color:#fff;padding:10px 16px;border-radius:0 0 8px 0;font-weight:600;text-decoration:none}
+.skip-link:focus{left:0}

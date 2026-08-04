@@ -26,31 +26,33 @@
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&amp;family=Hanken+Grotesk:wght@380;480;560;620&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
+
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap">
     <a class="brand" href="/"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
-    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu">
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
-    <nav class="nav">
+    <nav id="sitenav" class="nav" aria-label="Site">
       <a href="/">Home</a>
       <a href="/what-is-decision-space-integrity">What is DSI?</a>
       <a href="/product">Product</a>
       <a href="/getting-started">Getting started</a>
       <a href="/research">Research</a>
       <a href="/applications">Applications</a>
-      <a href="/articles" class="active">Articles</a>
+      <a href="/articles" class="active" aria-current="page">Articles</a>
       <a href="/reading">Reading</a>
       <a href="/contact">Contact</a>
     </nav>
   </div>
 </header>
 
-<main>
+<main id="main">
 
   <section class="hero" style="padding-bottom:40px;">
     <div class="wrap" style="display:block;">

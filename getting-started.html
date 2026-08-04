@@ -26,21 +26,23 @@
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&family=Hanken+Grotesk:wght@380;480;560;620&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&amp;family=Hanken+Grotesk:wght@380;480;560;620&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap">
     <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
-    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu">
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
-    <nav class="nav">
+    <nav id="sitenav" class="nav" aria-label="Site">
       <a href="index.html">Home</a>
       <a href="what-is-decision-space-integrity.html">What is DSI?</a>
       <a href="product.html">Product</a>
-      <a href="getting-started.html" class="active">Getting started</a>
+      <a href="getting-started.html" class="active" aria-current="page">Getting started</a>
       <a href="research.html">Research</a>
       <a href="applications.html">Applications</a>
       <a href="/articles">Articles</a>
@@ -50,7 +52,7 @@
   </div>
 </header>
 
-<main>
+<main id="main">
 
   <section class="hero" style="padding-bottom:40px;">
     <div class="wrap" style="display:block;">
@@ -158,7 +160,7 @@ print(result.to_jsonable()["coverage"])   <span class="c"># mfa surfaced, loggin
       <p class="lead" style="max-width:64ch;">Evaluators install the wheel (above). If you want to build from source or run the test suite:</p>
       <pre class="codeblock">git clone &lt;your evaluation repository access&gt;
 cd dsi-product
-python -m venv .venv && . .venv/bin/activate
+python -m venv .venv &amp;&amp; . .venv/bin/activate
 pip install -e ".[dev]"          <span class="c"># editable install with dev extras</span>
 python -m pytest                 <span class="c"># run the full suite</span></pre>
       <p style="max-width:64ch;">Docker is also supported: <span class="mono">docker build -t dsi-product:local .</span>, then run it bound to <span class="mono">127.0.0.1:8000</span>. See <a href="deployment.html">deployment</a> and <a href="security.html">security &amp; operations</a>.</p>

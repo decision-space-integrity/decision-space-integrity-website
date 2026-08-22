@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research — decision-space collapse &amp; Decision-Space Integrity</title>
-<meta name="description" content="Research on decision-space collapse, trajectory omission, framing sensitivity, and Decision-Space Integrity.">
+<title>Research — from decision-space collapse to measurement integrity</title>
+<meta name="description" content="Research on decision-space collapse and the integrity of behavioural measurement: trajectory omission, framing sensitivity, measurement authority and cross-version comparability.">
 <link rel="canonical" href="https://decisionspaceintegrity.com/research.html">
 <meta name="author" content="Andrew J Cousins">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Decision-Space Integrity">
-<meta property="og:title" content="Research — Decision-Space Collapse and Decision-Space Integrity">
-<meta property="og:description" content="Research on decision-space collapse, trajectory omission, framing sensitivity, and Decision-Space Integrity.">
+<meta property="og:title" content="Research — From Decision-Space Collapse to Measurement Integrity">
+<meta property="og:description" content="Research on decision-space collapse and the integrity of behavioural measurement: trajectory omission, framing sensitivity, measurement authority and cross-version comparability.">
 <meta property="og:url" content="https://decisionspaceintegrity.com/research.html">
 <meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Decision-Space Integrity — audit expected-path visibility in AI model outputs">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Research — Decision-Space Collapse and Decision-Space Integrity">
-<meta name="twitter:description" content="Research on decision-space collapse, trajectory omission, framing sensitivity, and Decision-Space Integrity.">
+<meta name="twitter:title" content="Research — From Decision-Space Collapse to Measurement Integrity">
+<meta name="twitter:description" content="Research on decision-space collapse and the integrity of behavioural measurement: trajectory omission, framing sensitivity, measurement authority and cross-version comparability.">
 <meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta name="twitter:image:alt" content="Decision-Space Integrity — audit expected-path visibility in AI model outputs">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
@@ -58,8 +58,62 @@
   <section class="hero" style="padding-bottom:40px;">
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Research &amp; evidence</p>
-      <h1 style="max-width:16ch;">Decision-space collapse.</h1>
-      <p class="lead" style="max-width:62ch;">When an advisory model answers a genuinely multi-path question, it can <strong>collapse the decision space</strong> — converging on one path and omitting other reasonable options the user would want to weigh. The answer can be fluent and even correct on its own terms while quietly removing alternatives from view. DSI exists to <strong>measure that visibility</strong> and make it inspectable.</p>
+      <h1 style="max-width:22ch;">From decision-space collapse to measurement integrity.</h1>
+      <p class="lead" style="max-width:66ch;">This research programme is built around two linked questions. The first: <strong>can an AI response narrow the set of options visible to a user without becoming obviously wrong?</strong> The second: <strong>how do we know the instrument measuring that phenomenon still means the same thing when its own population, reference, sensors or authority change?</strong> The original Decision-Space Collapse research addressed the first question. Building DSI — a reproducible instrument to measure it — exposed the second, which is now an active and open line of work, not a completed one.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The research story so far</p>
+        <h2>Observe, measure, challenge, govern.</h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <span class="idx">I · OBSERVE — DECISION-SPACE COLLAPSE</span>
+          <p style="margin-top:12px;">The original research investigated trajectory omission, framing sensitivity and recovery in genuinely multi-path advisory prompts — the ways an answer can read well while quietly narrowing what the user gets to weigh. This produced the preprint and the public replication materials.</p>
+        </div>
+        <div class="card">
+          <span class="idx">II · MEASURE — BUILD A REPRODUCIBLE INSTRUMENT</span>
+          <p style="margin-top:12px;">The work then moved from describing the phenomenon to defining a repeatable measurement: configured expected maps, surfaced and omitted evidence, coverage accounting, recovery, and provenance designed to make reported measurements reproducible and bounded.</p>
+        </div>
+        <div class="card">
+          <span class="idx">III · CHALLENGE — TEST THE INSTRUMENT ITSELF</span>
+          <p style="margin-top:12px;">Developing and challenging the instrument exposed cases where a legitimate evaluator change could alter evidence strength without necessarily moving a headline metric; where population and admission rules could affect what was actually being measured; and where an authority change could matter to the meaning of a measurement even though downstream scoring logic was unchanged. These are findings from instrument development and challenge, not universal empirical laws.</p>
+        </div>
+        <div class="card">
+          <span class="idx">IV · GOVERN — DECIDE WHEN MEASUREMENTS COMPARE</span>
+          <p style="margin-top:12px;">That led to the current research direction: separately governing population authority, reference authority, sensor authority, measurement identity and cross-version comparability. The research question is no longer only <em>what did the model omit?</em> but also <em>what measurement produced that conclusion, and are two such measurements authorised to be compared?</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Measurement engineering</p>
+        <h2>When the instrument changes, the number may not tell you.</h2>
+        <p>DSI is an experimental system for measuring preservation of governed decision-space elements in AI outputs. In building it, we encountered a broader measurement-engineering problem: changes to admission, reference construction, sensors, or authority can alter what a metric means without necessarily altering the metric value.</p>
+        <p>The general contribution is a claim-relative architecture for behavioural measurement in which population authority, reference authority, sensor authority, measurement identity and cross-version comparability are separately governed.</p>
+      </div>
+      <div class="card" style="max-width:820px;">
+        <span class="idx">FIVE SEPARATELY GOVERNED LAYERS</span>
+        <ul class="clean" style="margin-top:12px;">
+          <li><strong>Population authority</strong> — what enters the measured population.</li>
+          <li><strong>Reference authority</strong> — what expected/reference structure defines the measurement.</li>
+          <li><strong>Sensor authority</strong> — what evidence is permitted to count.</li>
+          <li><strong>Measurement identity</strong> — which governed instrument produced the result.</li>
+          <li><strong>Cross-version comparability</strong> — whether two measurements are authorised to support a comparative interpretation.</li>
+        </ul>
+      </div>
+      <div class="callout" style="margin-top:26px;">
+        <p>This describes the research architecture and direction of the work, not a claim that every layer is present in the currently released v0.2.1 product or that the behavioural instrument has been independently human-validated.</p>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-ghost" href="articles/who-decides-whether-the-goalposts-moved.html">Essay: Who Decides Whether the Goalposts Moved?</a>
+      </div>
     </div>
   </section>
 
@@ -78,9 +132,9 @@
   <section class="reveal">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">The research</p>
-        <h2>The research that led to the product.</h2>
-        <p>DSI originated from research into <strong>decision-space collapse</strong> — the tendency of advisory language models to narrow the visible set of options presented to users. That research produced a preprint, replication materials, and a public evaluation repository.</p>
+        <p class="eyebrow">Phase I · public empirical foundation</p>
+        <h2>The original empirical foundation.</h2>
+        <p>DSI originated from research into <strong>decision-space collapse</strong> — the tendency of advisory language models to narrow the visible set of options presented to users. That research produced a preprint, replication materials, and a public evaluation repository. It remains the public empirical foundation of the programme.</p>
       </div>
       <div class="card" style="max-width:820px;">
         <span class="idx">PREPRINT · OPEN MATERIALS</span>
@@ -127,33 +181,6 @@
   <section class="reveal">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">Measurement engineering</p>
-        <h2>When the instrument changes, the number may not tell you.</h2>
-        <p>DSI is an experimental system for measuring preservation of governed decision-space elements in AI outputs. In building it, we encountered a broader measurement-engineering problem: changes to admission, reference construction, sensors, or authority can alter what a metric means without necessarily altering the metric value.</p>
-        <p>The general contribution is a claim-relative architecture for behavioural measurement in which population authority, reference authority, sensor authority, measurement identity and cross-version comparability are separately governed.</p>
-      </div>
-      <div class="card" style="max-width:820px;">
-        <span class="idx">FIVE SEPARATELY GOVERNED LAYERS</span>
-        <ul class="clean" style="margin-top:12px;">
-          <li><strong>Population authority</strong> — what enters the measured population.</li>
-          <li><strong>Reference authority</strong> — what expected/reference structure defines the measurement.</li>
-          <li><strong>Sensor authority</strong> — what evidence is permitted to count.</li>
-          <li><strong>Measurement identity</strong> — which governed instrument produced the result.</li>
-          <li><strong>Cross-version comparability</strong> — whether two measurements are authorised to support a comparative interpretation.</li>
-        </ul>
-      </div>
-      <div class="callout" style="margin-top:26px;">
-        <p>This describes the research architecture and direction of the work, not a claim that every layer is present in the currently released v0.2.1 product or that the behavioural instrument has been independently human-validated.</p>
-      </div>
-      <div class="cta-row">
-        <a class="btn btn-ghost" href="articles/who-decides-whether-the-goalposts-moved.html">Essay: Who Decides Whether the Goalposts Moved?</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="reveal">
-    <div class="wrap">
-      <div class="section-head">
         <p class="eyebrow">Claim boundary</p>
         <h2>What this research does — and does not — claim.</h2>
       </div>
@@ -173,24 +200,20 @@
       <p class="yr">2026</p>
       <ul class="timeline">
         <li>
-          <span class="t-date">May 2026</span>
-          <p class="t-body">Decision-Space Integrity measurement framework and research spine established.</p>
+          <span class="t-date">May–June 2026</span>
+          <p class="t-body">Decision-space collapse framing, empirical study, preprint and public replication package.</p>
         </li>
         <li>
           <span class="t-date">June 2026</span>
-          <p class="t-body"><em>Decision-Space Collapse in Advisory Language Models</em> preprint released on OSF.</p>
+          <p class="t-body">DSI v0.2.1 made available for evaluation; Evaluation Package v1.2 improved validation and transparency without changing findings.</p>
         </li>
         <li>
-          <span class="t-date">June 2026</span>
-          <p class="t-body">Public replication repository published.</p>
+          <span class="t-date">July–August 2026</span>
+          <p class="t-body">Internal challenge and measurement-engineering work expanded the programme from behavioural omission measurement into instrument integrity, measurement authority and comparability.</p>
         </li>
         <li>
-          <span class="t-date">June 2026</span>
-          <p class="t-body">DSI product v0.2.1 released for evaluation and pilot.</p>
-        </li>
-        <li>
-          <span class="t-date">June 2026</span>
-          <p class="t-body">Evaluation Package v1.2 — validation and transparency update (no change to findings).</p>
+          <span class="t-date">Current</span>
+          <p class="t-body">Independent human validation remains outstanding; semantic measurement, expected-map validity and cross-version measurement governance remain active research questions.</p>
         </li>
       </ul>
     </div>
@@ -203,13 +226,12 @@
         <h2>What's available, and what's pending.</h2>
       </div>
       <ul class="statuslist">
-        <li class="done">Public replication repository available</li>
-        <li class="done">6,480-output empirical study completed</li>
-        <li class="done">Reproduction and intervention-recovery reports available</li>
+        <li class="done">Public: preprint, replication package and published evaluation materials</li>
+        <li class="done">6,480-output empirical study completed (part of the public replication package)</li>
         <li class="done">DSI product v0.2.1 available for evaluation (verified to build and run from a clean install)</li>
         <li class="done">Evaluation Package v1.2 — validation and transparency release published</li>
-        <li class="todo">Human annotation packet prepared; independent validation not yet complete</li>
-        <li class="todo">arXiv link to be added when available</li>
+        <li class="done">Internal and unpublished: subsequent challenge, engineering and measurement-integrity studies, including internally frozen reproduction and intervention-recovery reports</li>
+        <li class="todo">Independent human validation has not been completed. Internal annotation, adjudication and calibration work has been undertaken as part of instrument development, but it does not substitute for an independently recruited human-validation study.</li>
       </ul>
     </div>
   </section>
@@ -258,8 +280,8 @@
           <p style="margin-top:12px;">The phenomenon and the audit/recovery measurement have been reproduced internally and frozen as internal reports. <em>Internal only — not yet externally replicated.</em></p>
         </div>
         <div class="card">
-          <span class="idx">HUMAN VALIDATION · DESIGNED, NOT COMMISSIONED</span>
-          <p style="margin-top:12px;">A human-annotation study to validate the classifier's evidence is <strong>designed, with its framework, rubric, and tooling built</strong> — but the <strong>study itself has not yet been run</strong> (no annotations collected). The product reports its classifier status honestly as <strong>"challenge-tested only — not yet independently validated."</strong> The study is <strong>not commissioned</strong> and is not on the current product-engineering critical path; it remains a possible future route to stronger human-anchored claims.</p>
+          <span class="idx">HUMAN VALIDATION · NOT YET INDEPENDENT</span>
+          <p style="margin-top:12px;"><strong>Independent human validation has not been completed.</strong> Internal annotation, adjudication and calibration work has been undertaken as part of instrument development, but it does not substitute for an independently recruited human-validation study. The product reports its classifier status honestly as <strong>"challenge-tested only — not yet independently validated."</strong> An independent study remains a possible future route to stronger human-anchored claims.</p>
         </div>
         <div class="card">
           <span class="idx">REPRODUCIBILITY</span>

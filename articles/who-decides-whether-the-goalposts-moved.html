@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who Decides Whether the Goalposts Moved? | Decision-Space Integrity</title>
+<meta name="description" content="A system gets a better score after an implementation change. Did the system improve, did the measurement change, or did both happen? An essay by Andrew J Cousins on measurement engineering and who holds authority over what a metric means.">
+<link rel="canonical" href="https://decisionspaceintegrity.com/articles/who-decides-whether-the-goalposts-moved">
+<meta name="author" content="Andrew J Cousins">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Decision-Space Integrity">
+<meta property="og:title" content="Who Decides Whether the Goalposts Moved?">
+<meta property="og:description" content="A system gets a better score after an implementation change. Did the system improve, did the measurement change, or did both happen? An essay by Andrew J Cousins on measurement engineering and who holds authority over what a metric means.">
+<meta property="og:url" content="https://decisionspaceintegrity.com/articles/who-decides-whether-the-goalposts-moved">
+<meta property="og:image" content="https://decisionspaceintegrity.com/assets/articles/who-decides-whether-the-goalposts-moved.png">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:alt" content="Flow diagram: 1,000 evaluation cases, 120 failures, an implementation change, improved results, with the question: did the system improve, or did the test become easier?">
+<meta property="article:author" content="Andrew J Cousins">
+<meta property="article:published_time" content="2026-08-22">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Who Decides Whether the Goalposts Moved?">
+<meta name="twitter:description" content="A system gets a better score after an implementation change. Did the system improve, did the measurement change, or did both happen? An essay by Andrew J Cousins on measurement engineering and who holds authority over what a metric means.">
+<meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/articles/who-decides-whether-the-goalposts-moved.png">
+<meta name="twitter:image:alt" content="Flow diagram: 1,000 evaluation cases, 120 failures, an implementation change, improved results, with the question: did the system improve, or did the test become easier?">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/icons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/icons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&amp;family=Hanken+Grotesk:wght@380;480;560;620&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Who Decides Whether the Goalposts Moved?",
+  "description": "A system gets a better score after an implementation change. Did the system improve, did the measurement change, or did both happen? An essay by Andrew J Cousins on measurement engineering and who holds authority over what a metric means.",
+  "image": "https://decisionspaceintegrity.com/assets/articles/who-decides-whether-the-goalposts-moved.png",
+  "author": { "@type": "Person", "name": "Andrew J Cousins" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Decision-Space Integrity",
+    "url": "https://decisionspaceintegrity.com/"
+  },
+  "datePublished": "2026-08-22",
+  "mainEntityOfPage": "https://decisionspaceintegrity.com/articles/who-decides-whether-the-goalposts-moved",
+  "keywords": "Measurement Engineering, AI Evaluation, AI Assurance, Change Control, Model Validation, Evidence"
+}
+</script>
+</head>
+<body>
+
+
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
+    <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
+    <nav id="sitenav" class="nav" aria-label="Site">
+      <a href="/">Home</a>
+      <a href="/product">Product</a>
+      <a href="/research">Research</a>
+      <a href="/applications">Applications</a>
+      <a href="/articles" class="active" aria-current="page">Articles</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" style="padding-bottom:24px;">
+    <div class="wrap" style="display:block;">
+      <div class="article">
+        <p class="eyebrow">Essay / measurement engineering</p>
+        <h1>Who Decides Whether the Goalposts Moved?</h1>
+        <p class="meta">22 August 2026 · Andrew J Cousins</p>
+        <img class="cover" src="/assets/articles/who-decides-whether-the-goalposts-moved.png" width="1536" height="1024" loading="eager" alt="Flow diagram: 1,000 evaluation cases, 120 failures, an implementation change, improved results, with the question: did the system improve, or did the test become easier?">
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" style="padding-top:10px;">
+    <div class="wrap" style="display:block;">
+      <div class="article">
+        <div class="body">
+          <p>A system is tested against a thousand cases and fails a hundred and twenty of them. An AI coding agent investigates, concludes that the failing cases are ambiguous and should never have been in the set, changes the software, reruns the evaluation, and the score improves substantially.</p>
+          <p>The agent may well be right. Those hundred and twenty cases may not belong. But if they do belong, the system hasn't improved. The test has become easier.</p>
+          <p>That much is familiar enough. The part I find harder is that the same thing can happen when nobody touches the test at all.</p>
+          <p>Suppose the agent changes a parser instead. A parser is plainly implementation. Its job is to prepare inputs for the evaluator, and the change might be an entirely legitimate correction, a real bug properly fixed. But the old parser admitted 918 cases for evaluation and the new one admits 871. The implementation has changed. So, possibly, has what is being measured. Both of those can be true at the same time, and the boundary between them turns out to be surprisingly hard to draw.</p>
+          <p>I've been running into this while building Decision-Space Integrity (DSI), a system for measuring whether AI responses preserve reasonable decision paths or quietly drop them. I've used coding agents heavily throughout, not only to write code but to implement tests, inspect failures, propose corrections and produce evidence that the thing behaves as intended. It works remarkably well.</p>
+          <p>But DSI is itself a measurement system, and that makes some perfectly ordinary software changes less ordinary than they look. A parser decides which evidence reaches the evaluator. An applicability rule decides which cases count. A threshold changes a classification. An evaluator prompt changes what gets recognised as evidence. Aggregation logic can move the final number without altering a single observation underneath it. None of that looks like changing the test.</p>
+          <p>Which brings the question back round. Who decides whether the goalposts moved?</p>
+          <p>The obvious answer is that the AI shouldn't be allowed to change its own evaluation criteria. It's a good answer, and it skips the difficult part, which is working out which changes are changes to the evaluation criteria. An agent might change a parser because it thinks the parser is wrong, and it might be right. It can explain the bug, produce a cleaner implementation, pass every software test and make a perfectly reasonable case that it has done nothing except fix the code. If the change also alters which observations enter the measurement, then deciding it was "only an implementation change" is itself a judgement of some weight. And the agent stands to benefit from that judgement.</p>
+          <p>None of this is new. Regulated industries have worked on material change, independent validation and revalidation for years. Software assurance has change-impact analysis. Safety cases have to account for changes that invalidate their own evidence. AI safety has specification gaming and reward tampering. More recent work looks at epistemically significant changes to AI systems, including what happens when the system, or its provider, helps decide whether a change requires reassessment. Finding that literature was useful, mostly because it stopped me mistaking something I'd met in engineering for a field I'd discovered.</p>
+          <p>What does seem different with generative agents is speed and volume. An agent can make hundreds of implementation decisions, watch the consequences, investigate the failures, modify the code and the machinery around it, rerun everything and explain why the result is better. No gaming is required for this to become a problem. The agent can be doing exactly what we asked it to do, which is find problems and fix them. In measurement software, fixing the implementation and changing the instrument are not always separate operations.</p>
+          <p>I've started taking that distinction more seriously in DSI. A failed measurement shouldn't disappear because the system changed afterwards. If an agent believes the measurement itself is wrong, it should be able to say so and argue the case as well as it can. But proposing a change and making that change authoritative are different acts. If one version of the instrument produces 71% and a legitimately revised version produces 89%, nothing has gone wrong, provided the record still says that R1 produced 71% and R2 produced 89%, rather than quietly ending up with R1 at 89%.</p>
+          <p>It didn't.</p>
+          <p>All of which sounds like an elaborate way of saying don't let the AI mark its own homework. I don't think that's the problem. Marking your own homework assumes we already know what the homework is and how it will be marked. The harder version is allowing AI to make ordinary engineering changes when some of those changes alter what the marking scheme means.</p>
+          <p>Putting a human in front of every change isn't much of an answer either. At hundreds or thousands of changes, human approval becomes a button somebody clicks.</p>
+          <p>I don't have a clean solution to this. My suspicion is that it involves being much more explicit about which parts of a measurement system carry authority, preserving the evidence produced under each version, and separating the ability to propose a change from the authority to decide that it left the measurement unchanged.</p>
+          <p>There's a more practical question I'd like to ask first, and it's the reason I'm writing this. People working in regulated software, assurance, scientific computing and model validation have been drawing versions of this line for decades. When a change looks like ordinary engineering, where do you draw the line at which it becomes material enough that the existing evidence can no longer simply be carried forward?</p>
+        </div>
+
+        <div class="tags" role="group" aria-label="Tags">
+          <span class="tag-chip">Measurement Engineering</span>
+          <span class="tag-chip">AI Evaluation</span>
+          <span class="tag-chip">AI Assurance</span>
+          <span class="tag-chip">Change Control</span>
+          <span class="tag-chip">Model Validation</span>
+          <span class="tag-chip">Evidence</span>
+        </div>
+
+        <div class="disclaimer">
+          <p>The views and opinions expressed in this article are my own and do not necessarily reflect those of my employer.</p>
+        </div>
+
+        <a class="back" href="/articles">← All articles</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <div class="row">
+      <span>decisionspaceintegrity.com</span>
+      <span><a href="/articles">Articles</a> · <a href="/research">Research</a> · <a href="/contact">Contact</a></span>
+      <span class="statusflag">v0.2.1 · evaluation &amp; pilot</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

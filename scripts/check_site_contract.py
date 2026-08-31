@@ -153,6 +153,26 @@ def main(argv: list[str]) -> int:
             errors.append("pluraxis.html: maturity watermark missing from the image slot")
         if PLURAXIS_CAPTION not in s:
             errors.append("pluraxis.html: required diagram caption missing")
+        # the revised diagram must be published, with a text equivalent
+        if "/assets/diagrams/pluraxis-architecture.png" not in s:
+            errors.append("pluraxis.html: revised architecture diagram is not referenced")
+        else:
+            img = re.search(r'<img[^>]*pluraxis-architecture\.png[^>]*>', s)
+            if not img or 'alt="' not in img.group(0) or len(img.group(0)) < 200:
+                errors.append("pluraxis.html: architecture diagram needs a descriptive alt text equivalent")
+        # the unrevised owner-supplied source must never be published.
+        # Local build inputs are legitimate on disk; only files git would publish are policed,
+        # so anything named in .gitignore is skipped.
+        ignored = set()
+        gi = root / ".gitignore"
+        if gi.exists():
+            ignored = {ln.strip() for ln in gi.read_text(encoding="utf-8").splitlines()
+                       if ln.strip() and not ln.startswith("#")}
+        for stray in root.glob("assets/diagrams/*"):
+            rel = stray.relative_to(root).as_posix()
+            if stray.name != "pluraxis-architecture.png" and rel not in ignored:
+                errors.append(f"{rel}: only the revised diagram may be published "
+                              f"(the unrevised source is a build input)")
     else:
         errors.append("pluraxis.html is missing")
 

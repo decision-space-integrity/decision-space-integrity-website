@@ -499,6 +499,8 @@ pre.codeblock .c { color:var(--faint); }
 /* image slot for an owner-supplied asset that is not yet available */
 .slot { border:1px dashed var(--line-2); border-radius:12px; background:var(--bg-2);
         padding:34px 22px; text-align:center; margin:20px 0; }
+figure.diagram img { width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:12px; }
+.wmline { margin:10px 0 0; }
 .slot .wm { display:inline-block; font-family:var(--mono); font-size:11.5px; letter-spacing:.18em;
             text-transform:uppercase; color:var(--provisional); border:1px solid var(--provisional);
             border-radius:6px; padding:5px 10px; }

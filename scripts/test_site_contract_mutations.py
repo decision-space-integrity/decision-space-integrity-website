@@ -74,6 +74,34 @@ CASES = [
     ("pluraxis: decision-quality limitation removed", "pluraxis.html",
      "effect it may have on decision quality, are <strong>not established</strong>",
      "effect it may have on decision quality, are <strong>well proven</strong>"),
+    # --- final identity closure: bare uppercase DSI in the main content of a
+    # product/runtime surface. These are the exact residuals that survived two
+    # amendments because the contract enumerated verbs instead of closing the rule.
+    ("bare DSI: 'DSI returns'", "getting-started.html",
+     "; DSI Audit returns configured expected-path visibility.",
+     "; DSI returns configured expected-path visibility."),
+    ("bare DSI: 'DSI honestly reports'", "getting-started.html",
+     "so DSI Audit reports the result as <em>instrument-limited</em>",
+     "so DSI honestly reports it as <em>instrument-limited</em>"),
+    ("bare DSI: 'DSI does not redact'", "security.html",
+     "DSI Audit does not redact them for you.", "DSI does not redact them for you."),
+    ("bare DSI: \"DSI's finance example bundle\"", "example-audit.html",
+     "taken from DSI Audit's finance example bundle", "taken from DSI's finance example bundle"),
+    ("bare DSI: 'What DSI does'", "example-audit.html",
+     '<p class="eyebrow reveal-up">What DSI Audit does</p>',
+     '<p class="eyebrow reveal-up">What DSI does</p>'),
+    # an UNRECOGNISED verb: the whole point of the rule change. No verb list contains
+    # "orchestrates"; the contract must reject it anyway.
+    ("bare DSI: previously unrecognised verb", "deployment.html",
+     "DSI Audit runs in offline", "DSI orchestrates and runs in offline"),
+    # architecture surface, retired formulation (not covered by the main-content rule)
+    ("retired: 'DSI is offered for evaluation'", "research.html",
+     "DSI Audit is available for <strong>private evaluation</strong>",
+     "DSI is offered for <strong>evaluation</strong>"),
+    # applications: either illustrative profile left unclassified
+    ("applications: illustrative profile unclassified", "applications.html",
+     '          <div><span class="k">Application validity</span>'
+     '<span class="ev ev-not">Not established</span></div>\n', ''),
     ("pluraxis: diagram caption limitation removed", "pluraxis.html",
      "Conceptual target architecture. Individual components exist at different maturity levels; "
      "the integrated system and its effect on decision quality are not established.",

@@ -223,7 +223,45 @@ def main(argv: list[str]) -> int:
         t = t.replace("&mdash;", "-").replace("&#8212;", "-").replace("\u2014", "-")
         return re.sub(r"\s+", " ", t)
 
-    # Implementation verbs must never be attributed to bare DSI. Two allowances:
+    MAIN_RX = re.compile(r"<main\b[^>]*>(.*?)</main>", re.S | re.I)
+
+    # ---- PRIMARY IDENTITY INVARIANT -------------------------------------------------
+    # On a page that describes the executable thing, uppercase DSI must always read
+    # "DSI Audit". An enumerated verb list is NOT a durable invariant: whichever verb
+    # the copy reaches for next opens another hole, which is exactly how "DSI returns",
+    # "DSI honestly reports", "DSI does not redact" and "What DSI does" survived two
+    # amendments. This rule is closed by construction instead.
+    #
+    # Permitted on these surfaces:
+    #   - "DSI Audit"                    - the implementation
+    #   - "Decision-Space Integrity"     - the architecture, written in full
+    #   - lowercase identifiers: dsi, dsi-product, imports, CLI commands (the pattern
+    #     is case-sensitive and word-bounded, so these are untouched)
+    # Only <main> is scanned: the shared nav and footer chrome legitimately carry the
+    # architecture name and are governed by the chip and footer rules below.
+    PRODUCT_SURFACES = ("getting-started.html", "example-audit.html", "deployment.html",
+                        "security.html", "release-notes.html", "contact.html",
+                        "applications.html")
+    BARE_DSI = re.compile(r"(?<![\w-])DSI(?![\w-])(?!\s+Audit\b)")
+    for _name in PRODUCT_SURFACES:
+        _p = root / _name
+        if not _p.exists():
+            errors.append(f"{_name}: product/runtime surface is missing")
+            continue
+        _m = MAIN_RX.search(text[_p])
+        if not _m:
+            errors.append(f"{_name}: no <main> element, so the identity rule cannot be "
+                          f"applied to its main content")
+            continue
+        _body = rendered(_m.group(1))
+        for _hit in BARE_DSI.finditer(_body):
+            _frag = _body[max(0, _hit.start() - 60): _hit.end() + 60].strip()
+            errors.append(f"{_name}: bare 'DSI' in main content - on a product/runtime "
+                          f"surface the executable actor is 'DSI Audit', or name the "
+                          f"architecture in full: ...{_frag}...")
+
+    # Secondary net, for the pages where bare DSI is legitimate (architecture surfaces):
+    # implementation verbs must still never be attributed to bare DSI. Two allowances:
     #   - "DSI Audit <verb>" is correct and is excluded by the negative lookahead;
     #   - a denial ("DSI is not a ... sidecar") and genuine architecture subjects are
     #     allowed explicitly, rather than by weakening the pattern.
@@ -249,6 +287,12 @@ def main(argv: list[str]) -> int:
         "Human-validation packet prepared",
         "DSI never writes the advice",
         "See DSI work",
+        # retired at the final identity closure. "DSI is offered for evaluation" and
+        # "DSI is an experimental system" sit on /research, an architecture surface the
+        # main-content rule does not cover, so they are retired by name instead.
+        "DSI is offered for",
+        "DSI is an experimental system",
+        "See the product",
         "DSI is at v0.2.1",
         "a self-hosted, stateless assurance tool",
     )
@@ -283,11 +327,43 @@ def main(argv: list[str]) -> int:
             errors.append(f"{p.relative_to(root)}: implementation mislabelled: {m.group(0)!r} "
                           f"(use 'DSI Audit')")
 
-    # application profiles must not assert "Current" without a governing authority
+    # Application profiles must not assert "Current" without a governing authority, and
+    # a page that presents itself "by maturity" must classify every profile it shows.
+    # The two illustrative profiles - AI-summary assurance and the policy-assurance
+    # report - are classed on both axes: the maturity of the underlying comparison, and
+    # whether the application itself is established. Advisory and Regression Audit carry
+    # the implementation tier.
     apps = root / "applications.html"
-    if apps.exists() and re.search(r'class="statusflag">\s*Current\s*</span>', text[apps]):
-        errors.append("applications.html: application profiles must carry a maturity tier, "
-                      "not an unsupported 'Current' claim")
+    if apps.exists():
+        a = text[apps]
+        if re.search(r'class="statusflag">\s*Current\s*</span>', a):
+            errors.append("applications.html: application profiles must carry a maturity "
+                          "tier, not an unsupported 'Current' claim")
+        n_axes = a.count('class="axes"')
+        if n_axes < 2:
+            errors.append(f"applications.html: the illustrative profiles (AI-summary "
+                          f"assurance, policy-assurance report) must each be classified on "
+                          f"both axes; found {n_axes} two-axis block(s), expected 2")
+        if a.count('<span class="ev ev-not">Not established</span>') < 2:
+            errors.append("applications.html: each illustrative profile must record "
+                          "application validity as 'Not established'")
+        if a.count('<span class="tier tier-research">Research implementation</span>') < 4:
+            errors.append("applications.html: every profile must carry a maturity tier "
+                          "(advisory, regression, and both illustrative profiles)")
+        if "does not establish the completeness or authority of the policy-obligation set" not in a:
+            errors.append("applications.html: the policy-assurance illustration must state "
+                          "that executing an expected-point comparison does not establish "
+                          "the completeness or authority of the obligation set, policy-"
+                          "assurance validity, or compliance")
+
+    # the human-validation limitation must be one click from the concise statement
+    aud = root / "audit.html"
+    if aud.exists():
+        a = text[aud]
+        _i = a.find("Independent human validation has not yet been conducted")
+        if _i >= 0 and 'href="/evidence"' not in a[_i:_i + 300]:
+            errors.append("audit.html: the human-validation statement must link directly "
+                          "to /evidence so the full approved limitation is one click away")
 
     # ---- 9. chip scope, metadata freshness, Pluraxis limits ------------------------
     AUDIT_SURFACES = {"audit.html", "getting-started.html", "deployment.html",

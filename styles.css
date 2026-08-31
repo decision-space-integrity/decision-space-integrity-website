@@ -453,6 +453,14 @@ pre.codeblock .c { color:var(--faint); }
 .tier-research { color:var(--measure); background:var(--measure-ghost); }
 .tier-target   { color:var(--provisional); background:var(--provisional-ghost); }
 
+/* two-axis maturity labelling for application profiles: a profile is classed
+   both by the maturity of the underlying comparison and by whether the
+   application itself is established. */
+.axes { display:flex; flex-wrap:wrap; gap:14px 26px; margin:18px 0 0; }
+.axes .k { display:block; font-family:var(--mono); font-size:11px;
+           letter-spacing:.14em; text-transform:uppercase; color:var(--faint);
+           margin-bottom:7px; }
+
 /* evidence statuses */
 .ev {
   display:inline-block; font-family:var(--mono); font-size:11px; letter-spacing:.14em;
@@ -501,7 +509,8 @@ pre.codeblock .c { color:var(--faint); }
 .pipe li.out { border-color:var(--measure-deep); color:var(--measure); }
 .pipe .sep { border:0; background:none; color:var(--faint); padding:0 2px; }
 
-/* image slot for an owner-supplied asset that is not yet available */
+/* image slot retained for owner-supplied assets; the Pluraxis architecture
+   diagram is now present and published at assets/diagrams/ */
 .slot { border:1px dashed var(--line-2); border-radius:12px; background:var(--bg-2);
         padding:34px 22px; text-align:center; margin:20px 0; }
 figure.diagram img { width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:12px; }

@@ -94,7 +94,7 @@ curl http://127.0.0.1:8000/version</pre>
     <div class="wrap" style="display:block;">
       <p class="eyebrow">3 · Your first audit</p>
       <h2 style="max-width:28ch;">Audit a supplied prompt and response.</h2>
-      <p class="lead" style="max-width:64ch;">You send the prompt and the response your system produced; DSI returns configured expected-path visibility.</p>
+      <p class="lead" style="max-width:64ch;">You send the prompt and the response your system produced; DSI Audit returns configured expected-path visibility.</p>
       <pre class="codeblock">curl -X POST http://127.0.0.1:8000/v1/audit \
      -H "Content-Type: application/json" \
      -d '{"prompt":"Should I stay in my role or look elsewhere?",
@@ -133,7 +133,7 @@ print(result.to_jsonable()["coverage"])   <span class="c"># mfa surfaced, loggin
    "response":"Just invest everything."}]}</pre>
       <pre class="codeblock">dsi regression-audit baseline.json candidate.json
 <span class="c"># exit 0 = no regression · 1 = regression detected · 2 = malformed input</span></pre>
-      <p class="muted" style="max-width:64ch;">A single pair is below the sample floor, so DSI honestly reports it as <em>instrument-limited</em> rather than a regression — a real comparison uses a fixed set of paired prompts. Five worked examples ship in the 0.2.1 source archive under <span class="mono">docs/examples/regression_audit/</span>. Regression Audit reports a change in visibility between paired outputs — not that one build is objectively better, safer, or of higher quality.</p>
+      <p class="muted" style="max-width:64ch;">A single pair is below the sample floor, so DSI Audit reports the result as <em>instrument-limited</em> rather than a regression — a real comparison uses a fixed set of paired prompts. Five worked examples ship in the 0.2.1 source archive under <span class="mono">docs/examples/regression_audit/</span>. Regression Audit reports a change in visibility between paired outputs — not that one build is objectively better, safer, or of higher quality.</p>
     </div>
   </section>
 

@@ -39,7 +39,12 @@ strong { font-weight:620; color:#fbfaf4; }
 em { font-style:italic; color:var(--ink); }
 
 .wrap { max-width:var(--maxw); margin:0 auto; padding:0 clamp(20px,5vw,40px); }
-.mono { font-family:var(--mono); font-feature-settings:"ss01"; }
+.mono { font-family:var(--mono); font-feature-settings:"ss01"; overflow-wrap:anywhere; }
+/* Monospace spans carry identifiers, paths and addresses that have no break
+   opportunity (enquire@decisionspaceintegrity.com, audit_67914c8bf3e23965).
+   Without this they set an intrinsic min-content width that forces a card wider
+   than a 390px viewport. "anywhere" is required rather than "break-word": only
+   the former reduces min-content size. Identifier text itself is unchanged. */
 .eyebrow {
   font-family:var(--mono); font-size:12px; letter-spacing:.22em; text-transform:uppercase;
   color:var(--accent); margin:0 0 18px;
@@ -513,6 +518,18 @@ figure.diagram figcaption { color:var(--muted); font-size:14px; margin-top:10px;
   .dsc-vis .arrow { transform:rotate(90deg); justify-self:center; }
   .status dl { grid-template-columns:1fr; gap:2px; }
   .status dt { margin-top:8px; }
+
+  /* Evidence and maturity registers. The status chips are white-space:nowrap, so
+     at narrow widths the status column claimed 377px of a 622px table and squeezed
+     "scope" to 128px, which drove single rows past 560px tall - a column of chips
+     beside a tall band of blank space. Fixed proportions and wrapping chips keep
+     the register legible; .regwrap still provides the horizontal scroll. No claim,
+     status or scope text is altered. */
+  .reg { table-layout:fixed; min-width:600px; }
+  .reg th:nth-child(1), .reg td:nth-child(1) { width:30%; }
+  .reg th:nth-child(2), .reg td:nth-child(2) { width:32%; }
+  .reg th:nth-child(3), .reg td:nth-child(3) { width:38%; }
+  .reg .ev, .reg .tier { white-space:normal; }
 }
 @media (prefers-reduced-motion:reduce) {
   * { animation:none !important; transition:none !important; scroll-behavior:auto !important; }

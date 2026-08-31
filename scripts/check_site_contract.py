@@ -169,6 +169,10 @@ def main(argv: list[str]) -> int:
         try:
             out = subprocess.run(["git", "ls-files", "-z", "assets/diagrams"],
                                  cwd=root, capture_output=True, text=True, timeout=20)
+            # FAIL CLOSED: a nonzero exit must not read as "nothing is tracked".
+            if out.returncode != 0:
+                errors.append(f"git ls-files failed (rc={out.returncode}); cannot prove the "
+                              f"unrevised diagram is untracked: {out.stderr.strip()[:160]}")
             tracked = {t for t in out.stdout.split("\0") if t}
         except Exception as exc:                      # never pass silently on an unknown state
             errors.append(f"could not inspect the tracked tree for assets/diagrams: {exc}")
@@ -205,68 +209,115 @@ def main(argv: list[str]) -> int:
     if priv.exists() and "injects a Web Analytics beacon script into every page at the edge" not in text[priv]:
         errors.append("privacy.html: verified edge-analytics position is missing")
 
-    # ---- 8. amendment assertions (DSI/DSI Audit identity, chip, metadata) ---------
-    detag_all = re.compile(r"<[^>]+>")
+    # ---- 8. identity assertions, over TWO representations -------------------------
+    # RAW      : the source, so title/meta/OG/Twitter attribute text is visible.
+    # RENDERED : scripts and styles removed, then tags stripped, so markup can no longer
+    #            split a phrase and hide it from a substring scan.
+    SCRIPT_STYLE = re.compile(r"<(script|style)\b.*?</\1>", re.S | re.I)
+    TAG = re.compile(r"<[^>]+>")
 
-    # (a) DSI must not be defined as the local / self-hosted / stateless implementation.
-    dsi_as_impl = re.compile(
-        r"DSI\s+is\s+(?:a|an|the)\s+(?:[a-z-]+\s+){0,3}"
-        r"(?:local|self-hosted|stateless|sidecar|package|tool|product)\b", re.I)
+    def rendered(src: str) -> str:
+        t = SCRIPT_STYLE.sub(" ", src)
+        t = TAG.sub(" ", t)
+        t = t.replace("&amp;", "&").replace("&nbsp;", " ").replace("&#160;", " ")
+        t = t.replace("&mdash;", "-").replace("&#8212;", "-").replace("\u2014", "-")
+        return re.sub(r"\s+", " ", t)
+
+    # Implementation verbs must never be attributed to bare DSI. Two allowances:
+    #   - "DSI Audit <verb>" is correct and is excluded by the negative lookahead;
+    #   - a denial ("DSI is not a ... sidecar") and genuine architecture subjects are
+    #     allowed explicitly, rather than by weakening the pattern.
+    IMPL_VERBS = ("installs?", "runs?", "audits?", "takes?", "checks?", "recommends?",
+                  "re-runs?", "re-audits?", "provides?", "phones?", "generates?", "emits?",
+                  "is run", "is at v", "installs")
+    VERB_RX = re.compile(r"\bDSI\s+(?!Audit\b)(?:" + "|".join(IMPL_VERBS) + r")\b", re.I)
+    IMPL_DEF_RX = re.compile(
+        r"\bDSI\b[^.]{0,70}?\b(?:self-hosted|stateless|sidecar|assurance tool|"
+        r"product candidate|local product)\b", re.I)
+    ALLOWED_ARCH = (
+        "DSI is not a Python package, an audit product or a sidecar",   # explicit denial
+        "See how DSI works",                                            # link to the architecture
+        "Where DSI fits",                                               # architecture positioning
+    )
+
+    STALE_PHRASES = (
+        "Decision-Space Integrity Product",
+        "Decision-Space Integrity 0.2.1",
+        "v0.2.1 product candidate",
+        "Public release notes",
+        "currently released v0.2.1 product",
+        "Human-validation packet prepared",
+        "DSI never writes the advice",
+        "See DSI work",
+        "DSI is at v0.2.1",
+        "a self-hosted, stateless assurance tool",
+    )
+
     for p, s_ in text.items():
-        # scan the raw source: description/og/twitter wording lives inside tag attributes,
-        # which detagging would delete, hiding exactly the metadata this sweep must cover.
-        flat = re.sub(r"\s+", " ", s_)
-        for m in dsi_as_impl.finditer(flat):
-            frag = flat[max(0, m.start() - 60): m.end() + 60]
-            if "DSI Audit" in m.group(0) or "not a" in frag or "is not" in frag:
-                continue
-            errors.append(f"{p.relative_to(root)}: DSI defined as the implementation: "
-                          f"{m.group(0).strip()!r}")
+        name = p.relative_to(root).as_posix()
+        ren = rendered(s_)
+        raw_flat = re.sub(r"\s+", " ", s_)
 
-    # (b) the executable implementation must be called DSI Audit on current surfaces.
+        for label, hay in (("visible copy", ren), ("metadata/raw", raw_flat)):
+            for m in VERB_RX.finditer(hay):
+                frag = hay[max(0, m.start() - 70): m.end() + 70]
+                if any(a in frag for a in ALLOWED_ARCH):
+                    continue
+                errors.append(f"{name}: implementation verb attributed to bare DSI "
+                              f"({label}): {m.group(0).strip()!r}")
+            for m in IMPL_DEF_RX.finditer(hay):
+                frag = hay[max(0, m.start() - 70): m.end() + 70]
+                if any(a in frag for a in ALLOWED_ARCH) or "is not" in frag or "not a " in frag:
+                    continue
+                errors.append(f"{name}: DSI defined as the implementation ({label}): "
+                              f"{m.group(0).strip()[:70]!r}")
+
+        for phrase in STALE_PHRASES:
+            if phrase.lower() in ren.lower() or phrase.lower() in raw_flat.lower():
+                errors.append(f"{name}: stale wording present: {phrase!r}")
+
+    # the executable implementation is DSI Audit, never "DSI Product" or bare "DSI vX.Y.Z"
     mislabel = re.compile(r"DSI [Pp]roduct\b|\bDSI v?\d+\.\d+\.\d+")
     for p, s_ in text.items():
         for m in mislabel.finditer(re.sub(r"\s+", " ", s_)):
             errors.append(f"{p.relative_to(root)}: implementation mislabelled: {m.group(0)!r} "
                           f"(use 'DSI Audit')")
 
-    # (c) the programme-wide product chip is retired; version identity is Audit-scoped.
+    # application profiles must not assert "Current" without a governing authority
+    apps = root / "applications.html"
+    if apps.exists() and re.search(r'class="statusflag">\s*Current\s*</span>', text[apps]):
+        errors.append("applications.html: application profiles must carry a maturity tier, "
+                      "not an unsupported 'Current' claim")
+
+    # ---- 9. chip scope, metadata freshness, Pluraxis limits ------------------------
     AUDIT_SURFACES = {"audit.html", "getting-started.html", "deployment.html",
                       "security.html", "release-notes.html", "example-audit.html"}
     for p, s_ in text.items():
-        # scope to the footer: some pages use .statusflag as a body label too
+        name = p.relative_to(root).as_posix()
         foot = re.search(r'<footer class="site-foot">.*?</footer>', s_, re.S)
         if not foot:
-            errors.append(f"{p.relative_to(root)}: no site footer")
-            continue
+            errors.append(f"{name}: no site footer"); continue
         chip = re.search(r'class="statusflag">([^<]*)</span>', foot.group(0))
         if not chip:
-            errors.append(f"{p.relative_to(root)}: footer has no status chip")
-            continue
+            errors.append(f"{name}: footer has no status chip"); continue
         val = chip.group(1).strip()
-        name = p.relative_to(root).as_posix()
         if name in AUDIT_SURFACES:
             if "DSI Audit" not in val or "private evaluation" not in val:
                 errors.append(f"{name}: Audit-surface chip must read "
-                              f"'DSI Audit v… · private evaluation', found {val!r}")
-        else:
-            if "Research &amp; engineering programme" not in val:
-                errors.append(f"{name}: global chip must read "
-                              f"'Research & engineering programme', found {val!r}")
+                              f"'DSI Audit v... private evaluation', found {val!r}")
+        elif "Research &amp; engineering programme" not in val:
+            errors.append(f"{name}: global chip must read "
+                          f"'Research & engineering programme', found {val!r}")
 
-    # (d) no legacy or contradictory human-validation passages.
-    HV_BANNED = ["challenge-tested only",
+    HV_BANNED = ("challenge-tested only",
                  "possible future route to stronger human-anchored claims",
-                 "Designed, Not Commissioned",
-                 "no annotations collected",
-                 "human validation is planned",
-                 "recruitment is planned"]
+                 "Designed, Not Commissioned", "no annotations collected",
+                 "human validation is planned", "recruitment is planned")
     for p, s_ in text.items():
         for b in HV_BANNED:
             if b.lower() in s_.lower():
                 errors.append(f"{p.relative_to(root)}: legacy human-validation wording: {b!r}")
 
-    # (e) stale homepage metadata must not return.
     idx = root / "index.html"
     if idx.exists():
         if "A self-hosted assurance system" in text[idx]:
@@ -274,11 +325,19 @@ def main(argv: list[str]) -> int:
         if "AI can give a good answer and still narrow the decision." not in text[idx]:
             errors.append("index.html: programme-level metadata positioning is missing")
 
-    # (f) the Pluraxis efficacy limitation must survive alongside the watermark.
     if plx.exists():
         s_ = text[plx]
-        if "not established" not in s_.lower():
-            errors.append("pluraxis.html: efficacy limitation wording is missing")
+        # Require the SPECIFIC limitation statements, not merely the words "not established"
+        # somewhere on the page: a page with several such phrases would otherwise still pass
+        # after the load-bearing one was removed.
+        for needed, why in (
+            ("Efficacy: not established", "efficacy badge"),
+            ("effect it may have on decision quality, are <strong>not established</strong>",
+             "decision-quality limitation"),
+            ("its effect on decision quality are not established", "diagram caption limitation"),
+        ):
+            if needed not in s_:
+                errors.append(f"pluraxis.html: {why} is missing ({needed[:52]!r})")
         if "integrated system" not in s_.lower():
             errors.append("pluraxis.html: integrated-system limitation is missing")
 

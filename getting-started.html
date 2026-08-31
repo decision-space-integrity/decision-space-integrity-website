@@ -56,7 +56,7 @@
   <section class="hero" style="padding-bottom:40px;">
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Getting started · v0.2.1</p>
-      <h1 style="max-width:22ch;">Evaluate DSI locally in about 15 minutes.</h1>
+      <h1 style="max-width:22ch;">Evaluate DSI Audit locally in about 15 minutes.</h1>
       <p class="lead" style="max-width:66ch;">Install the package, verify the install, run a first audit and a Regression Audit, and read the evidence — everything below is the <strong>tested evaluator path</strong> — the installation, readiness, audit, and Regression Audit paths are exercised by the product's clean-install and documented-quick-start checks. It runs entirely on your machine; in the primary pattern it makes <strong>no provider call</strong> and retains <strong>nothing</strong> between requests. Choose a <a href="deployment.html">deployment profile</a> first if you like.</p>
     </div>
   </section>
@@ -65,7 +65,7 @@
     <div class="wrap" style="display:block;">
       <p class="eyebrow">1 · Install &amp; verify</p>
       <h2 style="max-width:26ch;">Install the wheel, then run the doctor.</h2>
-      <p class="lead" style="max-width:64ch;">DSI installs as an ordinary Python package (3.10+). <a href="contact.html">Request the 0.2.1 evaluation build</a> (a wheel + source archive, provided for evaluation and pilots), then run <span class="mono">dsi doctor</span> first — a read-only readiness check — then <span class="mono">dsi validate-install</span>, which runs a real, domain-consistent audit end to end.</p>
+      <p class="lead" style="max-width:64ch;">DSI Audit installs as an ordinary Python package (3.10+). <a href="contact.html">Request the 0.2.1 evaluation build</a> (a wheel + source archive, provided for evaluation and pilots), then run <span class="mono">dsi doctor</span> first — a read-only readiness check — then <span class="mono">dsi validate-install</span>, which runs a real, domain-consistent audit end to end.</p>
       <pre class="codeblock">python -m venv .venv
 . .venv/bin/activate            <span class="c"># Windows: .venv\Scripts\Activate.ps1</span>
 python -m pip install ./dsi_product-0.2.1-py3-none-any.whl
@@ -169,11 +169,11 @@ python -m pytest                 <span class="c"># run the full suite</span></pr
   <section>
     <div class="wrap" style="display:block;">
       <div class="callout" style="max-width:70ch;">
-        <p style="margin:0;">DSI audits supplied AI responses against configured expected maps. It is a visibility and evidence layer — not a language model, recommender, policy engine, governance workflow, or safety-certification tool.</p>
+        <p style="margin:0;">DSI Audit audits supplied AI responses against configured expected maps. It is a visibility and evidence layer — not a language model, recommender, policy engine, governance workflow, or safety-certification tool.</p>
       </div>
       <div class="cta-row">
         <a class="btn btn-primary btn-arrow" href="contact.html">Evaluate locally</a>
-        <a class="btn btn-ghost" href="/audit">How DSI fits</a>
+        <a class="btn btn-ghost" href="/audit">How DSI Audit fits</a>
         <a class="btn btn-ghost" href="release-notes.html">What's new in 0.2.1</a>
       </div>
     </div>

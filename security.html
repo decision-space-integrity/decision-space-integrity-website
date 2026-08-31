@@ -58,7 +58,7 @@
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Security &amp; operations · v0.2.1</p>
       <h1 style="max-width:20ch;">Local-first, and quiet by design.</h1>
-      <p class="lead" style="max-width:62ch;">DSI runs on your infrastructure. The primary path makes <strong>no model-provider call</strong>, keeps <strong>no state</strong> by default, and sends <strong>nothing home</strong>. This page describes the product's posture — it is not an independent third-party security audit.</p>
+      <p class="lead" style="max-width:62ch;">DSI Audit runs on your infrastructure. The primary path makes <strong>no model-provider call</strong>, keeps <strong>no state</strong> by default, and sends <strong>nothing home</strong>. This page describes the product's posture — it is not an independent third-party security audit.</p>
     </div>
   </section>
 
@@ -68,9 +68,9 @@
         <p class="eyebrow">Architecture posture</p>
       </div>
       <div class="grid grid-2">
-        <div class="card"><h3>Local-first</h3><p>You own the model call; DSI audits a supplied prompt/response pair. No external service is required to run it.</p></div>
+        <div class="card"><h3>Local-first</h3><p>You own the model call; DSI Audit audits a supplied prompt/response pair. No external service is required to run it.</p></div>
         <div class="card"><h3>Stateless by default</h3><p>No database is created and no audit history is retained unless you deliberately configure persistence. Evidence bundles are portable artefacts you choose to keep.</p></div>
-        <div class="card"><h3>No telemetry</h3><p>No usage reporting, no remote logging, no hidden ingestion. DSI phones nothing home.</p></div>
+        <div class="card"><h3>No telemetry</h3><p>No usage reporting, no remote logging, no hidden ingestion. DSI Audit phones nothing home.</p></div>
         <div class="card"><h3>Deterministic</h3><p>Under the same product version, configured expected map, pack, and instrument settings, the same inputs produce the same audit and the same audit identifier. The evidence-bundle export timestamp is the only intentionally variable field.</p></div>
       </div>
     </div>
@@ -98,7 +98,7 @@
         <li><strong>Treat prompts and responses as potentially sensitive.</strong> They may contain personal or confidential content; DSI does not redact them for you.</li>
         <li><strong>Log content.</strong> By default the runtime does not emit prompt/response text to logs. If you raise verbosity for debugging, review what your configuration writes before sharing logs.</li>
         <li><strong>Evidence retention is yours.</strong> A bundle contains the audited text (or its representation), the coverage result, and provenance fingerprints. Where you store it, how long you keep it, and who can read it are your decisions.</li>
-        <li><strong>Access control &amp; multi-tenancy.</strong> DSI provides no user accounts, roles, or tenant isolation; access control is delegated to your deployment. Multi-tenant use is unsupported in 0.2.1.</li>
+        <li><strong>Access control &amp; multi-tenancy.</strong> DSI Audit provides no user accounts, roles, or tenant isolation; access control is delegated to your deployment. Multi-tenant use is unsupported in 0.2.1.</li>
       </ul>
     </div>
   </section>

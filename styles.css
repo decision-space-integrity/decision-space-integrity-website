@@ -461,6 +461,12 @@ pre.codeblock .c { color:var(--faint); }
            letter-spacing:.14em; text-transform:uppercase; color:var(--faint);
            margin-bottom:7px; }
 
+/* Stacked maturity badges inside a register cell. As bare inline spans they wrapped
+   onto a second line with only line-height between them, which read as one crowded
+   block. Flex keeps them side by side where there is room and gives a real 7px row
+   gap when they wrap. .status .row already carries its own 8px gap. */
+.tierstack { display:flex; flex-wrap:wrap; gap:7px 8px; align-items:flex-start; }
+
 /* evidence statuses */
 .ev {
   display:inline-block; font-family:var(--mono); font-size:11px; letter-spacing:.14em;

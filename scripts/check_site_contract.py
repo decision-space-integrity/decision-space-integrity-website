@@ -146,8 +146,41 @@ def main(argv: list[str]) -> int:
                           "'Private evaluation access' maturity labels")
         if "no self-service public repository" not in s:
             errors.append("audit.html: must state that there is no self-service public repository")
+        # Version identity: v0.2.1 is the AVAILABLE EVALUATION BUILD, not "the product
+        # version". The development line is stated separately and must never read as an
+        # available or downloadable identity, because no 0.3.0 release exists.
+        if "Available evaluation build" not in s:
+            errors.append("audit.html: v0.2.1 must be labelled the available evaluation "
+                          "build, not an advertised or current product version")
+        if "supplied by request" not in s:
+            errors.append("audit.html: the evaluation build must state that it is "
+                          "supplied by request")
+        if "Current development line" not in s or "unreleased" not in s:
+            errors.append("audit.html: the current development line must be stated "
+                          "separately and marked unreleased")
     else:
         errors.append("audit.html is missing")
+
+    # The unreleased development line must never acquire a release identity. A "v"
+    # prefix would read as a tagged release, and no 0.3.0 release exists: the product
+    # repository's newest tag is v0.2.1 while pyproject declares 0.3.0 in development.
+    for p, s in text.items():
+        if re.search(r"\bv0\.3\.0\b", s):
+            errors.append(f"{p.relative_to(root)}: 'v0.3.0' implies a tagged release; "
+                          f"no 0.3.0 release exists - the development line is '0.3.0'")
+        if re.search(r"0\.3\.0[^.]{0,60}?\b(?:download|available for|obtain|supplied by "
+                     r"request|evaluation build)\b", s, re.I):
+            errors.append(f"{p.relative_to(root)}: 0.3.0 is presented as available; it is "
+                          f"an unreleased development line and v0.2.1 is the evaluation build")
+
+    # Stacked maturity badges in a register cell need a real row gap, not line-height.
+    ev = root / "evidence.html"
+    if ev.exists():
+        for cell in re.findall(r"<td\b[^>]*>.*?</td>", text[ev], re.S):
+            if cell.count('class="tier ') >= 2 and "tierstack" not in cell:
+                errors.append("evidence.html: a register cell stacks two maturity badges "
+                              "without .tierstack, so they lose their row gap when they "
+                              "wrap onto a second line")
 
     plx = root / "pluraxis.html"
     if plx.exists():

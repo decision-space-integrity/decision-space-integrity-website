@@ -12,10 +12,18 @@
 // `assets.directory` is the repository root, which is what the project already does -
 // that is why .assetsignore exists to keep docs/, scripts/, .github/ and this file
 // out of the published asset set.
+//
+// Routes stay owned by the Cloudflare dashboard. Cloudflare's guidance for that is to
+// omit `route`/`routes` here AND set `workers_dev: false` - otherwise Wrangler would
+// override dashboard routes on the next deploy, and `workers_dev` defaults to TRUE when
+// omitted, which would publish a *.workers.dev endpoint. Neither is wanted: this change
+// exists to fix 404 handling, not to widen the deployment surface.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "decision-space-integrity-website",
   "compatibility_date": "2026-08-31",
+  // no workers.dev endpoint; the custom domain is managed in the dashboard
+  "workers_dev": false,
   "assets": {
     "directory": ".",
     // serve the nearest 404.html with a 404 status instead of an empty body

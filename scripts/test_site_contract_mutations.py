@@ -135,6 +135,19 @@ CASES = [
      '  "assets": {', '  "main": "src/index.js",\n  "assets": {'),
     ("assetsignore: wrangler.jsonc wrongly published", ".assetsignore",
      "\nwrangler.jsonc\n", "\n"),
+    # Routes stay dashboard-owned. Omitting workers_dev defaults it to TRUE, which would
+    # publish a *.workers.dev endpoint; a top-level route/routes would override the
+    # dashboard-managed custom domain on the next deploy.
+    ("wrangler: workers_dev removed", "wrangler.jsonc",
+     '  "workers_dev": false,\n', ''),
+    ("wrangler: workers_dev set true", "wrangler.jsonc",
+     '"workers_dev": false', '"workers_dev": true'),
+    ("wrangler: top-level route introduced", "wrangler.jsonc",
+     '  "workers_dev": false,',
+     '  "workers_dev": false,\n  "route": "decisionspaceintegrity.com/*",'),
+    ("wrangler: top-level routes introduced", "wrangler.jsonc",
+     '  "workers_dev": false,',
+     '  "workers_dev": false,\n  "routes": ["decisionspaceintegrity.com/*"],'),
     # Repository internals must not re-enter the published asset set. The asset
     # directory is the repository root, so a dropped exclusion silently republishes
     # /docs/, /scripts/ or /.github/ on the production domain.

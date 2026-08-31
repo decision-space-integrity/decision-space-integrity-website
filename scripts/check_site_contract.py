@@ -22,6 +22,7 @@ Exit 1 on any breach, 0 if clean.
 """
 from __future__ import annotations
 
+import json
 import pathlib
 import re
 import subprocess
@@ -296,18 +297,41 @@ def main(argv: list[str]) -> int:
         errors.append("wrangler.jsonc: missing - unknown routes would return an empty "
                       "body instead of the 404 page")
     else:
-        w = wr.read_text(encoding="utf-8")
-        # tolerate // comments: this is jsonc, so match on the field text directly
-        if '"not_found_handling": "404-page"' not in re.sub(r"\s+", " ", w).replace(
-                '"not_found_handling" : "404-page"', '"not_found_handling": "404-page"'):
-            errors.append('wrangler.jsonc: assets.not_found_handling must be "404-page" '
-                          "so unknown routes serve 404.html with a 404 status")
-        if '"directory": "."' not in re.sub(r"\s+", " ", w):
-            errors.append('wrangler.jsonc: assets.directory must be "." to match the '
-                          "deployed asset root")
-        if re.search(r'^\s*"main"\s*:', w, re.M):
-            errors.append("wrangler.jsonc: declares a Worker entrypoint; this deployment "
-                          "is deliberately static with no Worker script")
+        # Parse it rather than pattern-match: only a parse can tell a TOP-LEVEL key from
+        # the same word nested somewhere harmless. Strip whole-line // comments (jsonc);
+        # a trailing comment after a value is left alone deliberately, so a value that
+        # legitimately contains "//" is never mangled.
+        raw_w = wr.read_text(encoding="utf-8")
+        try:
+            cfg = json.loads(re.sub(r"^\s*//.*$", "", raw_w, flags=re.M))
+        except Exception as exc:
+            cfg = None
+            errors.append(f"wrangler.jsonc: does not parse as JSON once comments are "
+                          f"stripped: {exc}")
+        if cfg is not None:
+            assets = cfg.get("assets") or {}
+            if assets.get("not_found_handling") != "404-page":
+                errors.append('wrangler.jsonc: assets.not_found_handling must be '
+                              '"404-page" so unknown routes serve 404.html with a 404 '
+                              f'status (found {assets.get("not_found_handling")!r})')
+            if assets.get("directory") != ".":
+                errors.append('wrangler.jsonc: assets.directory must be "." to match the '
+                              f'deployed asset root (found {assets.get("directory")!r})')
+            if "main" in cfg:
+                errors.append("wrangler.jsonc: declares a Worker entrypoint; this "
+                              "deployment is deliberately static with no Worker script")
+            # Routes stay dashboard-owned. Cloudflare's documented pattern for that is to
+            # omit route/routes AND set workers_dev false - omitting workers_dev defaults
+            # it to TRUE and would publish a *.workers.dev endpoint.
+            if cfg.get("workers_dev") is not False:
+                errors.append('wrangler.jsonc: "workers_dev": false is required; omitting '
+                              "it defaults to true and would publish a *.workers.dev "
+                              "endpoint, widening the deployment surface")
+            for key in ("route", "routes"):
+                if key in cfg:
+                    errors.append(f"wrangler.jsonc: top-level {key!r} would override the "
+                                  f"dashboard-managed custom domain on the next deploy; "
+                                  f"routes stay owned by the dashboard")
 
     ai = root / ".assetsignore"
     if not ai.exists():

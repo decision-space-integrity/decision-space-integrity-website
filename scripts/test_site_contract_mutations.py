@@ -102,6 +102,30 @@ CASES = [
     ("applications: illustrative profile unclassified", "applications.html",
      '          <div><span class="k">Application validity</span>'
      '<span class="ev ev-not">Not established</span></div>\n', ''),
+    # --- version identity. v0.2.1 is the AVAILABLE EVALUATION BUILD; 0.3.0 is the
+    # unreleased development line and must never read as an available identity.
+    ("version: 'advertised build' label returns", "audit.html",
+     "<dt>Available evaluation build</dt>", "<dt>Advertised build</dt>"),
+    ("version: 'supplied by request' dropped", "audit.html",
+     "&#183; supplied by request. This is the only build available",
+     "&#183; the current product version. This is the only build available"),
+    ("version: development line no longer stated", "audit.html",
+     "<dt>Current development line</dt>", "<dt>Notes</dt>"),
+    ("version: development line loses 'unreleased'", "audit.html",
+     "<strong>0.3.0</strong> &#183; unreleased research implementation.",
+     "<strong>0.3.0</strong> &#183; research implementation."),
+    # a "v" prefix would imply a tagged release; the newest product tag is v0.2.1
+    ("version: 0.3.0 given a release identity", "audit.html",
+     "<strong>0.3.0</strong>", "<strong>v0.3.0</strong>"),
+    ("version: 0.3.0 presented as downloadable", "audit.html",
+     "No 0.3.0 release exists: it is not published, not downloadable",
+     "0.3.0 is available for download"),
+    # stacked maturity badges must keep their row gap when they wrap
+    ("badges: evidence tierstack removed", "evidence.html",
+     '<span class="tierstack"><span class="tier tier-research">Research implementation</span>'
+     '<span class="tier tier-research">Private evaluation access</span></span>',
+     '<span class="tier tier-research">Research implementation</span> '
+     '<span class="tier tier-research">Private evaluation access</span>'),
     # Repository internals must not re-enter the published asset set. The asset
     # directory is the repository root, so a dropped exclusion silently republishes
     # /docs/, /scripts/ or /.github/ on the production domain.
@@ -148,14 +172,20 @@ def main() -> int:
     missed = []
     for name, fname, find, repl in CASES:
         f = ROOT / fname
-        original = f.read_text(encoding="utf-8")
+        # Restore from the ORIGINAL BYTES, not from decoded text. read_text performs
+        # universal-newline translation, so writing the decoded string back rewrote a
+        # CRLF working copy as LF and left the tree dirty - the suite claims every file
+        # is restored, so it must round-trip exactly. Matching still uses a normalised
+        # view so the "\n"-based anchors work whatever the file's line endings are.
+        raw = f.read_bytes()
+        original = raw.decode("utf-8").replace("\r\n", "\n")
         if find not in original:
             missed.append((name, "anchor absent - mutation could not be applied"))
             print(f"  ANCHOR?  {name}")
             continue
         f.write_text(original.replace(find, repl, 1), encoding="utf-8", newline="")
         rc = run_check()
-        f.write_text(original, encoding="utf-8", newline="")
+        f.write_bytes(raw)
         if rc == 0:
             missed.append((name, "checker passed a broken contract"))
             print(f"  MISSED   {name}")

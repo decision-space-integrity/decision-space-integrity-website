@@ -327,6 +327,14 @@ def main(argv: list[str]) -> int:
                 errors.append('wrangler.jsonc: "workers_dev": false is required; omitting '
                               "it defaults to true and would publish a *.workers.dev "
                               "endpoint, widening the deployment surface")
+            # Preview URLs are a SEPARATE control and are public when enabled. Cloudflare
+            # documents the default as preview_urls = workers_dev, but that did not hold
+            # here: with workers_dev false the build still published a versioned and a
+            # branch-aliased preview URL, both serving the whole site with HTTP 200.
+            if cfg.get("preview_urls") is not False:
+                errors.append('wrangler.jsonc: "preview_urls": false is required; when '
+                              "enabled they are public, and the documented default of "
+                              "preview_urls = workers_dev was not applied in practice")
             for key in ("route", "routes"):
                 if key in cfg:
                     errors.append(f"wrangler.jsonc: top-level {key!r} would override the "

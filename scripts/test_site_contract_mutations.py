@@ -142,6 +142,11 @@ CASES = [
      '  "workers_dev": false,\n', ''),
     ("wrangler: workers_dev set true", "wrangler.jsonc",
      '"workers_dev": false', '"workers_dev": true'),
+    # Preview URLs are public when enabled, and are a separate control from workers_dev.
+    ("wrangler: preview_urls removed", "wrangler.jsonc",
+     '  "preview_urls": false,\n', ''),
+    ("wrangler: preview_urls set true", "wrangler.jsonc",
+     '"preview_urls": false', '"preview_urls": true'),
     ("wrangler: top-level route introduced", "wrangler.jsonc",
      '  "workers_dev": false,',
      '  "workers_dev": false,\n  "route": "decisionspaceintegrity.com/*",'),

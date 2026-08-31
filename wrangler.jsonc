@@ -24,6 +24,12 @@
   "compatibility_date": "2026-08-31",
   // no workers.dev endpoint; the custom domain is managed in the dashboard
   "workers_dev": false,
+  // Preview URLs are a SEPARATE control from workers_dev, and they are public when
+  // enabled. Cloudflare documents the default as `preview_urls = workers_dev`, but that
+  // did not hold here: with workers_dev false, the build still published a versioned and
+  // a branch-aliased preview URL, both returning 200 and serving the whole site. So this
+  // is set explicitly rather than left to the documented default.
+  "preview_urls": false,
   "assets": {
     "directory": ".",
     // serve the nearest 404.html with a 404 status instead of an empty body

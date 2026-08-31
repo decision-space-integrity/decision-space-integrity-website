@@ -40,15 +40,14 @@
     <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav id="sitenav" class="nav" aria-label="Site">
-      <a href="index.html">Home</a>
-      <a href="what-is-decision-space-integrity.html">What is DSI?</a>
-      <a href="product.html">Product</a>
-      <a href="getting-started.html">Getting started</a>
-      <a href="research.html">Research</a>
-      <a href="applications.html">Applications</a>
+      <a href="/">Home</a>
+      <a href="/dsc">DSC</a>
+      <a href="/dsi">DSI</a>
+      <a href="/audit">DSI Audit</a>
+      <a href="/research">Research</a>
+      <a href="/evidence">Evidence</a>
       <a href="/articles">Articles</a>
-      <a href="reading.html">Reading</a>
-      <a href="contact.html">Contact</a>
+      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
     </nav>
   </div>
 </header>
@@ -60,7 +59,7 @@
       <p class="eyebrow">Privacy</p>
       <h1 style="max-width:16ch;">Privacy notice</h1>
       <p class="lead" style="max-width:64ch;">This website is a static informational site. It sets no cookies of its own, runs no analytics, and hosts no forms. This notice describes the limited processing that does occur, and your rights in relation to it.</p>
-      <p class="meta">Last updated: 22 August 2026</p>
+      <p class="meta">Last updated: 31 August 2026</p>
     </div>
   </section>
 
@@ -83,11 +82,25 @@
       </div>
       <ul class="clean" style="max-width:70ch;">
         <li>The site's own pages set <strong>no cookies</strong> and use <strong>no browser storage</strong> (no localStorage, sessionStorage or similar).</li>
-        <li>There is <strong>no analytics, advertising or tracking code</strong> of any kind.</li>
+        <li>The site's own source contains <strong>no analytics, advertising or tracking code</strong>. The hosting platform previously injected an analytics beacon at the edge; that feature was disabled and its absence verified on 31 August 2026. See the verified position below.</li>
         <li>There are <strong>no forms</strong>: the site collects nothing you type. Contact happens only by email that you choose to send.</li>
         <li>The site runs almost no JavaScript; one page uses a small first-party script for visual presentation only, which collects nothing and makes no network requests.</li>
       </ul>
       <p class="muted" style="max-width:70ch; margin-top:14px; font-size:14px;">These statements are backed by an audit of the site's source code (see the repository document <span class="mono">docs/privacy-data-flow-audit.md</span>). Behaviour that exists only at the hosting layer, such as any protective cookie the host might set during an attack-mitigation challenge, is controlled by the hosting provider rather than by this site's code, and is noted below.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Verified current position</p>
+        <h2>Platform analytics: disabled and verified absent.</h2>
+      </div>
+      <p style="max-width:74ch;"><strong>What was previously observed.</strong> Inspection of the deployed site on <strong>22 August 2026</strong> found that Cloudflare was injecting a Web Analytics beacon script &mdash; <span class="mono">static.cloudflareinsights.com/beacon.min.js</span>, carrying a <span class="mono">data-cf-beacon</span> site token &mdash; into pages at the edge. That script was never present in this site's source, and the pages never requested it; the hosting platform added it after the page left the repository.</p>
+      <p style="max-width:74ch;">That injection <strong>varied by request characteristics</strong>. An ordinary command-line request did not receive the beacon, while a browser-equivalent request did. A single clean fetch is therefore not evidence of absence, and any check that uses only a default client will report a false negative.</p>
+      <p style="max-width:74ch;"><strong>Resolution.</strong> Cloudflare Web Analytics was <strong>disabled</strong> for this site on <strong>31 August 2026</strong>. Absence was then verified on <strong>31 August 2026</strong> by requesting <span class="mono">/</span>, <span class="mono">/paper</span> and <span class="mono">/privacy</span> twice each &mdash; once with a default command-line agent and once with a <strong>browser-equivalent</strong> agent and browser request headers. Under both, every page returned zero references to <span class="mono">cloudflareinsights</span>, zero <span class="mono">data-cf-beacon</span> attributes and zero external analytics scripts.</p>
+      <p style="max-width:74ch;">The site's Content-Security-Policy sets <span class="mono">script-src 'none'</span> on every route but one. That is defence in depth, not the basis of this statement: the test applied here is that <strong>the script tag is not served at all</strong>, not merely that a browser would refuse to run it.</p>
+      <p style="max-width:74ch;"><strong>What this does not cover.</strong> This concerns the optional Web Analytics feature only. It is separate from the <strong>ordinary request processing every web host performs</strong> &mdash; your IP address, user agent and request details are still handled by the hosting layer to deliver pages and protect the service against abuse, as described under Hosting above. Disabling Web Analytics does not remove that processing, and this notice does not claim it does.</p>
     </div>
   </section>
 
@@ -174,11 +187,11 @@
 
 <footer class="site-foot">
   <div class="wrap">
-    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
     <div class="row">
       <span>decisionspaceintegrity.com</span>
-      <span><a href="research.html">Research</a> · <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy</a></span>
-      <span class="statusflag">v0.2.1 · evaluation &amp; pilot</span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
+      <span class="statusflag">Research &amp; engineering programme</span>
     </div>
   </div>
 </footer>

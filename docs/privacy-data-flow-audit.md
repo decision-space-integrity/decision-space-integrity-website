@@ -139,3 +139,27 @@ that exists is: (1) ordinary hosting/security request processing by Cloudflare;
 privacy.html discloses exactly these, labels deployment-only behaviour as such, and
 adds no cookie banner because the repository evidences no non-essential cookie or
 storage behaviour that would require one.
+
+---
+
+## Addendum — 22 August 2026: edge-injected analytics (DSI-WEBSITE-1A finding)
+
+The audit above is **repository-backed** and remains accurate for the repository. Inspection of the
+**deployed** site during DSI-WEBSITE-1A found behaviour the repository cannot show:
+
+**F12 — Cloudflare Web Analytics beacon, injected at the edge**
+- Component: a `<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/…">`
+  tag carrying a `data-cf-beacon` site token, appended after `</footer>` on **every page sampled**,
+  including `privacy.html` itself.
+- Repo evidence: **absent from source** — the tag appears only in the served response. Live bytes are
+  otherwise identical to the committed file.
+- Recipient: Cloudflare, Inc.
+- Essential/non-essential: **non-essential analytics**.
+- Mitigation in place: `_headers` sets `script-src 'none'` on `/*`, so a conforming browser should
+  refuse to execute it. The tag and token are still served.
+- Consequence: finding F7 ("Analytics, advertising, pixels: none") is true of the repository and
+  **not** true of the deployed site.
+
+**Owner action required before production release:** disable Cloudflare Web Analytics / Browser
+Insights for this project, then re-verify that the injected script is absent. This is a hosting
+dashboard change; no pack in this sequence has altered Cloudflare state.

@@ -40,15 +40,14 @@
     <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav id="sitenav" class="nav" aria-label="Site">
-      <a href="index.html">Home</a>
-      <a href="what-is-decision-space-integrity.html">What is DSI?</a>
-      <a href="product.html">Product</a>
-      <a href="getting-started.html">Getting started</a>
-      <a href="research.html">Research</a>
-      <a href="applications.html">Applications</a>
+      <a href="/">Home</a>
+      <a href="/dsc">DSC</a>
+      <a href="/dsi">DSI</a>
+      <a href="/audit">DSI Audit</a>
+      <a href="/research">Research</a>
+      <a href="/evidence">Evidence</a>
       <a href="/articles">Articles</a>
-      <a href="reading.html">Reading</a>
-      <a href="contact.html" class="active" aria-current="page">Contact</a>
+      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
     </nav>
   </div>
 </header>
@@ -58,8 +57,8 @@
   <section class="hero" style="padding-bottom:40px;">
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Contact</p>
-      <h1 style="max-width:16ch;">Evaluate DSI, or tell us where it's wrong.</h1>
-      <p class="lead" style="max-width:62ch;">DSI is at <strong>v0.2.1</strong> — verified to build and run from a clean install — offered for <strong>evaluation and pilot</strong>. The most useful thing you can do is run it locally and challenge it — the install is a short local setup, the numbers are reproducible, and we state the limitations up front.</p>
+      <h1 style="max-width:16ch;">Evaluate DSI Audit, or tell us where it is wrong.</h1>
+      <p class="lead" style="max-width:62ch;">DSI Audit is at <strong>v0.2.1</strong> — verified to build and run from a clean install — offered for <strong>evaluation and pilot</strong>. The most useful thing you can do is run it locally and challenge it — the install is a short local setup, the numbers are reproducible, and we state the limitations up front.</p>
     </div>
   </section>
 
@@ -70,7 +69,7 @@
       </div>
       <ul class="clean">
         <li><strong>Teams building or deploying advisory AI</strong> who want to see which expected option paths their assistants keep in view — and evidence they can reproduce.</li>
-        <li><strong>AI-governance and assurance reviewers</strong> who need decision-space evidence to attach to a review (DSI <strong>supports</strong> documentation; it does not certify compliance).</li>
+        <li><strong>AI-governance and assurance reviewers</strong> who need decision-space evidence to attach to a review (DSI Audit <strong>supports</strong> documentation; it does not certify compliance).</li>
         <li><strong>Researchers</strong> working on evaluation methodology who want to scrutinise the method and the numbers.</li>
       </ul>
     </div>
@@ -90,7 +89,7 @@
       <p style="margin-top:26px; max-width:72ch;">We are particularly interested in evaluation or design-partner work where a model, prompt, retrieval or orchestration change may have silently removed configured information that an existing assurance process already cares about.</p>
 
       <div class="cta-row" style="margin-top:34px;">
-        <a class="btn btn-primary btn-arrow" href="mailto:enquire@decisionspaceintegrity.com?subject=DSI%20product%20evaluation%20request">Request a product evaluation</a>
+        <a class="btn btn-primary btn-arrow" href="mailto:enquire@decisionspaceintegrity.com?subject=DSI%20Audit%20evaluation%20request">Request a DSI Audit evaluation</a>
         <a class="btn btn-ghost" href="mailto:enquire@decisionspaceintegrity.com?subject=DSI%20research%20%2F%20replication%20enquiry">Discuss research or replication</a>
         <a class="btn btn-ghost" href="https://github.com/decision-space-integrity/dsi-collapse-evaluation" target="_blank" rel="noopener">Public replication repository</a>
       </div>
@@ -105,23 +104,15 @@
     </div>
   </section>
 
-  <section class="reveal">
-    <div class="wrap">
-      <div class="callout">
-        <p><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
-      </div>
-    </div>
-  </section>
-
-</main>
+  </main>
 
 <footer class="site-foot">
   <div class="wrap">
-    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
     <div class="row">
       <span>decisionspaceintegrity.com</span>
-      <span><a href="product.html">Product</a> · <a href="research.html">Research</a> · <a href="privacy.html">Privacy</a></span>
-      <span class="statusflag">v0.2.1 · evaluation &amp; pilot</span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
+      <span class="statusflag">Research &amp; engineering programme</span>
     </div>
   </div>
 </footer>

@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Getting started — evaluate DSI locally in about 15 minutes</title>
-<meta name="description" content="Install DSI 0.2.1 from a wheel, verify it with dsi doctor and validate-install, run your first audit and Regression Audit, and read the evidence — the tested evaluator path.">
+<title>Getting started — evaluate DSI Audit locally in about 15 minutes</title>
+<meta name="description" content="Install DSI Audit 0.2.1 from a wheel, verify it with dsi doctor and validate-install, run your first audit and Regression Audit, and read the evidence — the tested evaluator path.">
 <link rel="canonical" href="https://decisionspaceintegrity.com/getting-started.html">
 <meta name="author" content="Andrew J Cousins">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Decision-Space Integrity">
-<meta property="og:title" content="Getting started — evaluate DSI locally in about 15 minutes">
-<meta property="og:description" content="Install DSI 0.2.1 from a wheel, verify with dsi doctor and validate-install, run your first audit and Regression Audit, and read the evidence.">
+<meta property="og:title" content="Getting started — evaluate DSI Audit locally in about 15 minutes">
+<meta property="og:description" content="Install DSI Audit 0.2.1 from a wheel, verify with dsi doctor and validate-install, run your first audit and Regression Audit, and read the evidence.">
 <meta property="og:url" content="https://decisionspaceintegrity.com/getting-started.html">
 <meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Getting started — evaluate DSI locally in about 15 minutes">
-<meta name="twitter:description" content="Install DSI 0.2.1 from a wheel, verify with dsi doctor and validate-install, run your first audit and Regression Audit, and read the evidence.">
+<meta name="twitter:title" content="Getting started — evaluate DSI Audit locally in about 15 minutes">
+<meta name="twitter:description" content="Install DSI Audit 0.2.1 from a wheel, verify with dsi doctor and validate-install, run your first audit and Regression Audit, and read the evidence.">
 <meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/icons/favicon-32x32.png" sizes="32x32" type="image/png">
@@ -39,15 +39,14 @@
     <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav id="sitenav" class="nav" aria-label="Site">
-      <a href="index.html">Home</a>
-      <a href="what-is-decision-space-integrity.html">What is DSI?</a>
-      <a href="product.html">Product</a>
-      <a href="getting-started.html" class="active" aria-current="page">Getting started</a>
-      <a href="research.html">Research</a>
-      <a href="applications.html">Applications</a>
+      <a href="/">Home</a>
+      <a href="/dsc">DSC</a>
+      <a href="/dsi">DSI</a>
+      <a href="/audit">DSI Audit</a>
+      <a href="/research">Research</a>
+      <a href="/evidence">Evidence</a>
       <a href="/articles">Articles</a>
-      <a href="reading.html">Reading</a>
-      <a href="contact.html">Contact</a>
+      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
     </nav>
   </div>
 </header>
@@ -57,7 +56,7 @@
   <section class="hero" style="padding-bottom:40px;">
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Getting started · v0.2.1</p>
-      <h1 style="max-width:22ch;">Evaluate DSI locally in about 15 minutes.</h1>
+      <h1 style="max-width:22ch;">Evaluate DSI Audit locally in about 15 minutes.</h1>
       <p class="lead" style="max-width:66ch;">Install the package, verify the install, run a first audit and a Regression Audit, and read the evidence — everything below is the <strong>tested evaluator path</strong> — the installation, readiness, audit, and Regression Audit paths are exercised by the product's clean-install and documented-quick-start checks. It runs entirely on your machine; in the primary pattern it makes <strong>no provider call</strong> and retains <strong>nothing</strong> between requests. Choose a <a href="deployment.html">deployment profile</a> first if you like.</p>
     </div>
   </section>
@@ -66,7 +65,7 @@
     <div class="wrap" style="display:block;">
       <p class="eyebrow">1 · Install &amp; verify</p>
       <h2 style="max-width:26ch;">Install the wheel, then run the doctor.</h2>
-      <p class="lead" style="max-width:64ch;">DSI installs as an ordinary Python package (3.10+). <a href="contact.html">Request the 0.2.1 evaluation build</a> (a wheel + source archive, provided for evaluation and pilots), then run <span class="mono">dsi doctor</span> first — a read-only readiness check — then <span class="mono">dsi validate-install</span>, which runs a real, domain-consistent audit end to end.</p>
+      <p class="lead" style="max-width:64ch;">DSI Audit installs as an ordinary Python package (3.10+). <a href="contact.html">Request the 0.2.1 evaluation build</a> (a wheel + source archive, provided for evaluation and pilots), then run <span class="mono">dsi doctor</span> first — a read-only readiness check — then <span class="mono">dsi validate-install</span>, which runs a real, domain-consistent audit end to end.</p>
       <pre class="codeblock">python -m venv .venv
 . .venv/bin/activate            <span class="c"># Windows: .venv\Scripts\Activate.ps1</span>
 python -m pip install ./dsi_product-0.2.1-py3-none-any.whl
@@ -95,7 +94,7 @@ curl http://127.0.0.1:8000/version</pre>
     <div class="wrap" style="display:block;">
       <p class="eyebrow">3 · Your first audit</p>
       <h2 style="max-width:28ch;">Audit a supplied prompt and response.</h2>
-      <p class="lead" style="max-width:64ch;">You send the prompt and the response your system produced; DSI returns configured expected-path visibility.</p>
+      <p class="lead" style="max-width:64ch;">You send the prompt and the response your system produced; DSI Audit returns configured expected-path visibility.</p>
       <pre class="codeblock">curl -X POST http://127.0.0.1:8000/v1/audit \
      -H "Content-Type: application/json" \
      -d '{"prompt":"Should I stay in my role or look elsewhere?",
@@ -134,7 +133,7 @@ print(result.to_jsonable()["coverage"])   <span class="c"># mfa surfaced, loggin
    "response":"Just invest everything."}]}</pre>
       <pre class="codeblock">dsi regression-audit baseline.json candidate.json
 <span class="c"># exit 0 = no regression · 1 = regression detected · 2 = malformed input</span></pre>
-      <p class="muted" style="max-width:64ch;">A single pair is below the sample floor, so DSI honestly reports it as <em>instrument-limited</em> rather than a regression — a real comparison uses a fixed set of paired prompts. Five worked examples ship in the 0.2.1 source archive under <span class="mono">docs/examples/regression_audit/</span>. Regression Audit reports a change in visibility between paired outputs — not that one build is objectively better, safer, or of higher quality.</p>
+      <p class="muted" style="max-width:64ch;">A single pair is below the sample floor, so DSI Audit reports the result as <em>instrument-limited</em> rather than a regression — a real comparison uses a fixed set of paired prompts. Five worked examples ship in the 0.2.1 source archive under <span class="mono">docs/examples/regression_audit/</span>. Regression Audit reports a change in visibility between paired outputs — not that one build is objectively better, safer, or of higher quality.</p>
     </div>
   </section>
 
@@ -170,11 +169,11 @@ python -m pytest                 <span class="c"># run the full suite</span></pr
   <section>
     <div class="wrap" style="display:block;">
       <div class="callout" style="max-width:70ch;">
-        <p style="margin:0;">DSI audits supplied AI responses against configured expected maps. It is a visibility and evidence layer — not a language model, recommender, policy engine, governance workflow, or safety-certification tool.</p>
+        <p style="margin:0;">DSI Audit audits supplied AI responses against configured expected maps. It is a visibility and evidence layer — not a language model, recommender, policy engine, governance workflow, or safety-certification tool.</p>
       </div>
       <div class="cta-row">
         <a class="btn btn-primary btn-arrow" href="contact.html">Evaluate locally</a>
-        <a class="btn btn-ghost" href="product.html">How DSI fits</a>
+        <a class="btn btn-ghost" href="/audit">How DSI Audit fits</a>
         <a class="btn btn-ghost" href="release-notes.html">What's new in 0.2.1</a>
       </div>
     </div>
@@ -184,11 +183,11 @@ python -m pytest                 <span class="c"># run the full suite</span></pr
 
 <footer class="site-foot">
   <div class="wrap">
-    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
     <div class="row">
       <span>decisionspaceintegrity.com</span>
-      <span><a href="product.html">Product</a> · <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy</a></span>
-      <span class="statusflag">v0.2.1 · evaluation &amp; pilot</span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
+      <span class="statusflag">DSI Audit v0.2.1 &#183; private evaluation</span>
     </div>
   </div>
 </footer>

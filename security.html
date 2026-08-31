@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security &amp; operations — Decision-Space Integrity</title>
-<meta name="description" content="How DSI 0.2.1 runs safely: local-first, stateless, no model-provider call, no telemetry, loopback by default, optional API key, customer-controlled evidence.">
+<meta name="description" content="How DSI Audit 0.2.1 runs safely: local-first, stateless, no model-provider call, no telemetry, loopback by default, optional API key, customer-controlled evidence.">
 <link rel="canonical" href="https://decisionspaceintegrity.com/security.html">
 <meta name="author" content="Andrew J Cousins">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Decision-Space Integrity">
 <meta property="og:title" content="Security &amp; operations — Decision-Space Integrity">
-<meta property="og:description" content="How DSI 0.2.1 runs safely: local-first, stateless, no provider call, no telemetry, loopback by default, optional API key, customer-controlled evidence.">
+<meta property="og:description" content="How DSI Audit 0.2.1 runs safely: local-first, stateless, no provider call, no telemetry, loopback by default, optional API key, customer-controlled evidence.">
 <meta property="og:url" content="https://decisionspaceintegrity.com/security.html">
 <meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security &amp; operations — Decision-Space Integrity">
-<meta name="twitter:description" content="How DSI 0.2.1 runs safely: local-first, stateless, no provider call, no telemetry, loopback by default, customer-controlled evidence.">
+<meta name="twitter:description" content="How DSI Audit 0.2.1 runs safely: local-first, stateless, no provider call, no telemetry, loopback by default, customer-controlled evidence.">
 <meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta name="twitter:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
@@ -40,15 +40,14 @@
     <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav id="sitenav" class="nav" aria-label="Site">
-      <a href="index.html">Home</a>
-      <a href="what-is-decision-space-integrity.html">What is DSI?</a>
-      <a href="product.html">Product</a>
-      <a href="getting-started.html">Getting started</a>
-      <a href="research.html">Research</a>
-      <a href="applications.html">Applications</a>
+      <a href="/">Home</a>
+      <a href="/dsc">DSC</a>
+      <a href="/dsi">DSI</a>
+      <a href="/audit">DSI Audit</a>
+      <a href="/research">Research</a>
+      <a href="/evidence">Evidence</a>
       <a href="/articles">Articles</a>
-      <a href="reading.html">Reading</a>
-      <a href="contact.html">Contact</a>
+      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
     </nav>
   </div>
 </header>
@@ -59,7 +58,7 @@
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Security &amp; operations · v0.2.1</p>
       <h1 style="max-width:20ch;">Local-first, and quiet by design.</h1>
-      <p class="lead" style="max-width:62ch;">DSI runs on your infrastructure. The primary path makes <strong>no model-provider call</strong>, keeps <strong>no state</strong> by default, and sends <strong>nothing home</strong>. This page describes the product's posture — it is not an independent third-party security audit.</p>
+      <p class="lead" style="max-width:62ch;">DSI Audit runs on your infrastructure. The primary path makes <strong>no model-provider call</strong>, keeps <strong>no state</strong> by default, and sends <strong>nothing home</strong>. This page describes the product's posture — it is not an independent third-party security audit.</p>
     </div>
   </section>
 
@@ -69,9 +68,9 @@
         <p class="eyebrow">Architecture posture</p>
       </div>
       <div class="grid grid-2">
-        <div class="card"><h3>Local-first</h3><p>You own the model call; DSI audits a supplied prompt/response pair. No external service is required to run it.</p></div>
+        <div class="card"><h3>Local-first</h3><p>You own the model call; DSI Audit audits a supplied prompt/response pair. No external service is required to run it.</p></div>
         <div class="card"><h3>Stateless by default</h3><p>No database is created and no audit history is retained unless you deliberately configure persistence. Evidence bundles are portable artefacts you choose to keep.</p></div>
-        <div class="card"><h3>No telemetry</h3><p>No usage reporting, no remote logging, no hidden ingestion. DSI phones nothing home.</p></div>
+        <div class="card"><h3>No telemetry</h3><p>No usage reporting, no remote logging, no hidden ingestion. DSI Audit phones nothing home.</p></div>
         <div class="card"><h3>Deterministic</h3><p>Under the same product version, configured expected map, pack, and instrument settings, the same inputs produce the same audit and the same audit identifier. The evidence-bundle export timestamp is the only intentionally variable field.</p></div>
       </div>
     </div>
@@ -96,10 +95,10 @@
         <p class="eyebrow">Handling prompts, responses &amp; evidence</p>
       </div>
       <ul class="clean">
-        <li><strong>Treat prompts and responses as potentially sensitive.</strong> They may contain personal or confidential content; DSI does not redact them for you.</li>
+        <li><strong>Treat prompts and responses as potentially sensitive.</strong> They may contain personal or confidential content; DSI Audit does not redact them for you.</li>
         <li><strong>Log content.</strong> By default the runtime does not emit prompt/response text to logs. If you raise verbosity for debugging, review what your configuration writes before sharing logs.</li>
         <li><strong>Evidence retention is yours.</strong> A bundle contains the audited text (or its representation), the coverage result, and provenance fingerprints. Where you store it, how long you keep it, and who can read it are your decisions.</li>
-        <li><strong>Access control &amp; multi-tenancy.</strong> DSI provides no user accounts, roles, or tenant isolation; access control is delegated to your deployment. Multi-tenant use is unsupported in 0.2.1.</li>
+        <li><strong>Access control &amp; multi-tenancy.</strong> DSI Audit provides no user accounts, roles, or tenant isolation; access control is delegated to your deployment. Multi-tenant use is unsupported in 0.2.1.</li>
       </ul>
     </div>
   </section>
@@ -122,11 +121,11 @@
 
 <footer class="site-foot">
   <div class="wrap">
-    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
     <div class="row">
       <span>decisionspaceintegrity.com</span>
-      <span><a href="research.html">Research &amp; evidence status</a> · <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy</a></span>
-      <span class="statusflag">v0.2.1 · evaluation &amp; pilot</span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
+      <span class="statusflag">DSI Audit v0.2.1 &#183; private evaluation</span>
     </div>
   </div>
 </footer>

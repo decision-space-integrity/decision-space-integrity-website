@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Decision-Space Integrity — Measuring What's Preserved. Governing What Changes.</title>
-<meta name="description" content="A self-hosted assurance system that measures which governed expected elements an AI output preserved, with evidence of what changed when the instrument changes.">
+<meta name="description" content="AI can give a good answer and still narrow the decision. Decision-Space Integrity measures what remains visible through AI-assisted decisions.">
 <link rel="canonical" href="https://decisionspaceintegrity.com/">
 <meta name="author" content="Andrew J Cousins">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Decision-Space Integrity">
 <meta property="og:title" content="Decision-Space Integrity — Measuring What's Preserved. Governing What Changes.">
-<meta property="og:description" content="A self-hosted assurance system that measures which governed expected elements an AI output preserved, with evidence of what changed when the instrument changes.">
+<meta property="og:description" content="AI can give a good answer and still narrow the decision. Decision-Space Integrity is a research and engineering programme for measuring what remains visible through AI-assisted decisions, and governing what happens when important structure is lost or changed.">
 <meta property="og:url" content="https://decisionspaceintegrity.com/">
 <meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Decision-Space Integrity — Measuring What's Preserved. Governing What Changes.">
-<meta name="twitter:description" content="A self-hosted assurance system that measures which governed expected elements an AI output preserved, with evidence of what changed when the instrument changes.">
+<meta name="twitter:description" content="AI can give a good answer and still narrow the decision. Decision-Space Integrity is a research and engineering programme for measuring what remains visible through AI-assisted decisions, and governing what happens when important structure is lost or changed.">
 <meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta name="twitter:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
@@ -66,238 +66,80 @@
     <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav id="sitenav" class="nav" aria-label="Site">
-      <a href="index.html" class="active" aria-current="page">Home</a>
-      <a href="what-is-decision-space-integrity.html">What is DSI?</a>
-      <a href="product.html">Product</a>
-      <a href="getting-started.html">Getting started</a>
-      <a href="research.html">Research</a>
-      <a href="applications.html">Applications</a>
+      <a href="/" class="active" aria-current="page">Home</a>
+      <a href="/dsc">DSC</a>
+      <a href="/dsi">DSI</a>
+      <a href="/audit">DSI Audit</a>
+      <a href="/research">Research</a>
+      <a href="/evidence">Evidence</a>
       <a href="/articles">Articles</a>
-      <a href="reading.html">Reading</a>
-      <a href="contact.html">Contact</a>
+      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
     </nav>
   </div>
 </header>
 
 <main id="main">
 
-  <section class="hero">
-    <div class="wrap">
-      <div>
-        <p class="eyebrow">Self-hosted AI omission assurance for regulated teams</p>
-        <h1>See what your AI answer left out.</h1>
-        <p class="lead">DSI is a <strong>self-hosted, stateless assurance tool</strong>. It produces <strong>reproducible reports of what an AI answer left out</strong> against a defined set of expected points — running entirely on your own infrastructure.</p>
-        <p class="lead" style="font-size:1.02rem;">DSI produces evidence-backed omission reports: <strong>expected points, surfaced points, omitted points, source evidence,</strong> and a <strong>reproducible fingerprint</strong>.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary btn-arrow" href="product.html">Try DSI locally</a>
-          <a class="btn btn-ghost" href="research.html">Read the research</a>
-          <a class="btn btn-ghost" href="what-is-decision-space-integrity.html">Learn what DSI is</a>
-        </div>
-        <p class="mono" style="font-size:12px; color:var(--muted); margin:14px 0 0;">Three ways in — for engineers, researchers, and anyone meeting the concept. <a href="example-audit.html">See a worked example →</a></p>
+  <section class="hero" style="padding-bottom:34px;">
+    <div class="wrap" style="display:block;">
+      <p class="eyebrow">Research &amp; engineering programme</p>
+      <h1 style="max-width:24ch;">AI can give a good answer and still narrow the decision.</h1>
+      <p class="lead" style="max-width:68ch;">Decision-Space Integrity is a research and engineering programme for measuring what remains visible when AI helps people reason, choose and act.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-arrow" href="/dsc">Explore Decision-Space Collapse</a>
+        <a class="btn btn-ghost" href="/dsi">See how DSI works</a>
       </div>
-      <aside class="figure" aria-label="Illustrative decision space">
-        <div class="fig-head">
-          <span class="fig-title">Decision space</span>
-          <span class="vis">visibility 2 / 6</span>
-        </div>
-        <div class="path surfaced"><span class="dotp"></span><span class="label">Clarify the goal</span><span class="tag">surfaced</span></div>
-        <div class="path missing"><span class="dotp"></span><span class="label">Explore the options</span><span class="tag">missing</span></div>
-        <div class="path surfaced"><span class="dotp"></span><span class="label">Act now</span><span class="tag">surfaced</span></div>
-        <div class="path missing"><span class="dotp"></span><span class="label">Check the risks</span><span class="tag">missing</span></div>
-        <div class="path missing"><span class="dotp"></span><span class="label">Wait and reassess</span><span class="tag">missing</span></div>
-        <div class="path missing"><span class="dotp"></span><span class="label">Seek another view</span><span class="tag">missing</span></div>
-        <div class="fig-foot">illustrative — not a live audit</div>
-      </aside>
-    </div>
-  </section>
-
-  <section class="reveal" id="original-research">
-    <div class="wrap grid grid-2" style="align-items:center; gap:40px;">
-      <div>
-        <p class="eyebrow">Original research</p>
-        <h2 style="margin-top:6px;">Research that kept changing the product.</h2>
-        <p>DSI began with research into decision-space collapse. Building a reproducible instrument to measure it exposed a broader question: how do we know a metric still means the same thing after the evaluator itself changes? <em>Decision-Space Collapse in Advisory Language Models</em> remains the public research record, with replication materials and a citable DOI.</p>
-        <div class="cta-row" style="margin-top:18px;">
-          <a class="btn btn-primary btn-arrow" href="paper.html">Read the paper</a>
-          <a class="btn btn-ghost" href="research.html">The research story</a>
-        </div>
-      </div>
-      <div class="card">
-        <p class="mono" style="font-size:12px; color:var(--muted); margin:0 0 8px;">Official research record</p>
-        <p style="margin:0 0 4px;"><strong>Decision-Space Collapse in Advisory Language Models</strong></p>
-        <ul class="mono" style="font-size:13px; margin:12px 0 0; line-height:1.9;">
-          <li>DOI: <a href="https://doi.org/10.17605/OSF.IO/KW25A" target="_blank" rel="noopener">10.17605/OSF.IO/KW25A</a></li>
-          <li>Replication: <a href="https://github.com/decision-space-integrity/dsi-collapse-evaluation" target="_blank" rel="noopener">public evaluation repository</a></li>
-          <li>Author: <a href="andrew-j-cousins.html">Andrew J Cousins</a></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="reveal" id="product-status">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Product status</p>
-        <h2>DSI Product v0.2.1 — evaluation &amp; pilot.</h2>
-      </div>
-      <div class="grid grid-3">
-        <div class="card"><h3>Local-first</h3><p>Stateless core; in the primary pattern it makes no provider call and retains nothing between requests.</p></div>
-        <div class="card"><h3>Challenge-tested</h3><p>The lexical classifier is challenge-only; human review is recommended.</p></div>
-        <div class="card"><h3>Supported workflows</h3><p>Audit · Regression Audit · Evidence export.</p></div>
-      </div>
-      <p class="stack-note">Verified to install and run from a clean environment. Not intended for autonomous high-stakes decision making. <a href="getting-started.html">Install &amp; evaluate</a> · <a href="deployment.html">Deployment</a> · <a href="release-notes.html">What's new in 0.2.1</a>.</p>
-    </div>
-  </section>
-
-  <section class="reveal" id="why">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Why it matters</p>
-        <h2>Most AI evaluation scores the answer — not what the answer left out.</h2>
-      </div>
-      <p class="lead"><strong>Decision-Space Integrity</strong> measures which configured expected paths are <strong>visible</strong>, which are <strong>missing</strong>, and whether intervention improves visibility — not to judge advice quality or correctness, but to make expected-path visibility measurable and auditable.</p>
-    </div>
-  </section>
-
-  <div class="band">
-    <div class="wrap">
-      <p class="oneliner">The advisor optimises for an answer; DSI audits whether <span class="hl">configured expected paths</span> remain visible.</p>
-    </div>
-  </div>
-
-  <section class="reveal">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">The problem</p>
-        <h2>A fluent answer can still collapse the decision.</h2>
-      </div>
-      <p class="lead">Advisory AI — assistants that help someone decide something — can quietly narrow a genuinely multi-path decision down to a single path, leaving out other reasonable options. The answer can read well, sound safe, and even be factually fine, and still <strong>collapse the decision space</strong>. Aggregate, answer-level scores don't surface this: they judge the answer, not <strong>which reasonable options were kept in view</strong>.</p>
     </div>
   </section>
 
   <section class="reveal">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">Why DSI exists</p>
-        <h2>What people can still see, consider, and choose.</h2>
+        <p class="eyebrow">The phenomenon</p>
+        <h2>What disappeared?</h2>
       </div>
-      <p class="lead">Much of the discussion around AI focuses on what machines can do. DSI focuses on what people are still able to see, consider, and choose after interacting with those machines.</p>
-      <p>A response can be factually correct, safe, and helpful while still constraining a user's perceived decision space. When this happens, important paths may remain unexplored—not because they are impossible or inappropriate, but because they were never surfaced.</p>
-      <p>Decision-Space Integrity was created to help measure the visibility of configured expected paths in model outputs, making it possible to identify omissions, evaluate recovery, and produce evidence that can be reviewed and reproduced.</p>
-      <div class="callout" style="margin-top:6px;">
-        <p>This work measures visibility of configured expected paths in model outputs. It does not measure advice quality, factual correctness, user outcomes, or regulatory compliance.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="reveal" id="loop">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">What DSI does</p>
-        <h2>Audit → recommend → re-audit → evidence.</h2>
-        <p>DSI takes a prompt and the response your system already produced, and:</p>
-      </div>
-      <div class="flow">
-        <div class="step"><div class="n">01 · Audit</div><h3>Visibility</h3><p>Audits the response against a configured map of the reasonable option paths — reporting <em>expected-path visibility</em> and which expected paths are missing.</p></div>
-        <div class="step"><div class="n">02 · Recommend</div><h3>An instruction</h3><p>Recommends which missing paths to surface, as an instruction your system uses to regenerate. <em>DSI never writes the answer.</em></p></div>
-        <div class="step"><div class="n">03 · Re-audit</div><h3>The change</h3><p>Re-audits your regenerated response and reports the visibility change.</p></div>
-        <div class="step"><div class="n">04 · Evidence</div><h3>A bundle</h3><p>Packages everything into a portable, reproducible evidence bundle.</p></div>
-      </div>
-      <p style="margin-top:26px;">Every result carries a <strong>trust chain</strong> — a step-by-step account of where the number came from; fingerprints bind the artefacts and configuration needed to reproduce each step — they do not themselves re-run the computation.</p>
-    </div>
-  </section>
-
-  <section class="reveal" id="example-report">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">See the output</p>
-        <h2>Example omission report.</h2>
-        <p>A typical report produced by the audit engine.</p>
-      </div>
-
-      <div class="omr" role="group" aria-label="Example AI omission report">
-        <div class="omr-row omr-head">
-          <div><span class="omr-k">Coverage</span><span class="omr-cov">67%<small>4 of 6 expected points</small></span></div>
-          <div><span class="omr-k">Fingerprint</span><span class="omr-fp">9E13-BC74</span></div>
-          <div><span class="omr-k">Status</span><span class="omr-status">Review recommended</span></div>
-        </div>
-        <div class="omr-row">
-          <h3 class="omr-h">Expected points</h3>
-          <ul class="omr-points">
-            <li class="ok"><span class="omr-mark" aria-hidden="true">✓</span><span class="omr-vh">Surfaced: </span>Root cause</li>
-            <li class="ok"><span class="omr-mark" aria-hidden="true">✓</span><span class="omr-vh">Surfaced: </span>Customer impact</li>
-            <li class="ok"><span class="omr-mark" aria-hidden="true">✓</span><span class="omr-vh">Surfaced: </span>Immediate mitigation</li>
-            <li class="ok"><span class="omr-mark" aria-hidden="true">✓</span><span class="omr-vh">Surfaced: </span>Escalation contact</li>
-            <li class="no"><span class="omr-mark" aria-hidden="true">✗</span><span class="omr-vh">Omitted: </span>Regulatory notification<span class="omr-req">required</span></li>
-            <li class="no"><span class="omr-mark" aria-hidden="true">✗</span><span class="omr-vh">Omitted: </span>Related affected services<span class="omr-req">required</span></li>
+      <div class="dsc-vis">
+        <div class="side">
+          <h3>Before</h3>
+          <p class="muted" style="margin:0;font-size:14.5px;">Paths a reasonable answer could keep in view.</p>
+          <ul class="branches">
+            <li>Stay and renegotiate</li><li>Move to another employer</li>
+            <li>Retrain or study</li><li>Reduce hours</li><li>Defer and gather information</li>
           </ul>
         </div>
-        <div class="omr-row">
-          <h3 class="omr-h">Evidence</h3>
-          <dl class="omr-ev">
-            <dt>Regulatory notification</dt>
-            <dd>“The incident requires notification under internal policy…”</dd>
-            <dt>Related affected services</dt>
-            <dd>“The authentication service was also affected…”</dd>
-          </dl>
-        </div>
-        <div class="omr-row">
-          <h3 class="omr-h">Result</h3>
-          <p class="omr-result">2 required points were omitted. Evidence attached.</p>
+        <div class="arrow" aria-hidden="true">&#8594;</div>
+        <div class="side">
+          <h3>After</h3>
+          <p class="muted" style="margin:0;font-size:14.5px;">Paths still visible in the answer received.</p>
+          <ul class="branches">
+            <li class="kept">Move to another employer</li>
+            <li class="gone">Stay and renegotiate</li><li class="gone">Retrain or study</li>
+            <li class="gone">Reduce hours</li><li class="gone">Defer and gather information</li>
+          </ul>
         </div>
       </div>
-
-      <p class="omr-note">Example report for illustration. Coverage measures expected-point visibility only. It does not certify answer quality, safety, compliance, or correctness.</p>
+      <p class="dsc-q">What disappeared?</p>
+      <p style="max-width:72ch;">Decision-Space Collapse describes the problem. Decision-Space Integrity makes aspects of that structural change measurable.</p>
+      <p><a href="/dsc">Read about the phenomenon &#8594;</a></p>
     </div>
   </section>
 
   <section class="reveal">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">What an audit shows</p>
-        <h2>One prompt, one response, one audit.</h2>
+        <p class="eyebrow">Research foundation</p>
+        <h2>Where this started.</h2>
       </div>
-      <div class="example">
-        <div class="ex-card">
-          <p class="ex-lbl">Prompt</p>
-          <p class="ex-quote">"I'm unsure whether to stay in my current role, ask for changes, or look elsewhere."</p>
-          <p class="ex-lbl" style="margin-top:18px;">Model response</p>
-          <p class="ex-quote">"Talk to your manager about your concerns and see whether the role can be improved."</p>
+      <div class="card" style="max-width:840px;">
+        <span class="idx">PREPRINT · OPEN MATERIALS</span>
+        <h3 style="margin-top:10px;">Decision-Space Collapse in Advisory Language Models</h3>
+        <p style="margin-top:14px;">A frozen <strong>6,480-output empirical study</strong> of trajectory omission, framing sensitivity and recovery in advisory model outputs, with its preprint, DOI and public replication materials.</p>
+        <p style="margin-top:.7em;">This work measures visibility of configured expected paths in model outputs. It does not measure advice quality, factual correctness, user outcomes, or regulatory compliance.</p>
+        <div class="cta-row" style="margin-top:18px;">
+          <a class="btn btn-primary btn-arrow" href="/paper">Read the preprint</a>
+          <a class="btn btn-ghost" href="https://doi.org/10.17605/OSF.IO/KW25A" target="_blank" rel="noopener">DOI / OSF</a>
+          <a class="btn btn-ghost" href="https://github.com/decision-space-integrity/dsi-collapse-evaluation" target="_blank" rel="noopener">Public replication repository</a>
         </div>
-        <div class="figure">
-          <div class="fig-head">
-            <span class="fig-title">DSI audit</span>
-            <span class="vis">visibility 2 / 5</span>
-          </div>
-          <div class="path surfaced"><span class="dotp"></span><span class="label">Clarify goals</span><span class="tag">surfaced</span></div>
-          <div class="path surfaced"><span class="dotp"></span><span class="label">Stay and adjust</span><span class="tag">surfaced</span></div>
-          <div class="path missing"><span class="dotp"></span><span class="label">Explore other roles</span><span class="tag">missing</span></div>
-          <div class="path missing"><span class="dotp"></span><span class="label">Check financial / practical constraints</span><span class="tag">missing</span></div>
-          <div class="path missing"><span class="dotp"></span><span class="label">Pause and gather more information</span><span class="tag">missing</span></div>
-        </div>
-      </div>
-      <div class="grid grid-2" style="margin-top:18px; gap:18px;">
-        <div class="ex-card">
-          <p class="ex-lbl">Visibility recommendation</p>
-          <p style="margin:.4em 0 0;">Ask your system to include the missing expected paths while preserving caveats.</p>
-        </div>
-        <div class="ex-card">
-          <p class="ex-lbl">Re-audit</p>
-          <p style="margin:.4em 0 0;">After your system regenerates, DSI can re-audit visibility and export an evidence bundle.</p>
-        </div>
-      </div>
-      <p class="ex-note">DSI measures configured-path visibility. It does not judge whether the advice is correct or optimal.</p>
-    </div>
-  </section>
-
-  <section class="reveal">
-    <div class="wrap grid grid-2" style="align-items:start; gap:48px;">
-      <div>
-        <p class="eyebrow">Why it's different</p>
-        <h2>It audits a response it did not produce.</h2>
-      </div>
-      <div>
-        <p class="lead">DSI <strong>audits a response it did not produce.</strong> It does not call or replace your model, it makes no hosted calls, it stores nothing, and it never generates the advice. You keep your stack; DSI adds a <strong>local assurance layer</strong> beside it.</p>
       </div>
     </div>
   </section>
@@ -305,40 +147,99 @@
   <section class="reveal">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">What this does not claim</p>
+        <p class="eyebrow">What DSI measures</p>
+        <h2>From governed structure to evidence.</h2>
       </div>
-      <div class="callout">
-        <p><strong>DSI does not certify answer quality, safety, compliance, or truth.</strong> It measures coverage against a <strong>configured expected set</strong> and records reproducible omission evidence. A configured expected set is a defined reference, not a claim that every possible point is present; DSI can <strong>support</strong> AI-governance documentation, it does <strong>not</strong> certify governance or safety.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="reveal">
-    <div class="wrap grid grid-2" style="align-items:start; gap:48px;">
-      <div>
-        <p class="eyebrow">About</p>
-        <h2>Built from enterprise systems experience.</h2>
-      </div>
-      <div>
-        <p class="lead"><strong>Andrew J Cousins</strong> is an enterprise software engineer and independent researcher whose work focuses on the measurement and governance of AI advisory systems. He is the creator of <strong>Decision-Space Integrity (DSI)</strong> and author of the Decision-Space Collapse research programme — combining practical systems-engineering experience with research into decision-space collapse, the tendency for advisory AI outputs to make some plausible options visible while leaving others out.</p>
-        <blockquote style="margin:28px 0 0; padding-left:18px; border-left:2px solid var(--accent-deep); font-family:var(--serif); font-style:italic; font-size:1.12rem; color:var(--ink-dim);">
-          "The future of AI isn't about replacing brilliance. It's about making brilliance more attainable."
-          <span style="display:block; margin-top:10px; font-family:var(--mono); font-style:normal; font-size:12px; letter-spacing:.04em; color:var(--muted);">— Andrew J Cousins</span>
-        </blockquote>
-        <p style="margin:20px 0 0;"><a href="/articles/ai-brilliance-human-capability" class="mono" style="font-size:13px; letter-spacing:.02em;">Read the essay →</a></p>
-      </div>
+      <ul class="pipe">
+        <li>Governed source structure</li><li class="sep" aria-hidden="true">&#8594;</li>
+        <li>Effective expected structure</li><li class="sep" aria-hidden="true">&#8597;</li>
+        <li>Observed structure</li><li class="sep" aria-hidden="true">&#8594;</li>
+        <li>Loss &#183; addition &#183; distortion</li><li class="sep" aria-hidden="true">&#8594;</li>
+        <li class="out">Evidence</li>
+      </ul>
+      <p style="max-width:72ch;"><strong>Compression is not automatically pathological collapse.</strong> Shortening an answer is normal; a transformation only creates the opportunity for loss. What DSI measures is whether structure a governed reference says should remain visible actually did.</p>
+      <p><a href="/dsi">How the architecture works &#8594;</a></p>
     </div>
   </section>
 
   <section class="reveal">
     <div class="wrap">
-      <p class="eyebrow">Status</p>
-      <h2 style="max-width:20ch;">A v0.2.1 product candidate, for evaluation and pilot.</h2>
-      <p class="lead"><strong>v0.2.1</strong> — verified to build and run from a clean install, as a Python package or a container. Intended for <strong>evaluation and pilot</strong>. It grew out of research into decision-space collapse — see the <a href="research.html">research</a>.</p>
+      <div class="section-head">
+        <p class="eyebrow">Measurement integrity</p>
+        <h2>If the ruler changes, what does the number mean?</h2>
+      </div>
+      <p class="lead" style="max-width:70ch;">If the reference, population or evaluator changes, did the system improve &mdash; or did the ruler change?</p>
+      <p style="max-width:72ch;">Building the instrument surfaced a second problem underneath the first: a change to admission, reference construction, sensors or authority can alter what a metric means without altering the number. That is why measurement identity and comparability are governed separately.</p>
       <div class="cta-row">
-        <a class="btn btn-primary btn-arrow" href="product.html#run">Run it locally</a>
-        <a class="btn btn-ghost" href="contact.html">Talk to us about a pilot</a>
+        <a class="btn btn-ghost" href="/articles/who-decides-whether-the-goalposts-moved">Essay: Who Decides Whether the Goalposts Moved?</a>
+        <a class="btn btn-ghost" href="/research">The research story</a>
       </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Available today</p>
+        <h2>DSI Audit.</h2>
+      </div>
+      <div class="status status-research">
+        <div class="row">
+          <span class="tier tier-research">Research implementation</span>
+          <span class="tier tier-research">Private evaluation access</span>
+        </div>
+        <p><strong>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</strong></p>
+        <dl>
+          <dt>Advertised build</dt><dd>v0.2.1, the evaluation build.</dd>
+          <dt>Access</dt><dd>Request-gated. There is no self-service public repository and no publicly downloadable release.</dd>
+          <dt>Development</dt><dd>Development has progressed beyond that version; research capabilities are not attributable to the evaluation build.</dd>
+        </dl>
+      </div>
+      <p><a href="/audit">What it does, and what it does not &#8594;</a></p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Where this is going</p>
+        <h2>Explore, measure, then decide &mdash; separately.</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card"><span class="idx">PLURAXIS &nbsp; <span class="tier tier-target">Target architecture</span></span>
+          <p style="margin-top:12px;">A research implementation within a broader target architecture, designed to explore options before narrowing.</p></div>
+        <div class="card"><span class="idx">GATE &nbsp; <span class="tier tier-research">Research implementation</span></span>
+          <p style="margin-top:12px;">Research-stage authority and controlled-execution infrastructure that keeps measurement separate from disposition.</p></div>
+        <div class="card"><span class="idx">INTEGRATED OPERATION &nbsp; <span class="tier tier-target">Target architecture</span></span>
+          <p style="margin-top:12px;">Pluraxis, DSI and GATE working as one system remains <strong>target architecture &#183; under active development</strong>. Its effect on decision quality is not established.</p></div>
+      </div>
+      <p><a href="/pluraxis">Pluraxis (target architecture) &#8594;</a></p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Evidence status</p>
+        <h2>What is established, and what is not.</h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="card"><span class="ev ev-frozen">Observed under a frozen study</span><p style="margin-top:12px;">The decision-space collapse phenomenon, within the scope of the original 6,480-output study.</p></div>
+        <div class="card"><span class="ev ev-active">Under active investigation</span><p style="margin-top:12px;">Measurement integrity, comparability and the governance of instrument change.</p></div>
+        <div class="card"><span class="ev ev-not">Not established</span><p style="margin-top:12px;">Independent human validation of the lexical instruments. Deliberation-loop efficacy. Any improvement in decision outcomes.</p></div>
+        <div class="card"><span class="ev ev-established">Established within stated scope</span><p style="margin-top:12px;">Availability of the public replication materials for the original study.</p></div>
+      </div>
+      <p><a href="/evidence">The full evidence register, claim by claim &#8594;</a></p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Research record</p>
+        <h2>Everything, in one place.</h2>
+      </div>
+      <p><a href="/paper">Preprint</a> &nbsp;·&nbsp; <a href="https://doi.org/10.17605/OSF.IO/KW25A" target="_blank" rel="noopener">DOI 10.17605/OSF.IO/KW25A</a> &nbsp;·&nbsp; <a href="https://github.com/decision-space-integrity/dsi-collapse-evaluation" target="_blank" rel="noopener">Public replication materials</a> &nbsp;·&nbsp; <a href="/research">Programme history</a> &nbsp;·&nbsp; <a href="/articles">Articles</a> &nbsp;·&nbsp; <a href="/evidence">Evidence register</a> &nbsp;·&nbsp; <a href="/andrew-j-cousins">Author</a></p>
     </div>
   </section>
 
@@ -346,11 +247,11 @@
 
 <footer class="site-foot">
   <div class="wrap">
-    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
     <div class="row">
       <span>decisionspaceintegrity.com</span>
-      <span><a href="evidence.html">Evidence</a> · <a href="research.html">Research</a> · <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy</a></span>
-      <span class="statusflag">v0.2.1 · evaluation &amp; pilot</span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
+      <span class="statusflag">Research &amp; engineering programme</span>
     </div>
   </div>
 </footer>

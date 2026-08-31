@@ -16,8 +16,13 @@ MANIFEST = json.loads((ROOT / "release_manifest.json").read_text(encoding="utf-8
 
 AUDIT_ID = re.compile(r"audit_[0-9a-f]{16}")
 CLASSIFIER = re.compile(r"(?:expected-map-)?lexical-precision-v\d+")
-# The version chip pattern used on every page ("v0.2.1 · evaluation & pilot").
-VERSION_CHIP = re.compile(r"(v\d+\.\d+\.\d+)\s*(?:·|&#183;|&middot;)\s*evaluation")
+# Version identity is a DSI Audit fact, not a programme-wide one. Since DSI-WEBSITE-1B the
+# global chip reads "Research & engineering programme"; the version chip lives only on the Audit
+# surfaces below. Any vX.Y.Z quoted ANYWHERE must still match the pinned release, so the check is
+# scoped in WHERE IT REQUIRES a chip, never in what it allows.
+VERSION_ANY = re.compile(r"\bv(\d+\.\d+\.\d+)\b")
+AUDIT_SURFACES = {"audit.html", "getting-started.html", "deployment.html",
+                  "security.html", "release-notes.html", "example-audit.html"}
 
 def main() -> int:
     errors: list[str] = []
@@ -41,10 +46,19 @@ def main() -> int:
                     match != MANIFEST["classifier_version"]:
                 errors.append(f"{rel}: classifier identity {match!r} != pinned "
                               f"{MANIFEST['classifier_version']!r}")
-        for match in VERSION_CHIP.findall(text):
-            if match != MANIFEST["current_version"]:
-                errors.append(f"{rel}: version chip {match} != pinned "
+        # Any version quoted anywhere must match the pinned release. Unchanged in strength,
+        # except on the release-notes page, which is a historical record and legitimately
+        # enumerates superseded releases; it is still required (below) to state the pinned one.
+        HISTORICAL = {"release-notes.html"}
+        for match in ([] if rel.as_posix() in HISTORICAL else VERSION_ANY.findall(text)):
+            if match != MANIFEST["current_version"].lstrip("v"):
+                errors.append(f"{rel}: version v{match} != pinned "
                               f"{MANIFEST['current_version']}")
+        # ...and the Audit surfaces must actually carry the release identity, so dropping the
+        # programme-wide chip cannot silently retire version pinning altogether.
+        if rel.as_posix() in AUDIT_SURFACES and MANIFEST["current_version"] not in text:
+            errors.append(f"{rel}: DSI Audit surface must state the pinned release "
+                          f"{MANIFEST['current_version']}")
     if errors:
         print("RELEASE-PROVENANCE FAILURES:")
         for e in errors:

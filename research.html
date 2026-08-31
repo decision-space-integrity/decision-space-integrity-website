@@ -123,7 +123,7 @@
         <h2>Compare, report, fingerprint.</h2>
       </div>
       <div>
-        <p class="lead">DSI compares an AI's advisory response against a <strong>configured map of reasonable option paths</strong> for the domain, reports which were surfaced and which were missing, and records the result as reproducible, fingerprinted evidence. The measurement is <strong>configured-path visibility</strong> — defined by a named domain configuration, classifier, and scorer — not a judgement of advice quality or safety. The same response audited under the same configuration yields the same numbers.</p>
+        <p class="lead"><a href="/audit">DSI Audit</a> compares an AI's advisory response against a <strong>configured map of reasonable option paths</strong> for the domain, reports which were surfaced and which were missing, and records the result as reproducible, fingerprinted evidence. The measurement is <strong>configured-path visibility</strong> — defined by a named domain configuration, classifier, and scorer — not a judgement of advice quality or safety. The same response audited under the same configuration yields the same numbers.</p>
       </div>
     </div>
   </section>
@@ -204,7 +204,7 @@
         </li>
         <li>
           <span class="t-date">June 2026</span>
-          <p class="t-body">DSI v0.2.1 made available for evaluation; Evaluation Package v1.2 improved validation and transparency without changing findings.</p>
+          <p class="t-body">DSI Audit v0.2.1 made available for private evaluation; Evaluation Package v1.2 improved validation and transparency without changing findings.</p>
         </li>
         <li>
           <span class="t-date">July–August 2026</span>
@@ -227,10 +227,10 @@
       <ul class="statuslist">
         <li class="done">Public: preprint, replication package and published evaluation materials</li>
         <li class="done">6,480-output empirical study completed (part of the public replication package)</li>
-        <li class="done">DSI product v0.2.1 available for evaluation (verified to build and run from a clean install)</li>
+        <li class="done">DSI Audit v0.2.1 available for private evaluation (verified to build and run from a clean install)</li>
         <li class="done">Evaluation Package v1.2 — validation and transparency release published</li>
         <li class="done">Internal and unpublished: subsequent challenge, engineering and measurement-integrity studies, including internally frozen reproduction and intervention-recovery reports</li>
-        <li class="todo">Independent human validation has not been completed. Internal annotation, adjudication and calibration work has been undertaken as part of instrument development, but it does not substitute for an independently recruited human-validation study.</li>
+        <li class="todo">Independent human validation has not yet been conducted. Internal annotation, adjudication and calibration informed instrument development, but the lexical instruments remain self-validated. These activities do not establish independent agreement or accuracy.</li>
       </ul>
     </div>
   </section>
@@ -279,8 +279,8 @@
           <p style="margin-top:12px;">The phenomenon and the audit/recovery measurement have been reproduced internally and frozen as internal reports. <em>Internal only — not yet externally replicated.</em></p>
         </div>
         <div class="card">
-          <span class="idx">HUMAN VALIDATION · NOT YET INDEPENDENT</span>
-          <p style="margin-top:12px;"><strong>Independent human validation has not been completed.</strong> Internal annotation, adjudication and calibration work has been undertaken as part of instrument development, but it does not substitute for an independently recruited human-validation study. The product reports its classifier status honestly as <strong>"challenge-tested only — not yet independently validated."</strong> An independent study remains a possible future route to stronger human-anchored claims.</p>
+          <span class="idx">HUMAN VALIDATION &nbsp; <span class="ev ev-not">Not established</span></span>
+          <p style="margin-top:12px;">Independent human validation has not yet been conducted. Internal annotation, adjudication and calibration informed instrument development, but the lexical instruments remain self-validated. These activities do not establish independent agreement or accuracy.</p>
         </div>
         <div class="card">
           <span class="idx">REPRODUCIBILITY</span>
@@ -306,7 +306,7 @@
         </details>
         <details class="faq-item">
           <summary>What is DSI?</summary>
-          <div class="ans"><p>Decision-Space Integrity (DSI) is a measurement framework, and a local product, for auditing whether the configured expected paths for a domain remain visible in a supplied model response. It reports configured expected-path visibility, omission, framing sensitivity, and recovery — as reproducible, fingerprinted evidence.</p></div>
+          <div class="ans"><p>Decision-Space Integrity (DSI) is the <strong>measurement and assurance architecture</strong> for comparing a governed reference structure against what an AI output actually made visible, and for governing that comparison so it keeps meaning the same thing over time. It is not a product or a package. <a href="/audit">DSI Audit</a> is the current local implementation of it.</p></div>
         </details>
         <details class="faq-item">
           <summary>How is this different from existing AI evaluation?</summary>
@@ -325,8 +325,8 @@
           <div class="ans"><p>No. DSI is not a safety guarantee and not a safety review. It reports configured expected-path visibility — one input a reviewer might consider, not an assurance of safe outcomes.</p></div>
         </details>
         <details class="faq-item">
-          <summary>Can DSI tell users what decision to make?</summary>
-          <div class="ans"><p>No. DSI never writes the advice and never recommends a decision. It audits a response your system produced and, where configured, recommends which missing paths to make visible — leaving the generation to your system and the decision to the user.</p></div>
+          <summary>Can DSI Audit tell users what decision to make?</summary>
+          <div class="ans"><p>No. <a href="/audit">DSI Audit</a> never writes the advice and never recommends a decision. It audits a response your system produced and, where configured, reports which missing paths could be made visible — leaving the generation to your system and the decision to the user.</p></div>
         </details>
       </div>
     </div>
@@ -373,7 +373,7 @@
     <div class="row">
       <span>decisionspaceintegrity.com</span>
       <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
-      <span class="statusflag">v0.2.1 · evaluation &amp; pilot</span>
+      <span class="statusflag">Research &amp; engineering programme</span>
     </div>
   </div>
 </footer>

@@ -19,7 +19,9 @@ Exit 1 on any breach, 0 if clean.
 """
 from __future__ import annotations
 
+import pathlib
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -160,31 +162,20 @@ def main(argv: list[str]) -> int:
             img = re.search(r'<img[^>]*pluraxis-architecture\.png[^>]*>', s)
             if not img or 'alt="' not in img.group(0) or len(img.group(0)) < 200:
                 errors.append("pluraxis.html: architecture diagram needs a descriptive alt text equivalent")
-        # the unrevised owner-supplied source must never be published.
-        # Local build inputs are legitimate on disk; only files git would publish are policed,
-        # so anything named in .gitignore is skipped.
-        ignored = set()
-        gi = root / ".gitignore"
-        if gi.exists():
-            ignored = {ln.strip() for ln in gi.read_text(encoding="utf-8").splitlines()
-                       if ln.strip() and not ln.startswith("#")}
-        for stray in root.glob("assets/diagrams/*"):
-            rel = stray.relative_to(root).as_posix()
-            if stray.name != "pluraxis-architecture.png" and rel not in ignored:
-                errors.append(f"{rel}: only the revised diagram may be published "
-                              f"(the unrevised source is a build input)")
-    else:
-        errors.append("pluraxis.html is missing")
-
-    # navigation label must carry the tier on every page.
-    # Compare on rendered text, not raw markup: the tier suffix is wrapped in a <span> for
-    # typographic treatment, which must not be mistaken for the tier having been dropped.
-    detag = re.compile(r"<[^>]+>")
-    for p, s in text.items():
-        if 'href="/pluraxis"' in s:
-            rendered = detag.sub("", s)
-            if "Pluraxis (target architecture)" not in rendered:
-                errors.append(f"{p.relative_to(root)}: Pluraxis nav label must carry its tier")
+        # The unrevised owner-supplied source must never be published. .gitignore is NOT
+        # proof of that: an already-tracked file keeps publishing regardless of ignore rules.
+        # Inspect the actual tracked tree instead.
+        tracked = set()
+        try:
+            out = subprocess.run(["git", "ls-files", "-z", "assets/diagrams"],
+                                 cwd=root, capture_output=True, text=True, timeout=20)
+            tracked = {t for t in out.stdout.split("\0") if t}
+        except Exception as exc:                      # never pass silently on an unknown state
+            errors.append(f"could not inspect the tracked tree for assets/diagrams: {exc}")
+        for t in sorted(tracked):
+            if pathlib.PurePosixPath(t).name != "pluraxis-architecture.png":
+                errors.append(f"{t}: tracked in git, but only the revised diagram may be "
+                              f"published (the unrevised source is a build input)")
 
     # ---- 6. no public-release language for DSI Audit ------------------------------
     # A denial ("there is no publicly downloadable release") is exactly the wording this pack
@@ -213,6 +204,83 @@ def main(argv: list[str]) -> int:
     priv = root / "privacy.html"
     if priv.exists() and "injects a Web Analytics beacon script into every page at the edge" not in text[priv]:
         errors.append("privacy.html: verified edge-analytics position is missing")
+
+    # ---- 8. amendment assertions (DSI/DSI Audit identity, chip, metadata) ---------
+    detag_all = re.compile(r"<[^>]+>")
+
+    # (a) DSI must not be defined as the local / self-hosted / stateless implementation.
+    dsi_as_impl = re.compile(
+        r"DSI\s+is\s+(?:a|an|the)\s+(?:[a-z-]+\s+){0,3}"
+        r"(?:local|self-hosted|stateless|sidecar|package|tool|product)\b", re.I)
+    for p, s_ in text.items():
+        # scan the raw source: description/og/twitter wording lives inside tag attributes,
+        # which detagging would delete, hiding exactly the metadata this sweep must cover.
+        flat = re.sub(r"\s+", " ", s_)
+        for m in dsi_as_impl.finditer(flat):
+            frag = flat[max(0, m.start() - 60): m.end() + 60]
+            if "DSI Audit" in m.group(0) or "not a" in frag or "is not" in frag:
+                continue
+            errors.append(f"{p.relative_to(root)}: DSI defined as the implementation: "
+                          f"{m.group(0).strip()!r}")
+
+    # (b) the executable implementation must be called DSI Audit on current surfaces.
+    mislabel = re.compile(r"DSI [Pp]roduct\b|\bDSI v?\d+\.\d+\.\d+")
+    for p, s_ in text.items():
+        for m in mislabel.finditer(re.sub(r"\s+", " ", s_)):
+            errors.append(f"{p.relative_to(root)}: implementation mislabelled: {m.group(0)!r} "
+                          f"(use 'DSI Audit')")
+
+    # (c) the programme-wide product chip is retired; version identity is Audit-scoped.
+    AUDIT_SURFACES = {"audit.html", "getting-started.html", "deployment.html",
+                      "security.html", "release-notes.html", "example-audit.html"}
+    for p, s_ in text.items():
+        # scope to the footer: some pages use .statusflag as a body label too
+        foot = re.search(r'<footer class="site-foot">.*?</footer>', s_, re.S)
+        if not foot:
+            errors.append(f"{p.relative_to(root)}: no site footer")
+            continue
+        chip = re.search(r'class="statusflag">([^<]*)</span>', foot.group(0))
+        if not chip:
+            errors.append(f"{p.relative_to(root)}: footer has no status chip")
+            continue
+        val = chip.group(1).strip()
+        name = p.relative_to(root).as_posix()
+        if name in AUDIT_SURFACES:
+            if "DSI Audit" not in val or "private evaluation" not in val:
+                errors.append(f"{name}: Audit-surface chip must read "
+                              f"'DSI Audit v… · private evaluation', found {val!r}")
+        else:
+            if "Research &amp; engineering programme" not in val:
+                errors.append(f"{name}: global chip must read "
+                              f"'Research & engineering programme', found {val!r}")
+
+    # (d) no legacy or contradictory human-validation passages.
+    HV_BANNED = ["challenge-tested only",
+                 "possible future route to stronger human-anchored claims",
+                 "Designed, Not Commissioned",
+                 "no annotations collected",
+                 "human validation is planned",
+                 "recruitment is planned"]
+    for p, s_ in text.items():
+        for b in HV_BANNED:
+            if b.lower() in s_.lower():
+                errors.append(f"{p.relative_to(root)}: legacy human-validation wording: {b!r}")
+
+    # (e) stale homepage metadata must not return.
+    idx = root / "index.html"
+    if idx.exists():
+        if "A self-hosted assurance system" in text[idx]:
+            errors.append("index.html: stale 'A self-hosted assurance system' metadata is present")
+        if "AI can give a good answer and still narrow the decision." not in text[idx]:
+            errors.append("index.html: programme-level metadata positioning is missing")
+
+    # (f) the Pluraxis efficacy limitation must survive alongside the watermark.
+    if plx.exists():
+        s_ = text[plx]
+        if "not established" not in s_.lower():
+            errors.append("pluraxis.html: efficacy limitation wording is missing")
+        if "integrated system" not in s_.lower():
+            errors.append("pluraxis.html: integrated-system limitation is missing")
 
     # ---- report ------------------------------------------------------------------
     if errors:

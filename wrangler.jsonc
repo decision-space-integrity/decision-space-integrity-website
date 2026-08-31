@@ -1,0 +1,38 @@
+// Cloudflare Workers configuration for a STATIC site.
+//
+// This exists for one reason: `not_found_handling`. Unknown routes were returning
+// HTTP 404 with an empty body even though 404.html was deployed and /404 served it
+// correctly. That setting is a Wrangler configuration field, not a dashboard option,
+// so it has to live here.
+//
+// Deliberately minimal. There is no `main`, so this stays a static-asset deployment
+// with no Worker script. Observability and nodejs_compat, which the bot-generated
+// PR #1 proposed, are intentionally absent: nothing here needs them.
+//
+// `assets.directory` is the repository root, which is what the project already does -
+// that is why .assetsignore exists to keep docs/, scripts/, .github/ and this file
+// out of the published asset set.
+//
+// Routes stay owned by the Cloudflare dashboard. Cloudflare's guidance for that is to
+// omit `route`/`routes` here AND set `workers_dev: false` - otherwise Wrangler would
+// override dashboard routes on the next deploy, and `workers_dev` defaults to TRUE when
+// omitted, which would publish a *.workers.dev endpoint. Neither is wanted: this change
+// exists to fix 404 handling, not to widen the deployment surface.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "decision-space-integrity-website",
+  "compatibility_date": "2026-08-31",
+  // no workers.dev endpoint; the custom domain is managed in the dashboard
+  "workers_dev": false,
+  // Preview URLs are a SEPARATE control from workers_dev, and they are public when
+  // enabled. Cloudflare documents the default as `preview_urls = workers_dev`, but that
+  // did not hold here: with workers_dev false, the build still published a versioned and
+  // a branch-aliased preview URL, both returning 200 and serving the whole site. So this
+  // is set explicitly rather than left to the documented default.
+  "preview_urls": false,
+  "assets": {
+    "directory": ".",
+    // serve the nearest 404.html with a 404 status instead of an empty body
+    "not_found_handling": "404-page"
+  }
+}

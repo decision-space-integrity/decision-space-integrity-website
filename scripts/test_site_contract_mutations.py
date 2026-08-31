@@ -126,6 +126,33 @@ CASES = [
      '<span class="tier tier-research">Private evaluation access</span></span>',
      '<span class="tier tier-research">Research implementation</span> '
      '<span class="tier tier-research">Private evaluation access</span>'),
+    # Workers config: unknown routes must serve 404.html, not an empty body.
+    ("wrangler: not_found_handling downgraded", "wrangler.jsonc",
+     '"not_found_handling": "404-page"', '"not_found_handling": "none"'),
+    ("wrangler: asset root changed", "wrangler.jsonc",
+     '"directory": ".",', '"directory": "./dist",'),
+    ("wrangler: a Worker entrypoint appears", "wrangler.jsonc",
+     '  "assets": {', '  "main": "src/index.js",\n  "assets": {'),
+    ("assetsignore: wrangler.jsonc wrongly published", ".assetsignore",
+     "\nwrangler.jsonc\n", "\n"),
+    # Routes stay dashboard-owned. Omitting workers_dev defaults it to TRUE, which would
+    # publish a *.workers.dev endpoint; a top-level route/routes would override the
+    # dashboard-managed custom domain on the next deploy.
+    ("wrangler: workers_dev removed", "wrangler.jsonc",
+     '  "workers_dev": false,\n', ''),
+    ("wrangler: workers_dev set true", "wrangler.jsonc",
+     '"workers_dev": false', '"workers_dev": true'),
+    # Preview URLs are public when enabled, and are a separate control from workers_dev.
+    ("wrangler: preview_urls removed", "wrangler.jsonc",
+     '  "preview_urls": false,\n', ''),
+    ("wrangler: preview_urls set true", "wrangler.jsonc",
+     '"preview_urls": false', '"preview_urls": true'),
+    ("wrangler: top-level route introduced", "wrangler.jsonc",
+     '  "workers_dev": false,',
+     '  "workers_dev": false,\n  "route": "decisionspaceintegrity.com/*",'),
+    ("wrangler: top-level routes introduced", "wrangler.jsonc",
+     '  "workers_dev": false,',
+     '  "workers_dev": false,\n  "routes": ["decisionspaceintegrity.com/*"],'),
     # Repository internals must not re-enter the published asset set. The asset
     # directory is the repository root, so a dropped exclusion silently republishes
     # /docs/, /scripts/ or /.github/ on the production domain.

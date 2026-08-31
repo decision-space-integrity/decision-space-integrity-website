@@ -22,6 +22,7 @@ Exit 1 on any breach, 0 if clean.
 """
 from __future__ import annotations
 
+import json
 import pathlib
 import re
 import subprocess
@@ -280,12 +281,66 @@ def main(argv: list[str]) -> int:
     # HTTP 200 on the production domain. Nothing there is secret, but none of it is the
     # site. These exclusions must not silently disappear.
     ASSETS_IGNORE_REQUIRED = (".github/", "docs/", "scripts/", "README.md",
-                              ".gitattributes", ".gitignore", ".assetsignore")
+                              ".gitattributes", ".gitignore", ".assetsignore",
+                              "wrangler.jsonc")
     # ...and these must never be excluded: the platform consumes the first two and the
     # site links to the third.
     ASSETS_IGNORE_FORBIDDEN = ("_headers", "_redirects", "release_manifest.json",
                                "styles.css", "sitemap.xml", "robots.txt",
                                "assets/", "articles/")
+    # Workers configuration. This file exists solely so unknown routes serve 404.html
+    # instead of an empty body; not_found_handling is a Wrangler field, not a dashboard
+    # option. It must stay a STATIC deployment: no "main" entry, and the asset directory
+    # is the repository root (which is why .assetsignore is load-bearing).
+    wr = root / "wrangler.jsonc"
+    if not wr.exists():
+        errors.append("wrangler.jsonc: missing - unknown routes would return an empty "
+                      "body instead of the 404 page")
+    else:
+        # Parse it rather than pattern-match: only a parse can tell a TOP-LEVEL key from
+        # the same word nested somewhere harmless. Strip whole-line // comments (jsonc);
+        # a trailing comment after a value is left alone deliberately, so a value that
+        # legitimately contains "//" is never mangled.
+        raw_w = wr.read_text(encoding="utf-8")
+        try:
+            cfg = json.loads(re.sub(r"^\s*//.*$", "", raw_w, flags=re.M))
+        except Exception as exc:
+            cfg = None
+            errors.append(f"wrangler.jsonc: does not parse as JSON once comments are "
+                          f"stripped: {exc}")
+        if cfg is not None:
+            assets = cfg.get("assets") or {}
+            if assets.get("not_found_handling") != "404-page":
+                errors.append('wrangler.jsonc: assets.not_found_handling must be '
+                              '"404-page" so unknown routes serve 404.html with a 404 '
+                              f'status (found {assets.get("not_found_handling")!r})')
+            if assets.get("directory") != ".":
+                errors.append('wrangler.jsonc: assets.directory must be "." to match the '
+                              f'deployed asset root (found {assets.get("directory")!r})')
+            if "main" in cfg:
+                errors.append("wrangler.jsonc: declares a Worker entrypoint; this "
+                              "deployment is deliberately static with no Worker script")
+            # Routes stay dashboard-owned. Cloudflare's documented pattern for that is to
+            # omit route/routes AND set workers_dev false - omitting workers_dev defaults
+            # it to TRUE and would publish a *.workers.dev endpoint.
+            if cfg.get("workers_dev") is not False:
+                errors.append('wrangler.jsonc: "workers_dev": false is required; omitting '
+                              "it defaults to true and would publish a *.workers.dev "
+                              "endpoint, widening the deployment surface")
+            # Preview URLs are a SEPARATE control and are public when enabled. Cloudflare
+            # documents the default as preview_urls = workers_dev, but that did not hold
+            # here: with workers_dev false the build still published a versioned and a
+            # branch-aliased preview URL, both serving the whole site with HTTP 200.
+            if cfg.get("preview_urls") is not False:
+                errors.append('wrangler.jsonc: "preview_urls": false is required; when '
+                              "enabled they are public, and the documented default of "
+                              "preview_urls = workers_dev was not applied in practice")
+            for key in ("route", "routes"):
+                if key in cfg:
+                    errors.append(f"wrangler.jsonc: top-level {key!r} would override the "
+                                  f"dashboard-managed custom domain on the next deploy; "
+                                  f"routes stay owned by the dashboard")
+
     ai = root / ".assetsignore"
     if not ai.exists():
         errors.append(".assetsignore: missing - the repository root is the asset "

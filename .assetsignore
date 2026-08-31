@@ -12,6 +12,7 @@ README.md
 .gitattributes
 .gitignore
 .assetsignore
+wrangler.jsonc
 
 # Deliberately NOT excluded, and must stay uploaded:
 #   _headers              - consumed by the platform to apply security headers

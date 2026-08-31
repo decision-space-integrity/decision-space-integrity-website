@@ -275,6 +275,44 @@ def main(argv: list[str]) -> int:
             errors.append("privacy.html: CSP is defence in depth, not evidence the beacon "
                           "is absent; the page must say so")
 
+    # ---- 7a. in-page anchors must resolve --------------------------------------------
+    # check_links.py strips the fragment before resolving, so it proves the PAGE exists
+    # but never that the anchor does. A link to /research#programme-history would keep
+    # passing after the id was deleted, landing the reader at the top of the page with
+    # no error anywhere. Every internal fragment link is resolved against the real ids.
+    ids = {p: set(re.findall(r'\bid="([^"]+)"', s)) for p, s in text.items()}
+    for p, s in text.items():
+        name = p.relative_to(root).as_posix()
+        for href in re.findall(r'href="([^"]*#[^"]+)"', s):
+            if href.startswith(("http://", "https://", "//", "mailto:")):
+                continue
+            path, _, frag = href.partition("#")
+            if not frag:
+                continue
+            target = p if path in ("", ".") else None
+            if target is None:
+                stem = path.strip("/") or "index"
+                cand = root / (stem if stem.endswith(".html") else f"{stem}.html")
+                if not cand.exists():
+                    continue                      # check_links.py already reports this
+                target = cand
+            if frag not in ids.get(target, set()):
+                errors.append(f"{name}: link {href!r} points at an anchor that does not "
+                              f"exist on {target.relative_to(root).as_posix()}")
+
+    # An anchored section must clear the sticky header, or the deep link lands with
+    # the section heading hidden behind it.
+    css = root / "styles.css"
+    if css.exists() and "scroll-margin-top" not in css.read_text(encoding="utf-8"):
+        errors.append("styles.css: anchored sections need scroll-margin-top, or a "
+                      "deep link scrolls the heading behind the sticky header")
+
+    # the programme history must stay reachable by its anchor
+    res = root / "research.html"
+    if res.exists() and "programme-history" not in ids.get(res, set()):
+        errors.append("research.html: the programme-history anchor is missing; the "
+                      "homepage and evidence register link to /research#programme-history")
+
     # ---- 7b. published asset surface ------------------------------------------------
     # The asset directory is the repository root, so without .assetsignore the whole
     # repository is published: /docs/, /scripts/, /.github/ and /README.md all returned

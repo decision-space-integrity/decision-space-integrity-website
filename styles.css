@@ -467,6 +467,11 @@ pre.codeblock .c { color:var(--faint); }
    gap when they wrap. .status .row already carries its own 8px gap. */
 .tierstack { display:flex; flex-wrap:wrap; gap:7px 8px; align-items:flex-start; }
 
+/* Anchored sections must clear the sticky header. Without this a deep link such as
+   /research#programme-history scrolls the section to y=0, putting its eyebrow behind
+   the 64px header - measured at 390px: header bottom 65px, eyebrow top 57px. */
+main section[id] { scroll-margin-top:84px; }
+
 /* evidence statuses */
 .ev {
   display:inline-block; font-family:var(--mono); font-size:11px; letter-spacing:.14em;

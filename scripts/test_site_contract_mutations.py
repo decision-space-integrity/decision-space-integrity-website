@@ -126,6 +126,18 @@ CASES = [
      '<span class="tier tier-research">Private evaluation access</span></span>',
      '<span class="tier tier-research">Research implementation</span> '
      '<span class="tier tier-research">Private evaluation access</span>'),
+    # The programme history must stay reachable by its anchor. check_links.py strips the
+    # fragment, so only the contract can catch a link pointing at a deleted anchor.
+    ("anchor: programme-history id removed", "research.html",
+     '<section class="reveal" id="programme-history">', '<section class="reveal">'),
+    ("anchor: in-page jump link broken", "research.html",
+     'href="#programme-history">Programme history', 'href="#programme-timeline">Programme history'),
+    ("anchor: evidence link points at a dead anchor", "evidence.html",
+     'href="/research#programme-history"', 'href="/research#history"'),
+    ("anchor: homepage link points at a dead anchor", "index.html",
+     'href="/research#programme-history"', 'href="/research#the-timeline"'),
+    ("anchor: sticky-header offset removed", "styles.css",
+     "main section[id] { scroll-margin-top:84px; }", ""),
     # Workers config: unknown routes must serve 404.html, not an empty body.
     ("wrangler: not_found_handling downgraded", "wrangler.jsonc",
      '"not_found_handling": "404-page"', '"not_found_handling": "none"'),

@@ -59,7 +59,7 @@
       <p class="eyebrow">Privacy</p>
       <h1 style="max-width:16ch;">Privacy notice</h1>
       <p class="lead" style="max-width:64ch;">This website is a static informational site. It sets no cookies of its own, runs no analytics, and hosts no forms. This notice describes the limited processing that does occur, and your rights in relation to it.</p>
-      <p class="meta">Last updated: 22 August 2026</p>
+      <p class="meta">Last updated: 31 August 2026</p>
     </div>
   </section>
 
@@ -82,7 +82,7 @@
       </div>
       <ul class="clean" style="max-width:70ch;">
         <li>The site's own pages set <strong>no cookies</strong> and use <strong>no browser storage</strong> (no localStorage, sessionStorage or similar).</li>
-        <li>The site's own source contains <strong>no analytics, advertising or tracking code</strong>. See the verified position below: the hosting platform currently injects an analytics script at the edge, which the site's own pages do not contain.</li>
+        <li>The site's own source contains <strong>no analytics, advertising or tracking code</strong>. The hosting platform previously injected an analytics beacon at the edge; that feature was disabled and its absence verified on 31 August 2026. See the verified position below.</li>
         <li>There are <strong>no forms</strong>: the site collects nothing you type. Contact happens only by email that you choose to send.</li>
         <li>The site runs almost no JavaScript; one page uses a small first-party script for visual presentation only, which collects nothing and makes no network requests.</li>
       </ul>
@@ -94,11 +94,13 @@
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Verified current position</p>
-        <h2>Analytics injected by the hosting platform.</h2>
+        <h2>Platform analytics: disabled and verified absent.</h2>
       </div>
-      <p style="max-width:74ch;">Inspection of the deployed site on <strong>22 August 2026</strong> found that <strong>Cloudflare injects a Web Analytics beacon script into every page at the edge</strong>. That script is <strong>not</strong> present in this site's source, and it is not something the pages request. It is added by the hosting platform after the page leaves the repository.</p>
-      <p style="max-width:74ch;">The site's Content-Security-Policy sets <span class="mono">script-src 'none'</span> on every route but one, so a conforming browser should refuse to execute it. The script tag is nevertheless served, and it carries a site identifier.</p>
-      <p style="max-width:74ch;">This notice records that plainly rather than claiming an analytics-free site while the beacon is served. <strong>The intended resolution is to disable the platform's analytics feature and then verify the script is absent</strong>, restoring a genuinely analytics-free site. Until that is done and verified, treat the position above as the accurate one.</p>
+      <p style="max-width:74ch;"><strong>What was previously observed.</strong> Inspection of the deployed site on <strong>22 August 2026</strong> found that Cloudflare was injecting a Web Analytics beacon script &mdash; <span class="mono">static.cloudflareinsights.com/beacon.min.js</span>, carrying a <span class="mono">data-cf-beacon</span> site token &mdash; into pages at the edge. That script was never present in this site's source, and the pages never requested it; the hosting platform added it after the page left the repository.</p>
+      <p style="max-width:74ch;">That injection <strong>varied by request characteristics</strong>. An ordinary command-line request did not receive the beacon, while a browser-equivalent request did. A single clean fetch is therefore not evidence of absence, and any check that uses only a default client will report a false negative.</p>
+      <p style="max-width:74ch;"><strong>Resolution.</strong> Cloudflare Web Analytics was <strong>disabled</strong> for this site on <strong>31 August 2026</strong>. Absence was then verified on <strong>31 August 2026</strong> by requesting <span class="mono">/</span>, <span class="mono">/paper</span> and <span class="mono">/privacy</span> twice each &mdash; once with a default command-line agent and once with a <strong>browser-equivalent</strong> agent and browser request headers. Under both, every page returned zero references to <span class="mono">cloudflareinsights</span>, zero <span class="mono">data-cf-beacon</span> attributes and zero external analytics scripts.</p>
+      <p style="max-width:74ch;">The site's Content-Security-Policy sets <span class="mono">script-src 'none'</span> on every route but one. That is defence in depth, not the basis of this statement: the test applied here is that <strong>the script tag is not served at all</strong>, not merely that a browser would refuse to run it.</p>
+      <p style="max-width:74ch;"><strong>What this does not cover.</strong> This concerns the optional Web Analytics feature only. It is separate from the <strong>ordinary request processing every web host performs</strong> &mdash; your IP address, user agent and request details are still handled by the hosting layer to deliver pages and protect the service against abuse, as described under Hosting above. Disabling Web Analytics does not remove that processing, and this notice does not claim it does.</p>
     </div>
   </section>
 

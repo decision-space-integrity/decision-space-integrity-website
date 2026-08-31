@@ -1,0 +1,22 @@
+# Cloudflare Workers static assets: paths NOT uploaded to the published asset set.
+# Same semantics as .gitignore. The asset directory is the repository root, so without
+# this file the whole repository is served: /docs/, /scripts/, /.github/ and /README.md
+# were all reachable with HTTP 200 on the production domain.
+#
+# Nothing here is secret - the repository is public - but none of it is part of the
+# site, and it should not be a production surface.
+.github/
+docs/
+scripts/
+README.md
+.gitattributes
+.gitignore
+.assetsignore
+
+# Deliberately NOT excluded, and must stay uploaded:
+#   _headers              - consumed by the platform to apply security headers
+#   _redirects            - consumed by the platform to serve the 301s
+#   release_manifest.json - the pinned release identity the site links to
+#   *.html, styles.css, sitemap.xml, robots.txt, assets/, articles/
+# Cloudflare requires _headers and _redirects to sit inside the asset directory and
+# processes them specially rather than serving them as files.

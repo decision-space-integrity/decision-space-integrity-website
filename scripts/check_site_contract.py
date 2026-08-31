@@ -12,7 +12,10 @@ the structural and governance rulings that a later content edit could silently u
   * DSI Audit is never described as a public release
   * the human-validation boundary is present verbatim
   * the GCB-2 public claim stays withheld, and appears exactly once
-  * the privacy page states the verified edge-analytics position
+  * the privacy page records the full verified analytics history: the prior beacon
+    observation, that the injection varied by request characteristics, the disable,
+    how absence was verified, and the distinction from ordinary hosting processing
+  * repository internals stay out of the published asset set (.assetsignore)
 
 Usage: python scripts/check_site_contract.py [root]   (default root = cwd)
 Exit 1 on any breach, 0 if clean.
@@ -205,9 +208,66 @@ def main(argv: list[str]) -> int:
         if re.search(r"GCB-?2", s) and GCB2_WITHHELD not in s:
             errors.append(f"{p.relative_to(root)}: mentions GCB-2 without the withheld statement")
 
+    # Privacy: the analytics position must record the whole verified history, not just a
+    # conclusion. The beacon injection VARIED BY REQUEST CHARACTERISTICS - a default
+    # command-line client saw no beacon while a browser-equivalent client did - so a page
+    # that simply asserts "no analytics" is not supported by a single clean fetch. The
+    # page must carry the prior observation, the disable, the verification method, and
+    # the distinction from ordinary hosting request processing.
     priv = root / "privacy.html"
-    if priv.exists() and "injects a Web Analytics beacon script into every page at the edge" not in text[priv]:
-        errors.append("privacy.html: verified edge-analytics position is missing")
+    if priv.exists():
+        pv = text[priv]
+        required = {
+            "the prior beacon observation":
+                "Cloudflare was injecting a Web Analytics beacon script",
+            "the beacon identity":
+                "static.cloudflareinsights.com/beacon.min.js",
+            "that injection varied by request characteristics":
+                "varied by request characteristics",
+            "the disable":
+                "Web Analytics was <strong>disabled</strong>",
+            "how absence was verified (both agents, not just a default client)":
+                "once with a default command-line agent and once with a "
+                "<strong>browser-equivalent</strong> agent",
+            "the distinction from ordinary hosting request processing":
+                "ordinary request processing every web host performs",
+        }
+        for what, needle in required.items():
+            if needle not in pv:
+                errors.append(f"privacy.html: the analytics position must record {what} "
+                              f"(missing: {needle!r})")
+        # CSP must not be offered as the basis of the absence claim
+        if "script-src 'none'" in pv and "defence in depth" not in pv:
+            errors.append("privacy.html: CSP is defence in depth, not evidence the beacon "
+                          "is absent; the page must say so")
+
+    # ---- 7b. published asset surface ------------------------------------------------
+    # The asset directory is the repository root, so without .assetsignore the whole
+    # repository is published: /docs/, /scripts/, /.github/ and /README.md all returned
+    # HTTP 200 on the production domain. Nothing there is secret, but none of it is the
+    # site. These exclusions must not silently disappear.
+    ASSETS_IGNORE_REQUIRED = (".github/", "docs/", "scripts/", "README.md",
+                              ".gitattributes", ".gitignore", ".assetsignore")
+    # ...and these must never be excluded: the platform consumes the first two and the
+    # site links to the third.
+    ASSETS_IGNORE_FORBIDDEN = ("_headers", "_redirects", "release_manifest.json",
+                               "styles.css", "sitemap.xml", "robots.txt",
+                               "assets/", "articles/")
+    ai = root / ".assetsignore"
+    if not ai.exists():
+        errors.append(".assetsignore: missing - the repository root is the asset "
+                      "directory, so every internal path would be published")
+    else:
+        lines = [ln.strip() for ln in ai.read_text(encoding="utf-8").splitlines()]
+        entries = [ln for ln in lines if ln and not ln.startswith("#")]
+        for req in ASSETS_IGNORE_REQUIRED:
+            if req not in entries:
+                errors.append(f".assetsignore: must exclude {req!r} from the published "
+                              f"asset set")
+        for forb in ASSETS_IGNORE_FORBIDDEN:
+            if forb in entries:
+                errors.append(f".assetsignore: must NOT exclude {forb!r} - the platform "
+                              f"consumes it or the site depends on it")
 
     # ---- 8. identity assertions, over TWO representations -------------------------
     # RAW      : the source, so title/meta/OG/Twitter attribute text is visible.

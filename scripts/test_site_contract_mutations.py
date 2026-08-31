@@ -126,6 +126,15 @@ CASES = [
      '<span class="tier tier-research">Private evaluation access</span></span>',
      '<span class="tier tier-research">Research implementation</span> '
      '<span class="tier tier-research">Private evaluation access</span>'),
+    # Workers config: unknown routes must serve 404.html, not an empty body.
+    ("wrangler: not_found_handling downgraded", "wrangler.jsonc",
+     '"not_found_handling": "404-page"', '"not_found_handling": "none"'),
+    ("wrangler: asset root changed", "wrangler.jsonc",
+     '"directory": ".",', '"directory": "./dist",'),
+    ("wrangler: a Worker entrypoint appears", "wrangler.jsonc",
+     '  "assets": {', '  "main": "src/index.js",\n  "assets": {'),
+    ("assetsignore: wrangler.jsonc wrongly published", ".assetsignore",
+     "\nwrangler.jsonc\n", "\n"),
     # Repository internals must not re-enter the published asset set. The asset
     # directory is the repository root, so a dropped exclusion silently republishes
     # /docs/, /scripts/ or /.github/ on the production domain.

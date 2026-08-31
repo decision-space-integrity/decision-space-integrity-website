@@ -1,0 +1,24 @@
+// Cloudflare Workers configuration for a STATIC site.
+//
+// This exists for one reason: `not_found_handling`. Unknown routes were returning
+// HTTP 404 with an empty body even though 404.html was deployed and /404 served it
+// correctly. That setting is a Wrangler configuration field, not a dashboard option,
+// so it has to live here.
+//
+// Deliberately minimal. There is no `main`, so this stays a static-asset deployment
+// with no Worker script. Observability and nodejs_compat, which the bot-generated
+// PR #1 proposed, are intentionally absent: nothing here needs them.
+//
+// `assets.directory` is the repository root, which is what the project already does -
+// that is why .assetsignore exists to keep docs/, scripts/, .github/ and this file
+// out of the published asset set.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "decision-space-integrity-website",
+  "compatibility_date": "2026-08-31",
+  "assets": {
+    "directory": ".",
+    // serve the nearest 404.html with a 404 status instead of an empty body
+    "not_found_handling": "404-page"
+  }
+}

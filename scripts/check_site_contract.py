@@ -280,12 +280,35 @@ def main(argv: list[str]) -> int:
     # HTTP 200 on the production domain. Nothing there is secret, but none of it is the
     # site. These exclusions must not silently disappear.
     ASSETS_IGNORE_REQUIRED = (".github/", "docs/", "scripts/", "README.md",
-                              ".gitattributes", ".gitignore", ".assetsignore")
+                              ".gitattributes", ".gitignore", ".assetsignore",
+                              "wrangler.jsonc")
     # ...and these must never be excluded: the platform consumes the first two and the
     # site links to the third.
     ASSETS_IGNORE_FORBIDDEN = ("_headers", "_redirects", "release_manifest.json",
                                "styles.css", "sitemap.xml", "robots.txt",
                                "assets/", "articles/")
+    # Workers configuration. This file exists solely so unknown routes serve 404.html
+    # instead of an empty body; not_found_handling is a Wrangler field, not a dashboard
+    # option. It must stay a STATIC deployment: no "main" entry, and the asset directory
+    # is the repository root (which is why .assetsignore is load-bearing).
+    wr = root / "wrangler.jsonc"
+    if not wr.exists():
+        errors.append("wrangler.jsonc: missing - unknown routes would return an empty "
+                      "body instead of the 404 page")
+    else:
+        w = wr.read_text(encoding="utf-8")
+        # tolerate // comments: this is jsonc, so match on the field text directly
+        if '"not_found_handling": "404-page"' not in re.sub(r"\s+", " ", w).replace(
+                '"not_found_handling" : "404-page"', '"not_found_handling": "404-page"'):
+            errors.append('wrangler.jsonc: assets.not_found_handling must be "404-page" '
+                          "so unknown routes serve 404.html with a 404 status")
+        if '"directory": "."' not in re.sub(r"\s+", " ", w):
+            errors.append('wrangler.jsonc: assets.directory must be "." to match the '
+                          "deployed asset root")
+        if re.search(r'^\s*"main"\s*:', w, re.M):
+            errors.append("wrangler.jsonc: declares a Worker entrypoint; this deployment "
+                          "is deliberately static with no Worker script")
+
     ai = root / ".assetsignore"
     if not ai.exists():
         errors.append(".assetsignore: missing - the repository root is the asset "

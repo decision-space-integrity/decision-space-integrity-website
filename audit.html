@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSI Audit — the current local implementation | Decision-Space Integrity</title>
+<meta name="description" content="DSI Audit is the current local implementation of Decision-Space Integrity. Research implementation with private evaluation access; there is no self-service public download.">
+<link rel="canonical" href="https://decisionspaceintegrity.com/audit">
+<meta name="author" content="Andrew J Cousins">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Decision-Space Integrity">
+<meta property="og:title" content="DSI Audit — the current local implementation | Decision-Space Integrity">
+<meta property="og:description" content="DSI Audit is the current local implementation of Decision-Space Integrity. Research implementation with private evaluation access; there is no self-service public download.">
+<meta property="og:url" content="https://decisionspaceintegrity.com/audit">
+<meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DSI Audit — the current local implementation | Decision-Space Integrity">
+<meta name="twitter:description" content="DSI Audit is the current local implementation of Decision-Space Integrity. Research implementation with private evaluation access; there is no self-service public download.">
+<meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
+<meta name="twitter:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/icons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/icons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&amp;family=Hanken+Grotesk:wght@380;480;560;620&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
+    <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
+    <nav id="sitenav" class="nav" aria-label="Site">
+      <a href="/">Home</a>
+      <a href="/dsc">DSC</a>
+      <a href="/dsi">DSI</a>
+      <a href="/audit" class="active" aria-current="page">DSI Audit</a>
+      <a href="/research">Research</a>
+      <a href="/evidence">Evidence</a>
+      <a href="/articles">Articles</a>
+      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" style="padding-bottom:34px;">
+    <div class="wrap" style="display:block;">
+      <p class="eyebrow">The current implementation</p>
+      <h1 style="max-width:22ch;">DSI Audit.</h1>
+      <p class="lead" style="max-width:68ch;">DSI Audit is the current local implementation of <a href="/dsi">Decision-Space Integrity</a>. It audits supplied outputs; it does not generate them.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="status status-research">
+        <div class="row">
+          <span class="tier tier-research">Research implementation</span>
+          <span class="tier tier-research">Private evaluation access</span>
+        </div>
+        <dl>
+          <dt>Advertised build</dt><dd><strong>v0.2.1</strong> &mdash; the evaluation build, offered for evaluation and pilot.</dd>
+          <dt>How to obtain</dt><dd><strong>By request.</strong> Access is granted directly and individually &mdash; see <a href="/contact">Contact</a>.</dd>
+          <dt>Public download</dt><dd><strong>None.</strong> There is no self-service public repository and no publicly downloadable release. This is not a public release.</dd>
+          <dt>Development state</dt><dd>Development has progressed beyond the advertised build. Capabilities present in the current development line are <strong>not</strong> attributable to the evaluation build.</dd>
+          <dt>Classifier</dt><dd><span class="mono">expected-map-lexical-precision-v3</span> &mdash; status <span class="mono">challenge_only</span>: challenge-tested, not independently validated.</dd>
+        </dl>
+        <p class="why">Everything below describes the evaluation build. Research-head functionality is described on <a href="/dsi">DSI</a> and carries its own tier.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What it does</p>
+        <h2>Supported workflows.</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card"><span class="idx">AUDIT</span><p style="margin-top:12px;">Compare one supplied response against a configured expected map for its domain. Reports which expected paths were surfaced and which were not.</p></div>
+        <div class="card"><span class="idx">REGRESSION</span><p style="margin-top:12px;">Compare runs under one declared instrument identity, so a moved number can be attributed rather than assumed.</p></div>
+        <div class="card"><span class="idx">EVIDENCE</span><p style="margin-top:12px;">Emit a fingerprinted evidence bundle a reviewer can reproduce and bound.</p></div>
+      </div>
+      <div class="section-head" style="margin-top:34px;">
+        <p class="eyebrow">Verified commands</p>
+        <h2>Readiness before measurement.</h2>
+      </div>
+      <ul class="clean" style="max-width:74ch;">
+        <li><span class="mono">dsi doctor</span> &mdash; read-only readiness check.</li>
+        <li><span class="mono">dsi validate-install</span> &mdash; runs a real, domain-consistent audit end to end.</li>
+        <li><span class="mono">dsi ready</span> &mdash; confirms the install is in a usable state.</li>
+      </ul>
+      <p style="max-width:74ch;">It runs locally. It is stateless between audits, and it audits a response your own system produced &mdash; it never generates advice and never recommends a decision.</p>
+      <p><a href="/getting-started">Getting started &#8594;</a> &nbsp;·&nbsp; <a href="/example-audit">Worked example audit</a> &nbsp;·&nbsp; <a href="/deployment">Deployment profiles</a> &nbsp;·&nbsp; <a href="/security">Security &amp; operations</a> &nbsp;·&nbsp; <a href="/release-notes">Release notes</a></p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Limitations</p>
+        <h2>What the evaluation build does not do.</h2>
+      </div>
+      <ul class="clean" style="max-width:76ch;">
+        <li>It does not measure advice quality, factual correctness, user outcomes, or regulatory compliance.</li>
+        <li>It does not certify AI systems, and it is not a safety review.</li>
+        <li>Its classifier is lexical and challenge-tested. Independent human validation has not yet been conducted; the lexical instruments remain self-validated.</li>
+        <li>It measures against a <em>configured</em> reference. It does not establish that the reference contains everything that matters.</li>
+        <li>Coverage of real-world options is not exhaustive, and open-domain applicability is not established.</li>
+      </ul>
+      <p><a href="/evidence">Evidence register &#8594;</a></p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
+    <div class="row">
+      <span>decisionspaceintegrity.com</span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
+      <span class="statusflag">v0.2.1 &#183; evaluation &amp; pilot</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -40,15 +40,14 @@
     <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav id="sitenav" class="nav" aria-label="Site">
-      <a href="index.html">Home</a>
-      <a href="what-is-decision-space-integrity.html">What is DSI?</a>
-      <a href="product.html">Product</a>
-      <a href="getting-started.html">Getting started</a>
-      <a href="research.html">Research</a>
-      <a href="applications.html">Applications</a>
+      <a href="/">Home</a>
+      <a href="/dsc">DSC</a>
+      <a href="/dsi">DSI</a>
+      <a href="/audit">DSI Audit</a>
+      <a href="/research">Research</a>
+      <a href="/evidence">Evidence</a>
       <a href="/articles">Articles</a>
-      <a href="reading.html">Reading</a>
-      <a href="contact.html">Contact</a>
+      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
     </nav>
   </div>
 </header>
@@ -83,11 +82,23 @@
       </div>
       <ul class="clean" style="max-width:70ch;">
         <li>The site's own pages set <strong>no cookies</strong> and use <strong>no browser storage</strong> (no localStorage, sessionStorage or similar).</li>
-        <li>There is <strong>no analytics, advertising or tracking code</strong> of any kind.</li>
+        <li>The site's own source contains <strong>no analytics, advertising or tracking code</strong>. See the verified position below: the hosting platform currently injects an analytics script at the edge, which the site's own pages do not contain.</li>
         <li>There are <strong>no forms</strong>: the site collects nothing you type. Contact happens only by email that you choose to send.</li>
         <li>The site runs almost no JavaScript; one page uses a small first-party script for visual presentation only, which collects nothing and makes no network requests.</li>
       </ul>
       <p class="muted" style="max-width:70ch; margin-top:14px; font-size:14px;">These statements are backed by an audit of the site's source code (see the repository document <span class="mono">docs/privacy-data-flow-audit.md</span>). Behaviour that exists only at the hosting layer, such as any protective cookie the host might set during an attack-mitigation challenge, is controlled by the hosting provider rather than by this site's code, and is noted below.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Verified current position</p>
+        <h2>Analytics injected by the hosting platform.</h2>
+      </div>
+      <p style="max-width:74ch;">Inspection of the deployed site on <strong>22 August 2026</strong> found that <strong>Cloudflare injects a Web Analytics beacon script into every page at the edge</strong>. That script is <strong>not</strong> present in this site's source, and it is not something the pages request. It is added by the hosting platform after the page leaves the repository.</p>
+      <p style="max-width:74ch;">The site's Content-Security-Policy sets <span class="mono">script-src 'none'</span> on every route but one, so a conforming browser should refuse to execute it. The script tag is nevertheless served, and it carries a site identifier.</p>
+      <p style="max-width:74ch;">This notice records that plainly rather than claiming an analytics-free site while the beacon is served. <strong>The intended resolution is to disable the platform's analytics feature and then verify the script is absent</strong>, restoring a genuinely analytics-free site. Until that is done and verified, treat the position above as the accurate one.</p>
     </div>
   </section>
 
@@ -174,10 +185,10 @@
 
 <footer class="site-foot">
   <div class="wrap">
-    <p class="claim"><em>DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not generate one. It measures configured expected-path visibility — not advice quality, safety, or compliance.</em></p>
+    <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
     <div class="row">
       <span>decisionspaceintegrity.com</span>
-      <span><a href="research.html">Research</a> · <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy</a></span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
       <span class="statusflag">v0.2.1 · evaluation &amp; pilot</span>
     </div>
   </div>

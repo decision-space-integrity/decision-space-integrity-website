@@ -30,6 +30,8 @@ jobs:
         run: python scripts/check_links.py
       - name: Release provenance (audit ids / classifier / version vs pinned manifest)
         run: python scripts/check_release_provenance.py
+      - name: Site contract (routes, redirects, maturity labels, governance wording)
+        run: python scripts/check_site_contract.py .
 
   html:
     name: HTML validation (blocking)

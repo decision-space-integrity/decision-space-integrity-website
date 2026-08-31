@@ -1,0 +1,6 @@
+# DSI-WEBSITE-1B redirect map. Cloudflare Pages.
+# Retired canonical routes -> their successors. 301 = permanent, inbound links preserved.
+/what-is-decision-space-integrity      /dsi     301
+/what-is-decision-space-integrity.html /dsi     301
+/product                               /audit   301
+/product.html                          /audit   301

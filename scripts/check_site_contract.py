@@ -387,28 +387,88 @@ def main(argv: list[str]) -> int:
             errors.append("privacy.html: CSP is defence in depth, not evidence the beacon "
                           "is absent; the page must say so")
 
-    # ---- 6b. the v1 capability ceiling ---------------------------------------------
-    # Only four positive v1 capabilities are authorised: auditing a supplied response
-    # against a governed reference, the seven-status partition, coverage over the
-    # applicable counted population, and the orthogonal omitted_safety_critical finding.
-    # Everything else the product line does belongs to v0.2.1 and must not be read as
-    # already present in v1.
-    V1_WITHHELD = ("regression", "evidence bundle", "fingerprint", "provenance", "replay",
-                   "comparability", "readiness", "stateless", "revision", "intervention",
-                   "remediation")
-    V1_RX = re.compile(r"DSI v1")
-    for p_, s_ in text.items():
-        name = p_.relative_to(root).as_posix()
-        # local strip: `rendered` is defined further down, in the identity section
-        _t = re.sub(r"<(script|style)\b.*?</\1>", " ", s_, flags=re.S | re.I)
-        flat = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", _t))
-        for m in V1_RX.finditer(flat):
-            window = flat[max(0, m.start() - 160): m.end() + 160].lower()
-            for w in V1_WITHHELD:
-                if w in window:
-                    errors.append(f"{name}: {w!r} appears alongside 'DSI v1'; that "
-                                  f"capability belongs to the v0.2.1 evaluation build and "
-                                  f"is not implemented in v1")
+    # ---- 6b. surface classes: what a page is FOR decides what it may claim ----------
+    # This replaces an earlier proximity rule that only fired when a withheld capability
+    # sat near the literal string "DSI v1". A page could foreground regression,
+    # fingerprints and comparability from top to bottom and never trip it. The boundary
+    # is structural instead.
+    #
+    #   v1 surfaces        speak for the product. The withheld capabilities are absent,
+    #                      and /dsi must POSITIVELY carry the four authorised ones.
+    #   v0.2.1 surfaces    document the evaluation build. The withheld capabilities are
+    #                      legitimate there, but the page must say so verbatim.
+    #   disclosure         evidence and programme history; governed by their own rules.
+    V1_SURFACES = ("index.html", "dsi.html", "applications.html")
+    V021_SURFACES = ("audit.html", "getting-started.html", "deployment.html",
+                     "security.html", "release-notes.html", "example-audit.html")
+    SCOPE_MARKER = "This page documents the <strong>v0.2.1</strong> evaluation build."
+
+    # Implemented in the evaluation build, NOT in v1. Multi-word where the single word is
+    # ordinary English: "evidence" is fine, "evidence bundle" is a capability claim.
+    WITHHELD = ("regression", "evidence bundle", "fingerprint", "provenance", "replay",
+                "comparability", "readiness", "stateless", "revision", "intervention",
+                "remediation")
+
+    for name in V1_SURFACES:
+        p_ = root / name
+        if not p_.exists():
+            errors.append(f"{name}: v1 surface is missing")
+            continue
+        src = re.sub(r"<(script|style)\b.*?</\1>", " ", text[p_], flags=re.S | re.I)
+        # CONTEXTUAL EXCEPTION: an evidence-status section is disclosure wherever it
+        # appears. A v1 surface may carry "comparability ... not established" as a
+        # recorded negative finding - deleting it would itself be a claim. Sections
+        # carrying an evidence chip are excluded from the capability scan.
+        # Bounded to the CARD or ROW carrying the chip, not the whole section: exempting
+        # a section would have exempted its heading too, and a capability claim promoted
+        # into a heading beside an unrelated evidence badge would have passed.
+        for pat in (r'<div class="card"[^>]*>(?:(?!</div>\s*</div>).)*?class="ev '
+                    r'(?:(?!</div>\s*</div>).)*?</div>\s*</div>',
+                    r'<tr\b(?:(?!</tr>).)*?class="ev (?:(?!</tr>).)*?</tr>'):
+            src = re.sub(pat, " ", src, flags=re.S)
+        body = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", src)).lower()
+        for w in WITHHELD:
+            if w in body:
+                i = body.index(w)
+                errors.append(f"{name}: {w!r} is a v0.2.1 capability and must not appear on "
+                              f"a v1 surface: ...{body[max(0, i - 60):i + 70]}...")
+
+    for name in V021_SURFACES:
+        p_ = root / name
+        if not p_.exists():
+            errors.append(f"{name}: v0.2.1 surface is missing")
+            continue
+        if SCOPE_MARKER not in text[p_]:
+            errors.append(f"{name}: documents evaluation-build functionality, so it must "
+                          f"carry the scope marker verbatim: {SCOPE_MARKER!r}")
+
+    # /dsi must positively carry v1's authorised capabilities and the governed statuses -
+    # otherwise gutting the page would satisfy the absence rules above.
+    dsi_ = root / "dsi.html"
+    if dsi_.exists():
+        d = text[dsi_]
+        for needed, why in (
+            ("governed reference", "the reference the audit compares against"),
+            ("coverage", "coverage over the applicable counted population"),
+            ("omitted_safety_critical", "the orthogonal safety finding"),
+        ):
+            if needed.lower() not in d.lower():
+                errors.append(f"dsi.html: v1 capability missing - {why} ({needed!r})")
+        # The seven statuses must appear in the CAPABILITY TABLE, not merely somewhere on
+        # the page. Several also occur in the pipeline diagram, so a page-wide search would
+        # still pass after the governed partition itself had been gutted.
+        STATUSES = ("surfaced", "partially surfaced", "omitted", "discouraged", "negated",
+                    "collapsed into other", "warning-required-missing")
+        tbl = re.search(r'<table class="reg">.*?</table>', d, re.S)
+        if not tbl:
+            errors.append("dsi.html: the capability table is missing")
+        else:
+            partition = tbl.group(0).lower()
+            for st in STATUSES:
+                if st.lower() not in partition:
+                    errors.append(f"dsi.html: governed status {st!r} is missing from the "
+                                  f"capability table; the seven-value partition is the "
+                                  f"single authority for trajectory status")
 
     # ---- 7a. in-page anchors must resolve --------------------------------------------
     # check_links.py strips the fragment before resolving, so it proves the PAGE exists
@@ -563,7 +623,9 @@ def main(argv: list[str]) -> int:
     PRODUCT_SURFACES = ("getting-started.html", "example-audit.html", "deployment.html",
                         "security.html", "release-notes.html", "contact.html",
                         "applications.html")
-    BARE_DSI = re.compile(r"(?<![\w-])DSI(?![\w-])(?!\s+Audit\b)")
+    # "DSI Audit" and "DSI v1" are both named product identities and are allowed. Anything
+    # else uppercase and bare is the architecture being used as if it were the executable.
+    BARE_DSI = re.compile(r"(?<![\w-])DSI(?![\w-])(?!\s+(?:Audit|v1)\b)")
     for _name in PRODUCT_SURFACES:
         _p = root / _name
         if not _p.exists():
@@ -668,9 +730,11 @@ def main(argv: list[str]) -> int:
         if a.count('<span class="ev ev-not">Not established</span>') < 2:
             errors.append("applications.html: each illustrative profile must record "
                           "application validity as 'Not established'")
-        if a.count('<span class="tier tier-research">Research implementation</span>') < 4:
+        # three profiles remain: advisory audit and the two illustrative ones. Regression
+        # comparison was removed - it is a v0.2.1 capability, not a v1 application.
+        if a.count('<span class="tier tier-research">Research implementation</span>') < 3:
             errors.append("applications.html: every profile must carry a maturity tier "
-                          "(advisory, regression, and both illustrative profiles)")
+                          "(advisory audit and both illustrative profiles)")
         if "does not establish the completeness or authority of the policy-obligation set" not in a:
             errors.append("applications.html: the policy-assurance illustration must state "
                           "that executing an expected-point comparison does not establish "

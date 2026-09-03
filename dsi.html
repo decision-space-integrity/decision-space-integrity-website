@@ -85,7 +85,7 @@
         <li>Effective expected structure</li><li class="sep" aria-hidden="true">&#8597;</li>
         <li>Observed structure</li><li class="sep" aria-hidden="true">&#8594;</li>
         <li>Surfaced &#183; partially surfaced &#183; omitted &#183; discouraged &#183; negated &#183; collapsed into other</li><li class="sep" aria-hidden="true">&#8594;</li>
-        <li class="out">Evidence &#183; provenance</li>
+        <li class="out">Coverage &#183; findings</li>
       </ul>
       <p style="max-width:72ch;">The reference is <strong>governed and independent of the response</strong>. The observed structure is read from the output. The comparison assigns every expected item a governed status &mdash; surfaced or partially surfaced; omitted, discouraged, negated or collapsed into another; or warning-required-missing &mdash; recorded as evidence bound to the identity of the instrument that produced it.</p>
       <div class="callout" style="margin-top:18px;">
@@ -98,45 +98,24 @@
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Capabilities and their maturity</p>
-        <h2>Each part carries its own tier.</h2>
+        <h2>Four capabilities, and their boundaries.</h2>
         <p>No component inherits maturity from the programme as a whole.</p>
       </div>
       <div class="regwrap">
       <table class="reg">
-        <caption>Capability maturity. Tier describes availability and implementation state, not evidence of benefit.</caption>
+        <caption>What DSI v1 measures. Tier describes implementation state, not evidence of benefit. Functionality of the v0.2.1 evaluation build is documented on <a href="/audit">DSI Audit</a>.</caption>
         <thead><tr><th scope="col">Capability</th><th scope="col">Tier</th><th scope="col">Note</th></tr></thead>
         <tbody>
-          <tr><td class="claim">Governed structural measurement</td><td><span class="tier tier-research">Research implementation</span></td><td>Implemented and exercised in the governed programme.</td></tr>
-          <tr><td class="claim">Expected / effective-map construction</td><td><span class="tier tier-research">Research implementation</span></td><td>Reference built independently of the response.</td></tr>
-          <tr><td class="claim">Audit execution</td><td><span class="tier tier-research">Research implementation</span></td><td>Runs locally today; access is request-gated. See <a href="/audit">DSI Audit</a>.</td></tr>
-          <tr><td class="claim">Regression comparison</td><td><span class="tier tier-research">Research implementation</span></td><td>Compares runs under a declared instrument identity.</td></tr>
-          <tr><td class="claim">Evidence generation and provenance</td><td><span class="tier tier-research">Research implementation</span></td><td>Fingerprinted, reproducible evidence bundles.</td></tr>
-          <tr><td class="claim">Measurement contract and replay</td><td><span class="tier tier-research">Research implementation</span></td><td>Not represented in the evaluation build.</td></tr>
-          <tr><td class="claim">Measurement identity and comparability</td><td><span class="tier tier-research">Research implementation</span></td><td>Refuses to compare runs whose governing identities differ.</td></tr>
+          <tr><td class="claim">Audit a supplied response against a governed reference</td><td><span class="tier tier-research">Research implementation</span></td><td>The reference is supplied and governed independently of the response. Implemented in DSI v1; <strong>unqualified</strong>.</td></tr>
+          <tr><td class="claim">The governed status partition</td><td><span class="tier tier-research">Research implementation</span></td><td>Seven values, one authority: surfaced, partially surfaced, omitted, discouraged, negated, collapsed into other, warning-required-missing.</td></tr>
+          <tr><td class="claim">Coverage over the applicable counted population</td><td><span class="tier tier-research">Research implementation</span></td><td>Produced once by the canonical counting authority. Coverage is <strong>not</strong> &ldquo;required coverage&rdquo;, and means nothing without its denominator.</td></tr>
+          <tr><td class="claim">The <span class="mono">omitted_safety_critical</span> finding</td><td><span class="tier tier-research">Research implementation</span></td><td>Orthogonal to coverage: a categorical finding, never a percentage contribution. Not a safety or regulatory conclusion.</td></tr>
         </tbody>
       </table>
       </div>
     </div>
   </section>
 
-  <section class="reveal">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Where it could apply</p>
-        <h2>Application profiles, labelled individually.</h2>
-        <p>These are bounded profiles, not deployments. Each carries its own tier.</p>
-      </div>
-      <div class="grid grid-2">
-        <div class="card"><span class="idx">GOVERNED REQUIRED-OPTION CHECKING &nbsp; <span class="tier tier-research">Research implementation</span></span>
-          <p style="margin-top:12px;">Checking whether options a configured reference requires remained visible in a supplied response.</p></div>
-        <div class="card"><span class="idx">REGRESSION BETWEEN RUNS &nbsp; <span class="tier tier-research">Research implementation</span></span>
-          <p style="margin-top:12px;">Comparing two runs under one declared instrument identity, with comparability refused when that identity moves.</p></div>
-      </div>
-      <div class="callout" style="margin-top:22px;">
-        <p>None of these establish regulatory compliance, safety or advice quality. DSI does not certify AI systems, and it is not a safety review.</p>
-      </div>
-    </div>
-  </section>
 
   <section class="reveal">
     <div class="wrap">

@@ -75,14 +75,22 @@ Specifically preserved:
   in the governed repositories and excluded from v1. `/pluraxis` redirects there.
 - No R-EGA reference is added; none exists today, and completeness is not a reason to create one.
 
-## Ambiguities found
+## Version identity — RESOLVED (option 2, owner-authorised)
 
-**ONE BLOCKING — the pack stops before push.**
+The site publishes **two** identities, and `0.3.0` is not one of them:
 
-Ruling 9 requires the site to keep `v0.2.1` (available by request) visibly distinct from
-`v1` (forthcoming, unavailable). It cannot be implemented as written, because **`v1` and the
-site's existing "current development line" are different artefacts**, and their relationship
-is not established by any evidence available here:
+- **`v0.2.1`** — the evaluation build, supplied by request. Every subordinate page
+  (installation, deployment, security, release notes, worked example) documents *this*.
+- **`DSI v1`** — separately lineaged, unqualified, not released and not downloadable.
+
+`0.3.0` is removed from published copy entirely. It was an internal predecessor development
+line, **not** the lineage that becomes v1, and publishing it beside v1 invited exactly the
+lineage inference recorded below. The contract now rejects `0.3.0` in published copy, a v-prefixed form of it
+anywhere, availability wording inside the v1 entry, and any wording implying 0.3.0 becomes v1.
+
+### Why it needed a ruling
+
+The two were different artefacts, and their relationship was not establishable from evidence:
 
 | Artefact | Version | Lineage |
 |---|---|---|
@@ -90,23 +98,23 @@ is not established by any evidence available here:
 | `D:\DSI-V1` — DSI v1 | `0.0.0` | inherits the measurand at `e0ad514`, and none of its status |
 
 `e0ad514` is the CORE-1A baseline, not `0.3.0`'s head, so v1 is not a continuation of the
-`0.3.0` line. Publishing "0.3.0 · unreleased development line" beside "v1 · forthcoming"
-would invite the reading that `0.3.0` becomes `v1`. That is an unsupported positive claim
-about lineage, on a public page.
+`0.3.0` line. Publishing them side by side would have asserted a lineage nothing supported.
+**Option 2 was authorised and is implemented**: name `v0.2.1` and `v1`, retire `0.3.0`.
 
-Pending a ruling, the **weaker claim is implemented**: the site is left with its existing
-`v0.2.1` / `0.3.0` identities, which already separate available from unreleased, and **`v1`
-is not named publicly**. This follows `CLAIM_BOUNDARIES.md`: *"When a task is ambiguous
-between a stronger and a weaker claim, implement the weaker one and say that the choice was
-made."*
+## Surface classes
 
-Three ways forward, for the owner to choose:
-1. Name all three — `v0.2.1` available, `0.3.0` predecessor development line, `v1`
-   forthcoming and separately lineaged. Most accurate, most crowded.
-2. Name `v0.2.1` and `v1` only, and retire `0.3.0` from the public page.
-3. Leave as implemented — no public `v1` — until v1 has release authority.
+The v1 boundary is enforced structurally, by what a page is for, not by lexical proximity:
 
-## Non-blocking corrections
+| Class | Pages | Rule |
+|---|---|---|
+| **v1 surfaces** | `/`, `/dsi`, `/applications` | The withheld capabilities must not appear at all. `/dsi` must positively carry the four authorised capabilities and the seven statuses. |
+| **v0.2.1 surfaces** | `/audit`, `/getting-started`, `/deployment`, `/security`, `/release-notes`, `/example-audit` | Withheld capabilities are legitimate, but the page must carry the verbatim scope marker. |
+| **disclosure surfaces** | `/evidence`, `/research` | Permitted as evidence and programme history; the not-established and history rules apply. |
+
+Withheld from v1: regression, evidence bundles, fingerprints, provenance, replay,
+comparability, readiness, stateless operation, revision, intervention, remediation.
+
+## Corrections made against the frozen contract
 
 Two owner-supplied phrasings were corrected against the frozen contract and
 are recorded here rather than silently adopted: the "loss · addition · distortion" triplet

@@ -145,10 +145,21 @@ CASES = [
     ("nav: primary sequence reordered", "index.html",
      '<a href="/applications">Applications</a>\n      <a href="/evidence">Evidence</a>',
      '<a href="/evidence">Evidence</a>\n      <a href="/applications">Applications</a>'),
-    # the v1 capability ceiling: only four positive capabilities are authorised
-    ("v1 ceiling: regression attributed to v1", "audit.html",
-     "<dt>Forthcoming</dt><dd><strong>DSI v1</strong>",
-     "<dt>Forthcoming</dt><dd>Regression comparison ships with <strong>DSI v1</strong>"),
+    # --- surface classes. A v1 surface may not carry a v0.2.1 capability at all; a
+    # v0.2.1 surface may, but only while it says so; /dsi must positively carry v1's four.
+    ("surface: a v0.2.1 capability appears on a v1 surface", "dsi.html",
+     "<h2>Four capabilities, and their boundaries.</h2>",
+     "<h2>Four capabilities, regression comparison, and their boundaries.</h2>"),
+    ("surface: fingerprints promoted onto /applications", "applications.html",
+     "<h2>AI summary assurance.</h2>",
+     "<h2>AI summary assurance, with a reproducible fingerprint.</h2>"),
+    ("surface: a v0.2.1 page drops its scope marker", "deployment.html",
+     "This page documents the <strong>v0.2.1</strong> evaluation build.",
+     "This page documents the current build."),
+    ("surface: /dsi loses a v1 capability", "dsi.html",
+     "<span class=\"mono\">omitted_safety_critical</span>", "<span class=\"mono\">findings</span>"),
+    ("surface: /dsi loses a governed status", "dsi.html",
+     "negated, collapsed into other", "negated"),
     ("version: 'supplied by request' dropped", "audit.html",
      "&#183; supplied by request. This is the only build available",
      "&#183; the current product version. This is the only build available"),
@@ -231,6 +242,43 @@ def run_check() -> int:
     return r.returncode
 
 
+def _snapshot_tracked():
+    """Bytes of every tracked file, plus the set of paths, taken before any mutation."""
+    r = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, text=True)
+    if r.returncode != 0:
+        return None
+    snap = {}
+    for rel in (x for x in r.stdout.split("\0") if x):
+        f = ROOT / rel
+        if f.is_file():
+            snap[rel] = f.read_bytes()
+    return snap
+
+
+def _restore_snapshot(snap):
+    """Force the tree back to the snapshot and PROVE it. Returns the still-dirty paths."""
+    if snap is None:
+        return ["(snapshot unavailable)"]
+    for rel, data in snap.items():
+        f = ROOT / rel
+        try:
+            if (not f.exists()) or f.read_bytes() != data:
+                f.parent.mkdir(parents=True, exist_ok=True)
+                f.write_bytes(data)
+        except OSError as exc:
+            return [f"{rel}: {exc}"]
+    # verification pass: a write that did not land must not be reported as cleanup
+    stubborn = []
+    for rel, data in snap.items():
+        f = ROOT / rel
+        try:
+            if (not f.exists()) or f.read_bytes() != data:
+                stubborn.append(rel)
+        except OSError as exc:
+            stubborn.append(f"{rel}: {exc}")
+    return stubborn
+
+
 def _digest(path: pathlib.Path):
     """Content digest, or None when the file is absent. Absence is a real state."""
     return hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else None
@@ -256,7 +304,24 @@ def main() -> int:
     if start_rc != 0:
         print("BASELINE FAIL: could not read the working tree state from git.")
         return 1
+    baseline_bytes = _snapshot_tracked()
+    if baseline_bytes is None:
+        print("BASELINE FAIL: could not snapshot the tracked tree.")
+        return 1
     print(f"baseline clean · {len(CASES) + 2} mutations\n")
+    try:
+        return _run(start_state, baseline_bytes)
+    finally:
+        # OUTERMOST cleanup. Per-case restoration is not enough on a filesystem where a
+        # write can be reported as done without landing; this re-writes and re-verifies.
+        stubborn = _restore_snapshot(baseline_bytes)
+        if stubborn:
+            print("\nCLEANUP FAILED - these files could not be restored:")
+            for f_ in stubborn:
+                print(f"  {f_}")
+
+
+def _run(start_state, baseline_bytes) -> int:
 
     missed = []
     unrestored = []
@@ -365,6 +430,12 @@ def main() -> int:
         return 1
 
     # The claim is "every file restored", so prove it against git rather than asserting it.
+    stubborn = _restore_snapshot(baseline_bytes)
+    if stubborn:
+        print(f"MUTATION SUITE: FAIL — {len(stubborn)} file(s) could not be restored")
+        for f_ in stubborn:
+            print(f"  {f_}")
+        return 1
     end_rc, end_state = _worktree_state()
     if end_rc != 0 or end_state != start_state:
         print("MUTATION SUITE: FAIL — the working tree did not come back to its starting state")

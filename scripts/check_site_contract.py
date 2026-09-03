@@ -7,7 +7,7 @@ the structural and governance rulings that a later content edit could silently u
   * canonical route uniqueness and sitemap parity
   * redirect completeness, resolvable targets, no loops
   * maturity labels present where a tier is asserted
-  * the Pluraxis watermark and caption
+  * the v1 product boundary: no Pluraxis, no GATE, no retired /pluraxis route
   * retired C-001 wording stays retired
   * DSI Audit is never described as a public release
   * the human-validation boundary is present verbatim
@@ -47,10 +47,6 @@ HUMAN_VALIDATION = (
 GCB2_WITHHELD = ("PUBLIC CLAIM WITHHELD — ORIGINAL INVALIDATED; "
                  "SUCCESSOR DID NOT RESOLVE THE CONTRAST")
 
-PLURAXIS_WATERMARK = "TARGET ARCHITECTURE &#183; UNDER ACTIVE DEVELOPMENT"
-PLURAXIS_CAPTION = ("Conceptual target architecture. Individual components exist at different "
-                    "maturity levels; the integrated system and its effect on decision quality "
-                    "are not established.")
 
 # DSI Audit must never be described in public-release terms.
 PUBLIC_RELEASE_BANNED = [
@@ -126,7 +122,7 @@ def main(argv: list[str]) -> int:
                 errors.append(f"sitemap lists {path}, which is a redirect source")
         if f"{SITE}/404" in locs:
             errors.append("sitemap must not list the 404 route")
-        for required in ("/", "/dsc", "/dsi", "/audit", "/pluraxis", "/evidence", "/research", "/articles"):
+        for required in ("/", "/dsc", "/dsi", "/audit", "/applications", "/evidence", "/research", "/articles"):
             want = SITE + ("" if required == "/" else required)
             if required == "/":
                 want = SITE + "/"
@@ -183,40 +179,62 @@ def main(argv: list[str]) -> int:
                               "without .tierstack, so they lose their row gap when they "
                               "wrap onto a second line")
 
-    plx = root / "pluraxis.html"
-    if plx.exists():
-        s = text[plx]
-        if "<title>Pluraxis (target architecture)" not in s:
-            errors.append("pluraxis.html: title must carry the target-architecture tier")
-        if PLURAXIS_WATERMARK not in s:
-            errors.append("pluraxis.html: maturity watermark missing from the image slot")
-        if PLURAXIS_CAPTION not in s:
-            errors.append("pluraxis.html: required diagram caption missing")
-        # the revised diagram must be published, with a text equivalent
-        if "/assets/diagrams/pluraxis-architecture.png" not in s:
-            errors.append("pluraxis.html: revised architecture diagram is not referenced")
-        else:
-            img = re.search(r'<img[^>]*pluraxis-architecture\.png[^>]*>', s)
-            if not img or 'alt="' not in img.group(0) or len(img.group(0)) < 200:
-                errors.append("pluraxis.html: architecture diagram needs a descriptive alt text equivalent")
-        # The unrevised owner-supplied source must never be published. .gitignore is NOT
-        # proof of that: an already-tracked file keeps publishing regardless of ignore rules.
-        # Inspect the actual tracked tree instead.
-        tracked = set()
-        try:
-            out = subprocess.run(["git", "ls-files", "-z", "assets/diagrams"],
-                                 cwd=root, capture_output=True, text=True, timeout=20)
-            # FAIL CLOSED: a nonzero exit must not read as "nothing is tracked".
-            if out.returncode != 0:
-                errors.append(f"git ls-files failed (rc={out.returncode}); cannot prove the "
-                              f"unrevised diagram is untracked: {out.stderr.strip()[:160]}")
-            tracked = {t for t in out.stdout.split("\0") if t}
-        except Exception as exc:                      # never pass silently on an unknown state
-            errors.append(f"could not inspect the tracked tree for assets/diagrams: {exc}")
-        for t in sorted(tracked):
-            if pathlib.PurePosixPath(t).name != "pluraxis-architecture.png":
-                errors.append(f"{t}: tracked in git, but only the revised diagram may be "
-                              f"published (the unrevised source is a build input)")
+    # ---- 5b. the v1 product boundary: no Pluraxis, no GATE -------------------------
+    # These rules previously asserted Pluraxis PRESENCE - watermark, caption, diagram,
+    # alt text, efficacy limitations. Retiring the page made every one of them silently
+    # skip, because they were guarded by `if pluraxis.html exists`. Absence is asserted
+    # directly instead, so the retirement cannot be quietly undone.
+    #
+    # The site is the public account of the DSI v1 product line. Pluraxis and GATE are
+    # listed as deliberately unsupported in v1 (DSI-V1 docs/CLAIM_BOUNDARIES.md); they
+    # remain preserved in the governed repositories, not on the website.
+    if (root / "pluraxis.html").exists():
+        errors.append("pluraxis.html: retired from the published site; it must not return")
+
+    # GATE is matched case-sensitively and word-bounded ON PURPOSE. Ordinary English on
+    # this site contains "gates", "delegated", "request-gated", "investigated" and
+    # "aggregate"; a loose scan would fire on all of them and would be turned off.
+    PLURAXIS_RX = re.compile(r"Pluraxis", re.I)
+    GATE_RX = re.compile(r"(?<![\w-])GATE(?![\w-])")
+    for p_, s_ in text.items():
+        name = p_.relative_to(root).as_posix()
+        for rx, what in ((PLURAXIS_RX, "Pluraxis"), (GATE_RX, "GATE")):
+            for m in rx.finditer(s_):
+                frag = " ".join(s_[max(0, m.start() - 60):m.end() + 60].split())
+                errors.append(f"{name}: {what} is outside the v1 product boundary and must "
+                              f"not appear on the published site: ...{frag}...")
+        if "/pluraxis" in s_:
+            errors.append(f"{name}: links to the retired /pluraxis route")
+
+    # Applications took Pluraxis's place in the primary navigation. Assert its presence,
+    # or the promotion could be reverted with no gate objecting - the same silent-skip
+    # failure the retired Pluraxis rules had.
+    NAV_RX = re.compile(r'<nav[^>]*class="nav"[^>]*>(.*?)</nav>', re.S)
+    for p_, s_ in text.items():
+        name = p_.relative_to(root).as_posix()
+        nav = NAV_RX.search(s_)
+        if not nav:
+            errors.append(f"{name}: no primary navigation")
+            continue
+        if 'href="/applications"' not in nav.group(1):
+            errors.append(f"{name}: Applications is missing from the primary navigation")
+
+    # The target-architecture diagram must not be in the published asset set at all.
+    # Inspect the tracked tree: an untracked file cannot deploy, but a tracked one does
+    # regardless of any ignore rule.
+    try:
+        out = subprocess.run(["git", "ls-files", "-z", "assets/diagrams"],
+                             cwd=root, capture_output=True, text=True, timeout=20)
+        # FAIL CLOSED: a nonzero exit must not read as "nothing is tracked".
+        if out.returncode != 0:
+            errors.append(f"git ls-files failed (rc={out.returncode}); cannot prove the "
+                          f"target-architecture diagram is unpublished: "
+                          f"{out.stderr.strip()[:160]}")
+        for t in sorted(t for t in out.stdout.split("\0") if t):
+            errors.append(f"{t}: tracked in git, but the target-architecture diagram is "
+                          f"outside the v1 product boundary and must not be published")
+    except Exception as exc:                      # never pass silently on an unknown state
+        errors.append(f"could not inspect the tracked tree for assets/diagrams: {exc}")
 
     # ---- 6. no public-release language for DSI Audit ------------------------------
     # A denial ("there is no publicly downloadable release") is exactly the wording this pack
@@ -586,22 +604,6 @@ def main(argv: list[str]) -> int:
             errors.append("index.html: stale 'A self-hosted assurance system' metadata is present")
         if "AI can give a good answer and still narrow the decision." not in text[idx]:
             errors.append("index.html: programme-level metadata positioning is missing")
-
-    if plx.exists():
-        s_ = text[plx]
-        # Require the SPECIFIC limitation statements, not merely the words "not established"
-        # somewhere on the page: a page with several such phrases would otherwise still pass
-        # after the load-bearing one was removed.
-        for needed, why in (
-            ("Efficacy: not established", "efficacy badge"),
-            ("effect it may have on decision quality, are <strong>not established</strong>",
-             "decision-quality limitation"),
-            ("its effect on decision quality are not established", "diagram caption limitation"),
-        ):
-            if needed not in s_:
-                errors.append(f"pluraxis.html: {why} is missing ({needed[:52]!r})")
-        if "integrated system" not in s_.lower():
-            errors.append("pluraxis.html: integrated-system limitation is missing")
 
     # ---- report ------------------------------------------------------------------
     if errors:

@@ -67,13 +67,19 @@ CASES = [
     ("homepage: stale metadata returns", "index.html",
      "AI can give a good answer and still narrow the decision. Decision-Space Integrity measures",
      "A self-hosted assurance system that measures. Decision-Space Integrity measures"),
-    ("pluraxis: watermark removed", "pluraxis.html",
-     "TARGET ARCHITECTURE &#183; UNDER ACTIVE DEVELOPMENT", "PRODUCTION READY"),
-    ("pluraxis: efficacy badge removed", "pluraxis.html",
-     "Efficacy: not established", "Efficacy: established"),
-    ("pluraxis: decision-quality limitation removed", "pluraxis.html",
-     "effect it may have on decision quality, are <strong>not established</strong>",
-     "effect it may have on decision quality, are <strong>well proven</strong>"),
+    # --- v1 product boundary. Pluraxis and GATE are deliberately unsupported in v1
+    # (DSI-V1 docs/CLAIM_BOUNDARIES.md); the site is the account of the product line, not
+    # the programme archive. GATE is matched case-sensitively and word-bounded, so
+    # "request-gated", "delegated" and "Aggregate" stay legal.
+    ("boundary: Pluraxis returns to a page", "dsi.html",
+     "<h1", "<h1 data-note=\"Pluraxis\""),
+    ("boundary: GATE returns to a page", "dsi.html",
+     "Measurement is separate from disposition",
+     "GATE governs disposition. Measurement is separate from disposition"),
+    ("boundary: the retired /pluraxis route is linked again", "index.html",
+     'href="/applications"', 'href="/pluraxis"'),
+    ("boundary: Applications drops out of the primary navigation", "index.html",
+     '<a href="/applications">Applications</a>', ''),
     # --- final identity closure: bare uppercase DSI in the main content of a
     # product/runtime surface. These are the exact residuals that survived two
     # amendments because the contract enumerated verbs instead of closing the rule.
@@ -189,10 +195,6 @@ CASES = [
      "nothing at all is processed"),
     ("privacy: CSP offered as evidence of absence", "privacy.html",
      "defence in depth", "conclusive proof"),
-    ("pluraxis: diagram caption limitation removed", "pluraxis.html",
-     "Conceptual target architecture. Individual components exist at different maturity levels; "
-     "the integrated system and its effect on decision quality are not established.",
-     "Conceptual target architecture, fully validated end to end."),
 ]
 
 
@@ -206,7 +208,7 @@ def main() -> int:
     if run_check() != 0:
         print("BASELINE FAIL: the contract does not pass before mutation; fix that first.")
         return 1
-    print(f"baseline clean · {len(CASES) + 1} mutations\n")
+    print(f"baseline clean · {len(CASES) + 2} mutations\n")
 
     missed = []
     for name, fname, find, repl in CASES:
@@ -231,12 +233,14 @@ def main() -> int:
         else:
             print(f"  caught   {name}")
 
-    # Tracked-tree case: staging the unrevised source must be rejected.
+    # Tracked-tree case: staging ANY diagram must now be rejected. Under the v1 product
+    # boundary the target-architecture diagram is outside the published asset set
+    # entirely - the rule is no longer "only the revised one may be published".
     # CI checks out only TRACKED files, so the real build input is absent there and
     # this case would be silently skipped - leaving the fail-closed tracked-tree rule
     # unproven on exactly the runs that gate the branch. Synthesise a stand-in when
     # the real file is absent so the case is exercised everywhere, then remove it.
-    stray = "assets/diagrams/Pluraxis Architecture.PNG"
+    stray = "assets/diagrams/pluraxis-architecture.png"
     stray_path = ROOT / stray
     created = False
     if not stray_path.exists():
@@ -251,11 +255,29 @@ def main() -> int:
         if created:
             stray_path.unlink(missing_ok=True)
     if rc == 0:
-        missed.append(("tracked unrevised diagram", "checker passed a broken contract"))
-        print("  MISSED   tracked unrevised diagram")
+        missed.append(("tracked target-architecture diagram", "checker passed a broken contract"))
+        print("  MISSED   tracked target-architecture diagram")
     else:
-        print("  caught   tracked unrevised diagram"
+        print("  caught   tracked target-architecture diagram"
               + (" (synthesised stand-in)" if created else ""))
+
+    # The retired page must not return. The harness mutates existing files, so this
+    # case has to create one - and remove it again whatever happens.
+    retired = ROOT / "pluraxis.html"
+    if retired.exists():
+        missed.append(("retired page present", "pluraxis.html exists in the working tree"))
+        print("  ERROR    pluraxis.html is present before the case runs")
+    else:
+        retired.write_text("<!doctype html><title>x</title><p>x</p>\n", encoding="utf-8")
+        try:
+            rc_r = run_check()
+        finally:
+            retired.unlink(missing_ok=True)
+        if rc_r == 0:
+            missed.append(("retired page restored", "checker passed a broken contract"))
+            print("  MISSED   retired /pluraxis page restored")
+        else:
+            print("  caught   retired /pluraxis page restored")
 
     print()
     if missed:

@@ -153,6 +153,16 @@ CASES = [
     ("surface: fingerprints promoted onto /applications", "applications.html",
      "<h2>AI summary assurance.</h2>",
      "<h2>AI summary assurance, with a reproducible fingerprint.</h2>"),
+    # --- the two escapes that reached a pushed head. Both were invisible to the checker:
+    # the first because stripping tags discarded metadata, the second because the card
+    # carrying the claim also carried an unrelated application-validity chip.
+    ("escape: a v0.2.1 capability hides in v1 metadata", "dsi.html",
+     'architecture for auditing a supplied response against a governed reference',
+     'architecture for governed structural comparison, provenance and legitimate comparability'),
+    ("escape: a capability claim hides in a card with an evidence chip", "applications.html",
+     "report which expected points it surfaced and which it omitted, against a reference "
+     "governed independently of the response.",
+     "report the omissions — each with source evidence and a reproducible fingerprint."),
     ("surface: a v0.2.1 page drops its scope marker", "deployment.html",
      "This page documents the <strong>v0.2.1</strong> evaluation build.",
      "This page documents the current build."),

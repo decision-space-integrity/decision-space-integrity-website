@@ -107,12 +107,33 @@ The v1 boundary is enforced structurally, by what a page is for, not by lexical 
 
 | Class | Pages | Rule |
 |---|---|---|
-| **v1 surfaces** | `/`, `/dsi`, `/applications` | The withheld capabilities must not appear at all. `/dsi` must positively carry the four authorised capabilities and the seven statuses. |
+| **v1 surfaces** | `/`, `/dsi`, `/applications` | The withheld capabilities must not appear in **visible copy or metadata** — title, description, OG, Twitter and image alt text are all scanned, because stripping tags discards exactly the place a claim can hide. `/dsi` must positively carry the four authorised capabilities and the seven statuses. **`/dsi` and `/applications` get no exemption of any kind.** |
 | **v0.2.1 surfaces** | `/audit`, `/getting-started`, `/deployment`, `/security`, `/release-notes`, `/example-audit` | Withheld capabilities are legitimate, but the page must carry the verbatim scope marker. |
 | **disclosure surfaces** | `/evidence`, `/research` | Permitted as evidence and programme history; the not-established and history rules apply. |
 
 Withheld from v1: regression, evidence bundles, fingerprints, provenance, replay,
 comparability, readiness, stateless operation, revision, intervention, remediation.
+
+### The one exception, and why it is this narrow
+
+The homepage carries a bounded evidence-status disclosure — including
+*"measurement integrity, comparability … not established"* — which must survive, because
+deleting a negative finding is itself a claim. That exemption is keyed to **one explicitly
+identified section**, `index.html#evidence-status`, and to nothing else.
+
+Two earlier versions were broader and each hid a real escape that reached a pushed head:
+
+| Exception as written | What it hid |
+|---|---|
+| whole `<section>` containing an `ev-*` chip | a capability promoted into a heading beside an unrelated badge |
+| any card or row containing an `ev-*` chip | *"a reproducible fingerprint"* in the `/applications` AI-summary card, which also carried an application-validity badge |
+
+An exception scoped by "contains a chip" is scoped by coincidence. This one is scoped by
+identity.
+
+`source evidence` is **not** one of v1's four authorised capabilities, so the application
+profiles state the governed reference and the status partition instead of promising evidence
+the contract does not authorise.
 
 ## Corrections made against the frozen contract
 

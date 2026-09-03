@@ -415,23 +415,31 @@ def main(argv: list[str]) -> int:
             errors.append(f"{name}: v1 surface is missing")
             continue
         src = re.sub(r"<(script|style)\b.*?</\1>", " ", text[p_], flags=re.S | re.I)
-        # CONTEXTUAL EXCEPTION: an evidence-status section is disclosure wherever it
-        # appears. A v1 surface may carry "comparability ... not established" as a
-        # recorded negative finding - deleting it would itself be a claim. Sections
-        # carrying an evidence chip are excluded from the capability scan.
-        # Bounded to the CARD or ROW carrying the chip, not the whole section: exempting
-        # a section would have exempted its heading too, and a capability claim promoted
-        # into a heading beside an unrelated evidence badge would have passed.
-        for pat in (r'<div class="card"[^>]*>(?:(?!</div>\s*</div>).)*?class="ev '
-                    r'(?:(?!</div>\s*</div>).)*?</div>\s*</div>',
-                    r'<tr\b(?:(?!</tr>).)*?class="ev (?:(?!</tr>).)*?</tr>'):
-            src = re.sub(pat, " ", src, flags=re.S)
-        body = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", src)).lower()
-        for w in WITHHELD:
-            if w in body:
-                i = body.index(w)
-                errors.append(f"{name}: {w!r} is a v0.2.1 capability and must not appear on "
-                              f"a v1 surface: ...{body[max(0, i - 60):i + 70]}...")
+
+        # The exception is now keyed to ONE explicitly identified disclosure, and only on
+        # the homepage. Two earlier versions were too broad and each hid a real escape:
+        # exempting whole <section>s hid a capability promoted into a heading, and
+        # exempting any card carrying an ev-* chip hid "a reproducible fingerprint" in the
+        # /applications AI-summary card, because that card also carried an unrelated
+        # application-validity badge. /dsi and /applications now get NO exemption at all.
+        if name == "index.html":
+            src = re.sub(r'<section\b[^>]*id="evidence-status"[^>]*>.*?</section>',
+                         " ", src, flags=re.S)
+
+        # TWO representations. Stripping tags discards metadata attributes, which is how
+        # "provenance and legitimate comparability" survived in the /dsi description, OG
+        # and Twitter cards while the rendered text was clean.
+        visible = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", src)).lower()
+        meta = " ".join(re.findall(r'<meta[^>]+content="([^"]*)"', src, re.I)
+                        + re.findall(r"<title>(.*?)</title>", src, re.S | re.I)
+                        + re.findall(r'<img[^>]+alt="([^"]*)"', src, re.I)).lower()
+        for label, hay in (("visible copy", visible), ("metadata", meta)):
+            for w in WITHHELD:
+                if w in hay:
+                    i = hay.index(w)
+                    errors.append(f"{name}: {w!r} is a v0.2.1 capability and must not appear "
+                                  f"on a v1 surface ({label}): "
+                                  f"...{hay[max(0, i - 60):i + 70]}...")
 
     for name in V021_SURFACES:
         p_ = root / name

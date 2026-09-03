@@ -36,6 +36,10 @@ except Exception:
 
 SITE = "https://decisionspaceintegrity.com"
 
+# Approved primary navigation: understand -> evaluate -> verify.
+# Home is provided by the site mark; Articles is footer material.
+NAV_SEQUENCE = ["/dsc", "/dsi", "/audit", "/applications", "/evidence", "/research"]
+
 C001 = ("DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not "
         "generate one. It measures configured expected-path visibility")
 
@@ -160,9 +164,34 @@ def main(argv: list[str]) -> int:
         if "supplied by request" not in s:
             errors.append("audit.html: the evaluation build must state that it is "
                           "supplied by request")
-        if "Current development line" not in s or "unreleased" not in s:
-            errors.append("audit.html: the current development line must be stated "
-                          "separately and marked unreleased")
+        # Option 2: two public identities only. 0.3.0 was an internal predecessor
+        # development line, not the lineage that becomes v1, so it is off the public site.
+        if "DSI v1" not in s or "Forthcoming" not in s:
+            errors.append("audit.html: DSI v1 must be stated separately as forthcoming")
+        for needed, why in (
+            ("separately lineaged", "v1 must be marked separately lineaged"),
+            ("unqualified", "v1 must be marked unqualified"),
+            ("not released and not downloadable", "v1 must be marked unavailable"),
+        ):
+            if needed not in s:
+                errors.append(f"audit.html: {why} ({needed!r} missing)")
+        if "describes <strong>v0.2.1</strong>" not in s:
+            errors.append("audit.html: the site's subordinate pages (installation, "
+                          "deployment, security, release notes) must be stated as "
+                          "describing v0.2.1")
+        # v1 is forthcoming. Availability wording belongs to v0.2.1 and must never
+        # migrate into the v1 definition, which is the subtlest way this could go wrong.
+        fc = re.search(r"<dt>Forthcoming</dt>\s*<dd>(.*?)</dd>", s, re.S)
+        if fc:
+            # "evaluation build" is deliberately NOT here: the v1 entry legitimately
+            # refers to the evaluation build's predecessor when stating its lineage.
+            AVAILABILITY = ("supplied by request", "available for", "download", "obtain")
+            for a in AVAILABILITY:
+                if a in fc.group(1).lower() and a != "download":
+                    errors.append(f"audit.html: the DSI v1 entry carries availability "
+                                  f"wording ({a!r}); v1 is forthcoming and unavailable")
+                elif a == "download" and re.search(r"(?<!not )downloadab", fc.group(1), re.I):
+                    errors.append("audit.html: the DSI v1 entry reads as downloadable")
     else:
         errors.append("audit.html is missing")
 
@@ -170,6 +199,12 @@ def main(argv: list[str]) -> int:
     # prefix would read as a tagged release, and no 0.3.0 release exists: the product
     # repository's newest tag is v0.2.1 while pyproject declares 0.3.0 in development.
     for p, s in text.items():
+        # 0.3.0 is an INTERNAL predecessor development line, not the lineage that becomes
+        # v1. It is off the public site entirely, which also removes any opportunity to
+        # imply that it becomes v1.
+        if re.search(r"\b0\.3\.0\b", s):
+            errors.append(f"{p.relative_to(root)}: 0.3.0 is an internal predecessor "
+                          f"development line and must not appear in published copy")
         if re.search(r"\bv0\.3\.0\b", s):
             errors.append(f"{p.relative_to(root)}: 'v0.3.0' implies a tagged release; "
                           f"no 0.3.0 release exists - the development line is '0.3.0'")
@@ -177,6 +212,11 @@ def main(argv: list[str]) -> int:
                      r"request|evaluation build)\b", s, re.I):
             errors.append(f"{p.relative_to(root)}: 0.3.0 is presented as available; it is "
                           f"an unreleased development line and v0.2.1 is the evaluation build")
+        # 0.3.0 is an internal predecessor line, NOT the lineage that becomes v1. Saying so
+        # publicly would be an unsupported lineage claim, which is why it is off the site.
+        if re.search(r"0\.3\.0[^.]{0,80}?\bv1\b|\bv1\b[^.]{0,80}?0\.3\.0", s, re.I):
+            errors.append(f"{p.relative_to(root)}: implies 0.3.0 becomes v1; they are "
+                          f"separately lineaged and 0.3.0 is not published at all")
 
     # Stacked maturity badges in a register cell need a real row gap, not line-height.
     ev = root / "evidence.html"
@@ -265,8 +305,13 @@ def main(argv: list[str]) -> int:
         if not nav:
             errors.append(f"{name}: no primary navigation")
             continue
-        if 'href="/applications"' not in nav.group(1):
-            errors.append(f"{name}: Applications is missing from the primary navigation")
+        # The approved sequence encodes the journey: understand -> evaluate -> verify.
+        # Order is asserted, not merely membership - a reordering would change the story
+        # the navigation tells while every link still resolved.
+        seq = re.findall(r'<a href="(/[a-z-]*)"[^>]*>', nav.group(1))
+        if seq != NAV_SEQUENCE:
+            errors.append(f"{name}: primary navigation must be exactly "
+                          f"{' -> '.join(NAV_SEQUENCE)}, found {' -> '.join(seq) or '(empty)'}")
 
     # The target-architecture diagram must not be in the published asset set at all.
     # Inspect the tracked tree: an untracked file cannot deploy, but a tracked one does
@@ -341,6 +386,29 @@ def main(argv: list[str]) -> int:
         if "script-src 'none'" in pv and "defence in depth" not in pv:
             errors.append("privacy.html: CSP is defence in depth, not evidence the beacon "
                           "is absent; the page must say so")
+
+    # ---- 6b. the v1 capability ceiling ---------------------------------------------
+    # Only four positive v1 capabilities are authorised: auditing a supplied response
+    # against a governed reference, the seven-status partition, coverage over the
+    # applicable counted population, and the orthogonal omitted_safety_critical finding.
+    # Everything else the product line does belongs to v0.2.1 and must not be read as
+    # already present in v1.
+    V1_WITHHELD = ("regression", "evidence bundle", "fingerprint", "provenance", "replay",
+                   "comparability", "readiness", "stateless", "revision", "intervention",
+                   "remediation")
+    V1_RX = re.compile(r"DSI v1")
+    for p_, s_ in text.items():
+        name = p_.relative_to(root).as_posix()
+        # local strip: `rendered` is defined further down, in the identity section
+        _t = re.sub(r"<(script|style)\b.*?</\1>", " ", s_, flags=re.S | re.I)
+        flat = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", _t))
+        for m in V1_RX.finditer(flat):
+            window = flat[max(0, m.start() - 160): m.end() + 160].lower()
+            for w in V1_WITHHELD:
+                if w in window:
+                    errors.append(f"{name}: {w!r} appears alongside 'DSI v1'; that "
+                                  f"capability belongs to the v0.2.1 evaluation build and "
+                                  f"is not implemented in v1")
 
     # ---- 7a. in-page anchors must resolve --------------------------------------------
     # check_links.py strips the fragment before resolving, so it proves the PAGE exists

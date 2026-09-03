@@ -15,6 +15,7 @@ Exit 1 if any mutation is NOT caught, 0 if every one is.
 """
 from __future__ import annotations
 
+import hashlib
 import pathlib
 import subprocess
 import sys
@@ -124,20 +125,34 @@ CASES = [
     # unreleased development line and must never read as an available identity.
     ("version: 'advertised build' label returns", "audit.html",
      "<dt>Available evaluation build</dt>", "<dt>Advertised build</dt>"),
+    # --- option 2: two public identities. v0.2.1 available by request; DSI v1
+    # forthcoming, separately lineaged, unqualified, unavailable. 0.3.0 is off the site.
+    ("version: the forthcoming v1 identity disappears", "audit.html",
+     "<dt>Forthcoming</dt>", "<dt>Notes</dt>"),
+    ("version: v1 stops being marked unqualified", "audit.html",
+     "<strong>unqualified</strong>, not released", "ready, not released"),
+    ("version: v1 stops being marked unavailable", "audit.html",
+     "not released and not downloadable", "not yet widely promoted"),
+    ("version: availability wording migrates to v1", "audit.html",
+     "<strong>DSI v1</strong> &#183; separately lineaged",
+     "<strong>DSI v1</strong> &#183; supplied by request, separately lineaged"),
+    ("version: lineage blurred between 0.3.0 and v1", "audit.html",
+     "It inherits the measurand of the evaluation build's predecessor",
+     "It is the 0.3.0 line renamed, and inherits the measurand of the predecessor"),
+    ("version: subordinate pages stop being scoped to v0.2.1", "audit.html",
+     "describes <strong>v0.2.1</strong>", "describes the current product"),
+    # the approved navigation sequence encodes the journey; order is asserted
+    ("nav: primary sequence reordered", "index.html",
+     '<a href="/applications">Applications</a>\n      <a href="/evidence">Evidence</a>',
+     '<a href="/evidence">Evidence</a>\n      <a href="/applications">Applications</a>'),
+    # the v1 capability ceiling: only four positive capabilities are authorised
+    ("v1 ceiling: regression attributed to v1", "audit.html",
+     "<dt>Forthcoming</dt><dd><strong>DSI v1</strong>",
+     "<dt>Forthcoming</dt><dd>Regression comparison ships with <strong>DSI v1</strong>"),
     ("version: 'supplied by request' dropped", "audit.html",
      "&#183; supplied by request. This is the only build available",
      "&#183; the current product version. This is the only build available"),
-    ("version: development line no longer stated", "audit.html",
-     "<dt>Current development line</dt>", "<dt>Notes</dt>"),
-    ("version: development line loses 'unreleased'", "audit.html",
-     "<strong>0.3.0</strong> &#183; unreleased research implementation.",
-     "<strong>0.3.0</strong> &#183; research implementation."),
     # a "v" prefix would imply a tagged release; the newest product tag is v0.2.1
-    ("version: 0.3.0 given a release identity", "audit.html",
-     "<strong>0.3.0</strong>", "<strong>v0.3.0</strong>"),
-    ("version: 0.3.0 presented as downloadable", "audit.html",
-     "No 0.3.0 release exists: it is not published, not downloadable",
-     "0.3.0 is available for download"),
     # stacked maturity badges must keep their row gap when they wrap
     ("badges: evidence tierstack removed", "evidence.html",
      '<span class="tierstack"><span class="tier tier-research">Research implementation</span>'
@@ -216,91 +231,157 @@ def run_check() -> int:
     return r.returncode
 
 
+def _digest(path: pathlib.Path):
+    """Content digest, or None when the file is absent. Absence is a real state."""
+    return hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else None
+
+
+def _worktree_state():
+    """The whole working tree as git sees it. Compared before and after the run."""
+    r = subprocess.run(["git", "status", "--porcelain"],
+                       cwd=ROOT, capture_output=True, text=True)
+    return r.returncode, r.stdout
+
+
+def _git(*args) -> tuple[int, str]:
+    r = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
+    return r.returncode, (r.stderr or "").strip()
+
+
 def main() -> int:
     if run_check() != 0:
         print("BASELINE FAIL: the contract does not pass before mutation; fix that first.")
         return 1
+    start_rc, start_state = _worktree_state()
+    if start_rc != 0:
+        print("BASELINE FAIL: could not read the working tree state from git.")
+        return 1
     print(f"baseline clean · {len(CASES) + 2} mutations\n")
 
     missed = []
+    unrestored = []
+
     for name, fname, find, repl in CASES:
         f = ROOT / fname
-        # Restore from the ORIGINAL BYTES, not from decoded text. read_text performs
-        # universal-newline translation, so writing the decoded string back rewrote a
-        # CRLF working copy as LF and left the tree dirty - the suite claims every file
-        # is restored, so it must round-trip exactly. Matching still uses a normalised
-        # view so the "\n"-based anchors work whatever the file's line endings are.
+        # Restore from the ORIGINAL BYTES. read_text performs universal-newline
+        # translation, so writing the decoded string back would rewrite a CRLF working
+        # copy as LF. Matching uses a normalised view so "\n" anchors work regardless.
         raw = f.read_bytes()
+        before = hashlib.sha256(raw).hexdigest()
         original = raw.decode("utf-8").replace("\r\n", "\n")
         if find not in original:
             missed.append((name, "anchor absent - mutation could not be applied"))
             print(f"  ANCHOR?  {name}")
             continue
-        f.write_text(original.replace(find, repl, 1), encoding="utf-8", newline="")
-        rc = run_check()
-        f.write_bytes(raw)
-        if rc == 0:
+        rc = None
+        try:
+            f.write_text(original.replace(find, repl, 1), encoding="utf-8", newline="")
+            rc = run_check()
+        finally:
+            # ALWAYS restore, even if run_check raised. Without this an exception left
+            # the file mutated and the next run started from a corrupted tree.
+            f.write_bytes(raw)
+            if _digest(f) != before:
+                unrestored.append(fname)
+        if rc is None:
+            missed.append((name, "the contract check raised before returning a result"))
+            print(f"  ERROR    {name}")
+        elif rc == 0:
             missed.append((name, "checker passed a broken contract"))
             print(f"  MISSED   {name}")
         else:
             print(f"  caught   {name}")
 
-    # Tracked-tree case: staging ANY diagram must now be rejected. Under the v1 product
+    # Tracked-tree case: staging ANY diagram must be rejected. Under the v1 product
     # boundary the target-architecture diagram is outside the published asset set
-    # entirely - the rule is no longer "only the revised one may be published".
-    # CI checks out only TRACKED files, so the real build input is absent there and
+    # entirely. CI checks out only tracked files, so the real asset is absent there and
     # this case would be silently skipped - leaving the fail-closed tracked-tree rule
-    # unproven on exactly the runs that gate the branch. Synthesise a stand-in when
-    # the real file is absent so the case is exercised everywhere, then remove it.
+    # unproven on exactly the runs that gate the branch. Synthesise a stand-in.
     stray = "assets/diagrams/pluraxis-architecture.png"
     stray_path = ROOT / stray
-    created = False
+    created_file = False
+    created_dir = not stray_path.parent.exists()
+    rc_t = None
     if not stray_path.exists():
         stray_path.parent.mkdir(parents=True, exist_ok=True)
         stray_path.write_bytes(bytes([137, 80, 78, 71, 13, 10, 26, 10]) + bytes(32))
-        created = True
+        created_file = True
+    add_rc, add_err = _git("add", "-f", stray)
     try:
-        subprocess.run(["git", "add", "-f", stray], cwd=ROOT, capture_output=True)
-        rc = run_check()
+        if add_rc != 0:
+            missed.append(("tracked target-architecture diagram",
+                           f"could not stage the probe, so the rule was never exercised: {add_err[:120]}"))
+            print("  ERROR    tracked target-architecture diagram (git add failed)")
+        else:
+            rc_t = run_check()
     finally:
-        subprocess.run(["git", "rm", "-q", "--cached", stray], cwd=ROOT, capture_output=True)
-        if created:
+        # unstage unconditionally; an unchecked failure here is how index residue survived
+        rm_rc, rm_err = _git("rm", "-q", "--cached", "--ignore-unmatch", stray)
+        if rm_rc != 0:
+            unrestored.append(f"{stray} (still staged: {rm_err[:100]})")
+        if created_file:
             stray_path.unlink(missing_ok=True)
-    if rc == 0:
-        missed.append(("tracked target-architecture diagram", "checker passed a broken contract"))
-        print("  MISSED   tracked target-architecture diagram")
-    else:
-        print("  caught   tracked target-architecture diagram"
-              + (" (synthesised stand-in)" if created else ""))
+        if created_dir and stray_path.parent.exists():
+            try:
+                stray_path.parent.rmdir()
+            except OSError:
+                pass                      # not empty; leave it rather than delete content
+    if rc_t is not None:
+        if rc_t == 0:
+            missed.append(("tracked target-architecture diagram", "checker passed a broken contract"))
+            print("  MISSED   tracked target-architecture diagram")
+        else:
+            print("  caught   tracked target-architecture diagram"
+                  + (" (synthesised stand-in)" if created_file else ""))
 
-    # The retired page must not return. The harness mutates existing files, so this
-    # case has to create one - and remove it again whatever happens.
+    # The retired page must not return.
     retired = ROOT / "pluraxis.html"
     if retired.exists():
         missed.append(("retired page present", "pluraxis.html exists in the working tree"))
         print("  ERROR    pluraxis.html is present before the case runs")
     else:
-        retired.write_text("<!doctype html><title>x</title><p>x</p>\n", encoding="utf-8")
+        rc_r = None
         try:
+            retired.write_text("<!doctype html><title>x</title><p>x</p>\n", encoding="utf-8")
             rc_r = run_check()
         finally:
             retired.unlink(missing_ok=True)
-        if rc_r == 0:
+            if retired.exists():
+                unrestored.append("pluraxis.html (probe not removed)")
+        if rc_r is None:
+            missed.append(("retired page restored", "the contract check raised"))
+            print("  ERROR    retired /pluraxis page restored")
+        elif rc_r == 0:
             missed.append(("retired page restored", "checker passed a broken contract"))
             print("  MISSED   retired /pluraxis page restored")
         else:
             print("  caught   retired /pluraxis page restored")
 
     print()
+    if unrestored:
+        print(f"MUTATION SUITE: FAIL — {len(unrestored)} file(s) not restored byte-exactly")
+        for u in unrestored:
+            print(f"  {u}")
+        return 1
+
+    # The claim is "every file restored", so prove it against git rather than asserting it.
+    end_rc, end_state = _worktree_state()
+    if end_rc != 0 or end_state != start_state:
+        print("MUTATION SUITE: FAIL — the working tree did not come back to its starting state")
+        for line in sorted(set(end_state.splitlines()) ^ set(start_state.splitlines())):
+            print(f"  {line}")
+        return 1
+
     if missed:
         print(f"MUTATION SUITE: FAIL — {len(missed)} not caught")
         for n, why in missed:
             print(f"  {n}: {why}")
         return 1
     if run_check() != 0:
-        print("MUTATION SUITE: FAIL — files were not restored cleanly")
+        print("MUTATION SUITE: FAIL — the contract does not pass after restoration")
         return 1
-    print("MUTATION SUITE: PASS — every mutation was rejected and every file restored.")
+    print("MUTATION SUITE: PASS — every mutation was rejected, every file restored "
+          "byte-exactly, and the working tree is unchanged.")
     return 0
 
 

@@ -80,6 +80,18 @@ CASES = [
      'href="/applications"', 'href="/pluraxis"'),
     ("boundary: Applications drops out of the primary navigation", "index.html",
      '<a href="/applications">Applications</a>', ''),
+    # The contextual rule has a POSITIVE side: bounded disclosure must survive. Deleting a
+    # not-established finding along with the programme material would itself be a claim.
+    ("boundary: the not-established deliberation-loop finding is deleted", "evidence.html",
+     "Deliberation-loop efficacy", "Deliberation loop"),
+    ("boundary: programme history stops saying the work is excluded from v1", "research.html",
+     "preserved in the governed repositories and excluded from", "described in"),
+    # a disclosure page may carry the words, but never in a heading
+    ("boundary: Pluraxis promoted into a heading on a disclosure page", "research.html",
+     "<h2>How the work has unfolded.</h2>", "<h2>Pluraxis and how the work has unfolded.</h2>"),
+    # the retired route must land somewhere real
+    ("boundary: the /pluraxis redirect anchor is broken", "research.html",
+     'id="programme-history"', 'id="programme-timeline"'),
     # --- final identity closure: bare uppercase DSI in the main content of a
     # product/runtime surface. These are the exact residuals that survived two
     # amendments because the contract enumerated verbs instead of closing the rule.

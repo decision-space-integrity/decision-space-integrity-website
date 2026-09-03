@@ -98,9 +98,17 @@ def main(argv: list[str]) -> int:
                 errors.append(f"_redirects: {src} -> {dst} -> {redirects[dst]} (chain/loop)")
             if src == dst:
                 errors.append(f"_redirects: {src} redirects to itself")
-            target = dst.lstrip("/") or "index"
-            if not ((root / f"{target}.html").exists() or (root / target).exists()):
+            # a redirect may target a fragment (/research#programme-history); resolve
+            # the page, then require the anchor to exist on it
+            dst_path, _, dst_frag = dst.partition("#")
+            target = dst_path.lstrip("/") or "index"
+            tgt_file = root / f"{target}.html"
+            if not (tgt_file.exists() or (root / target).exists()):
                 errors.append(f"_redirects: target {dst} does not resolve to a page")
+            elif dst_frag and tgt_file.exists():
+                if f'id="{dst_frag}"' not in tgt_file.read_text(encoding="utf-8"):
+                    errors.append(f"_redirects: target {dst} resolves to a page, but the "
+                                  f"anchor #{dst_frag} does not exist on it")
         # a retired route must not still exist as a page
         for src in redirects:
             stem = src.lstrip("/")
@@ -194,17 +202,58 @@ def main(argv: list[str]) -> int:
     # GATE is matched case-sensitively and word-bounded ON PURPOSE. Ordinary English on
     # this site contains "gates", "delegated", "request-gated", "investigated" and
     # "aggregate"; a loose scan would fire on all of them and would be turned off.
+    #
+    # The boundary is CONTEXTUAL, not lexical. An earlier draft of this rule demanded zero
+    # references, which was wrong: deleting a negative finding is itself a claim. Pluraxis
+    # and GATE carry no promotion, navigation, application profile or v1-capability
+    # representation - but they remain permitted as bounded evidence and programme-history
+    # disclosure, because "deliberation-loop efficacy: not established" has to survive.
     PLURAXIS_RX = re.compile(r"Pluraxis", re.I)
     GATE_RX = re.compile(r"(?<![\w-])GATE(?![\w-])")
+    DISCLOSURE_PAGES = {"research.html", "evidence.html"}
+    TITLE_RX = re.compile(r"<title>(.*?)</title>", re.S | re.I)
+    META_RX = re.compile(r'<meta[^>]+content="([^"]*)"', re.I)
+    HEAD_RX = re.compile(r"<h[1-3]\b[^>]*>(.*?)</h[1-3]>", re.S | re.I)
+    CARD_RX = re.compile(r'<span class="idx">(.*?)</span>', re.S | re.I)
+
     for p_, s_ in text.items():
         name = p_.relative_to(root).as_posix()
+        nav_m = re.search(r'<nav[^>]*class="nav"[^>]*>(.*?)</nav>', s_, re.S)
+        zones = [("primary navigation", nav_m.group(1) if nav_m else ""),
+                 ("page title", " ".join(TITLE_RX.findall(s_))),
+                 ("metadata", " ".join(META_RX.findall(s_))),
+                 ("a heading", " ".join(HEAD_RX.findall(s_))),
+                 ("an application or capability card", " ".join(CARD_RX.findall(s_)))]
         for rx, what in ((PLURAXIS_RX, "Pluraxis"), (GATE_RX, "GATE")):
-            for m in rx.finditer(s_):
+            # (a) never in a promotional / navigational / capability position, any page
+            for zone_name, zone in zones:
+                if zone and rx.search(zone):
+                    errors.append(f"{name}: {what} appears in {zone_name}; the v1 boundary "
+                                  f"permits it only as bounded evidence or programme history")
+            # (b) elsewhere, only on the two disclosure surfaces
+            if name not in DISCLOSURE_PAGES and rx.search(s_):
+                m = rx.search(s_)
                 frag = " ".join(s_[max(0, m.start() - 60):m.end() + 60].split())
-                errors.append(f"{name}: {what} is outside the v1 product boundary and must "
-                              f"not appear on the published site: ...{frag}...")
+                errors.append(f"{name}: {what} is outside the v1 product boundary. Bounded "
+                              f"disclosure belongs on /research or /evidence: ...{frag}...")
         if "/pluraxis" in s_:
             errors.append(f"{name}: links to the retired /pluraxis route")
+
+    # The negative finding must survive the retirement - removing it would itself be a claim.
+    ev_ = root / "evidence.html"
+    if ev_.exists() and "Deliberation-loop efficacy" not in text[ev_]:
+        errors.append("evidence.html: 'Deliberation-loop efficacy' must remain in the "
+                      "register; a not-established finding is not removed with the "
+                      "programme material it came from")
+
+    # The programme history must say the wider work is preserved AND excluded from v1.
+    res_ = root / "research.html"
+    if res_.exists():
+        r_ = text[res_]
+        if "preserved in the governed repositories and excluded from" not in r_:
+            errors.append("research.html: the programme-history section must state that the "
+                          "wider work is preserved in the governed repositories and excluded "
+                          "from DSI v1")
 
     # Applications took Pluraxis's place in the primary navigation. Assert its presence,
     # or the promotion could be reverted with no gate objecting - the same silent-skip

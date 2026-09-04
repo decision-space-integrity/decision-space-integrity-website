@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Decision-Space Integrity — the measurement architecture | DSI</title>
-<meta name="description" content="Decision-Space Integrity is the measurement and assurance architecture for governed structural comparison, provenance and legitimate comparability. It is not a package or a sidecar.">
+<meta name="description" content="Decision-Space Integrity is the measurement and assurance architecture for auditing a supplied response against a governed reference: which expected structure it surfaced, which it omitted, and coverage over the applicable counted population. It is not a package or a sidecar.">
 <link rel="canonical" href="https://decisionspaceintegrity.com/dsi">
 <meta name="author" content="Andrew J Cousins">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Decision-Space Integrity">
 <meta property="og:title" content="Decision-Space Integrity — the measurement architecture | DSI">
-<meta property="og:description" content="Decision-Space Integrity is the measurement and assurance architecture for governed structural comparison, provenance and legitimate comparability. It is not a package or a sidecar.">
+<meta property="og:description" content="Decision-Space Integrity is the measurement and assurance architecture for auditing a supplied response against a governed reference: which expected structure it surfaced, which it omitted, and coverage over the applicable counted population. It is not a package or a sidecar.">
 <meta property="og:url" content="https://decisionspaceintegrity.com/dsi">
 <meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Decision-Space Integrity — the measurement architecture | DSI">
-<meta name="twitter:description" content="Decision-Space Integrity is the measurement and assurance architecture for governed structural comparison, provenance and legitimate comparability. It is not a package or a sidecar.">
+<meta name="twitter:description" content="Decision-Space Integrity is the measurement and assurance architecture for auditing a supplied response against a governed reference: which expected structure it surfaced, which it omitted, and coverage over the applicable counted population. It is not a package or a sidecar.">
 <meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta name="twitter:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
@@ -39,7 +39,7 @@
     {"@type":"Question","name":"Does DSI certify AI systems?","acceptedAnswer":{"@type":"Answer","text":"No. DSI does not certify AI systems. It can support governance documentation by supplying decision-space evidence, but it issues no certification of governance, safety or compliance."}},
     {"@type":"Question","name":"Does DSI guarantee safety?","acceptedAnswer":{"@type":"Answer","text":"No. DSI is not a safety guarantee and not a safety review."}},
     {"@type":"Question","name":"Has the instrument been validated against human judgement?","acceptedAnswer":{"@type":"Answer","text":"Independent human validation has not yet been conducted. Internal annotation, adjudication and calibration informed instrument development, but the lexical instruments remain self-validated. These activities do not establish independent agreement or accuracy."}}
-    ,{"@type":"Question","name":"Which layer decides what happens to a response?","acceptedAnswer":{"@type":"Answer","text":"DSI measures governed structural change. DSI Audit applies that architecture to supplied outputs. GATE governs disposition and authorised execution. None of those layers tells the user what decision to make."}}
+    ,{"@type":"Question","name":"Which layer decides what happens to a response?","acceptedAnswer":{"@type":"Answer","text":"DSI measures governed structural change, and DSI Audit applies that measurement to supplied outputs. Neither decides what happens next. Measurement is separate from disposition: nothing here tells the user what decision to make."}}
   ]
 }
 </script>
@@ -54,14 +54,12 @@
     <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav id="sitenav" class="nav" aria-label="Site">
-      <a href="/">Home</a>
       <a href="/dsc">DSC</a>
       <a href="/dsi" class="active" aria-current="page">DSI</a>
       <a href="/audit">DSI Audit</a>
-      <a href="/research">Research</a>
+      <a href="/applications">Applications</a>
       <a href="/evidence">Evidence</a>
-      <a href="/articles">Articles</a>
-      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
+      <a href="/research">Research</a>
     </nav>
   </div>
 </header>
@@ -86,10 +84,10 @@
         <li>Governed source structure</li><li class="sep" aria-hidden="true">&#8594;</li>
         <li>Effective expected structure</li><li class="sep" aria-hidden="true">&#8597;</li>
         <li>Observed structure</li><li class="sep" aria-hidden="true">&#8594;</li>
-        <li>Loss &#183; addition &#183; distortion</li><li class="sep" aria-hidden="true">&#8594;</li>
-        <li class="out">Evidence &#183; provenance</li>
+        <li>Surfaced &#183; partially surfaced &#183; omitted &#183; discouraged &#183; negated &#183; collapsed into other</li><li class="sep" aria-hidden="true">&#8594;</li>
+        <li class="out">Coverage &#183; findings</li>
       </ul>
-      <p style="max-width:72ch;">The reference is <strong>governed and independent of the response</strong>. The observed structure is read from the output. The comparison yields what was preserved, what was added and what was distorted &mdash; recorded as evidence bound to the identity of the instrument that produced it.</p>
+      <p style="max-width:72ch;">The reference is <strong>governed and independent of the response</strong>. The observed structure is read from the output. The comparison assigns every expected item a governed status &mdash; surfaced or partially surfaced; omitted, discouraged, negated or collapsed into another; or warning-required-missing &mdash; recorded as evidence bound to the identity of the instrument that produced it.</p>
       <div class="callout" style="margin-top:18px;">
         <p><strong>Measurement is not disposition.</strong> A measurement says what a comparison found. It does not decide what should happen next, and it confers no authority to act. Keeping those separate is the whole point of the architecture.</p>
       </div>
@@ -100,51 +98,24 @@
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Capabilities and their maturity</p>
-        <h2>Each part carries its own tier.</h2>
+        <h2>Four capabilities, and their boundaries.</h2>
         <p>No component inherits maturity from the programme as a whole.</p>
       </div>
       <div class="regwrap">
       <table class="reg">
-        <caption>Capability maturity. Tier describes availability and implementation state, not evidence of benefit.</caption>
+        <caption>What DSI v1 measures. Tier describes implementation state, not evidence of benefit. Functionality of the v0.2.1 evaluation build is documented on <a href="/audit">DSI Audit</a>.</caption>
         <thead><tr><th scope="col">Capability</th><th scope="col">Tier</th><th scope="col">Note</th></tr></thead>
         <tbody>
-          <tr><td class="claim">Governed structural measurement</td><td><span class="tier tier-research">Research implementation</span></td><td>Implemented and exercised in the governed programme.</td></tr>
-          <tr><td class="claim">Expected / effective-map construction</td><td><span class="tier tier-research">Research implementation</span></td><td>Reference built independently of the response.</td></tr>
-          <tr><td class="claim">Audit execution</td><td><span class="tier tier-research">Research implementation</span></td><td>Runs locally today; access is request-gated. See <a href="/audit">DSI Audit</a>.</td></tr>
-          <tr><td class="claim">Regression comparison</td><td><span class="tier tier-research">Research implementation</span></td><td>Compares runs under a declared instrument identity.</td></tr>
-          <tr><td class="claim">Evidence generation and provenance</td><td><span class="tier tier-research">Research implementation</span></td><td>Fingerprinted, reproducible evidence bundles.</td></tr>
-          <tr><td class="claim">Measurement contract and replay</td><td><span class="tier tier-research">Research implementation</span></td><td>Not represented in the evaluation build.</td></tr>
-          <tr><td class="claim">Measurement identity and comparability</td><td><span class="tier tier-research">Research implementation</span></td><td>Refuses to compare runs whose governing identities differ.</td></tr>
-          <tr><td class="claim">Authority and controlled execution (GATE)</td><td><span class="tier tier-research">Research implementation</span></td><td>Locally implemented and tested; evidence is locally reported.</td></tr>
-          <tr><td class="claim">Integrated measurement + authority operation</td><td><span class="tier tier-target">Target architecture</span></td><td>The joined system is not established.</td></tr>
+          <tr><td class="claim">Audit a supplied response against a governed reference</td><td><span class="tier tier-research">Research implementation</span></td><td>The reference is supplied and governed independently of the response. Implemented in DSI v1; <strong>unqualified</strong>.</td></tr>
+          <tr><td class="claim">The governed status partition</td><td><span class="tier tier-research">Research implementation</span></td><td>Seven values, one authority: surfaced, partially surfaced, omitted, discouraged, negated, collapsed into other, warning-required-missing.</td></tr>
+          <tr><td class="claim">Coverage over the applicable counted population</td><td><span class="tier tier-research">Research implementation</span></td><td>Produced once by the canonical counting authority. Coverage is <strong>not</strong> &ldquo;required coverage&rdquo;, and means nothing without its denominator.</td></tr>
+          <tr><td class="claim">The <span class="mono">omitted_safety_critical</span> finding</td><td><span class="tier tier-research">Research implementation</span></td><td>Orthogonal to coverage: a categorical finding, never a percentage contribution. Not a safety or regulatory conclusion.</td></tr>
         </tbody>
       </table>
       </div>
     </div>
   </section>
 
-  <section class="reveal">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Where it could apply</p>
-        <h2>Application profiles, labelled individually.</h2>
-        <p>These are bounded profiles, not deployments. Each carries its own tier.</p>
-      </div>
-      <div class="grid grid-2">
-        <div class="card"><span class="idx">GOVERNED REQUIRED-OPTION CHECKING &nbsp; <span class="tier tier-research">Research implementation</span></span>
-          <p style="margin-top:12px;">Checking whether options a configured reference requires remained visible in a supplied response.</p></div>
-        <div class="card"><span class="idx">REGRESSION BETWEEN RUNS &nbsp; <span class="tier tier-research">Research implementation</span></span>
-          <p style="margin-top:12px;">Comparing two runs under one declared instrument identity, with comparability refused when that identity moves.</p></div>
-        <div class="card"><span class="idx">HANDOFF INTEGRITY &nbsp; <span class="tier tier-target">Target architecture</span></span>
-          <p style="margin-top:12px;">Whether structure survives a transfer between systems or stages. Not implemented.</p></div>
-        <div class="card"><span class="idx">RETRIEVAL / RAG INTEGRITY &nbsp; <span class="tier tier-target">Target architecture</span></span>
-          <p style="margin-top:12px;">Whether retrieved source structure survives into the generated answer. Under investigation, not established.</p></div>
-      </div>
-      <div class="callout" style="margin-top:22px;">
-        <p>None of these establish regulatory compliance, safety or advice quality. DSI does not certify AI systems, and it is not a safety review.</p>
-      </div>
-    </div>
-  </section>
 
   <section class="reveal">
     <div class="wrap">
@@ -157,7 +128,7 @@
         <details class="faq-item"><summary>Does DSI measure correctness?</summary><div class="ans"><p>No. DSI does not measure advice quality, factual correctness, user outcomes, or regulatory compliance. It measures whether governed expected structure remained visible.</p></div></details>
         <details class="faq-item"><summary>Does DSI certify AI systems?</summary><div class="ans"><p>No. DSI does not certify AI systems. It can support governance documentation by supplying decision-space evidence, but it issues no certification of governance, safety or compliance.</p></div></details>
         <details class="faq-item"><summary>Does DSI guarantee safety?</summary><div class="ans"><p>No. DSI is not a safety guarantee and not a safety review.</p></div></details>
-        <details class="faq-item"><summary>Which layer decides what happens to a response?</summary><div class="ans"><p>DSI measures governed structural change. DSI Audit applies that architecture to supplied outputs. GATE governs disposition and authorised execution. None of those layers tells the user what decision to make.</p></div></details>
+        <details class="faq-item"><summary>Which layer decides what happens to a response?</summary><div class="ans"><p>DSI measures governed structural change, and DSI Audit applies that measurement to supplied outputs. Neither decides what happens next. Measurement is separate from disposition: nothing here tells the user what decision to make.</p></div></details>
         <details class="faq-item"><summary>Has the instrument been validated against human judgement?</summary><div class="ans"><p>Independent human validation has not yet been conducted. Internal annotation, adjudication and calibration informed instrument development, but the lexical instruments remain self-validated. These activities do not establish independent agreement or accuracy.</p></div></details>
       </div>
     </div>
@@ -170,7 +141,7 @@
     <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
     <div class="row">
       <span>decisionspaceintegrity.com</span>
-      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/articles">Articles</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
       <span class="statusflag">Research &amp; engineering programme</span>
     </div>
   </div>

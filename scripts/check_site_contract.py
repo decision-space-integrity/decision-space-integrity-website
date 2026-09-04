@@ -7,7 +7,7 @@ the structural and governance rulings that a later content edit could silently u
   * canonical route uniqueness and sitemap parity
   * redirect completeness, resolvable targets, no loops
   * maturity labels present where a tier is asserted
-  * the Pluraxis watermark and caption
+  * the v1 product boundary: no Pluraxis, no GATE, no retired /pluraxis route
   * retired C-001 wording stays retired
   * DSI Audit is never described as a public release
   * the human-validation boundary is present verbatim
@@ -36,6 +36,10 @@ except Exception:
 
 SITE = "https://decisionspaceintegrity.com"
 
+# Approved primary navigation: understand -> evaluate -> verify.
+# Home is provided by the site mark; Articles is footer material.
+NAV_SEQUENCE = ["/dsc", "/dsi", "/audit", "/applications", "/evidence", "/research"]
+
 C001 = ("DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not "
         "generate one. It measures configured expected-path visibility")
 
@@ -47,10 +51,6 @@ HUMAN_VALIDATION = (
 GCB2_WITHHELD = ("PUBLIC CLAIM WITHHELD — ORIGINAL INVALIDATED; "
                  "SUCCESSOR DID NOT RESOLVE THE CONTRAST")
 
-PLURAXIS_WATERMARK = "TARGET ARCHITECTURE &#183; UNDER ACTIVE DEVELOPMENT"
-PLURAXIS_CAPTION = ("Conceptual target architecture. Individual components exist at different "
-                    "maturity levels; the integrated system and its effect on decision quality "
-                    "are not established.")
 
 # DSI Audit must never be described in public-release terms.
 PUBLIC_RELEASE_BANNED = [
@@ -102,9 +102,17 @@ def main(argv: list[str]) -> int:
                 errors.append(f"_redirects: {src} -> {dst} -> {redirects[dst]} (chain/loop)")
             if src == dst:
                 errors.append(f"_redirects: {src} redirects to itself")
-            target = dst.lstrip("/") or "index"
-            if not ((root / f"{target}.html").exists() or (root / target).exists()):
+            # a redirect may target a fragment (/research#programme-history); resolve
+            # the page, then require the anchor to exist on it
+            dst_path, _, dst_frag = dst.partition("#")
+            target = dst_path.lstrip("/") or "index"
+            tgt_file = root / f"{target}.html"
+            if not (tgt_file.exists() or (root / target).exists()):
                 errors.append(f"_redirects: target {dst} does not resolve to a page")
+            elif dst_frag and tgt_file.exists():
+                if f'id="{dst_frag}"' not in tgt_file.read_text(encoding="utf-8"):
+                    errors.append(f"_redirects: target {dst} resolves to a page, but the "
+                                  f"anchor #{dst_frag} does not exist on it")
         # a retired route must not still exist as a page
         for src in redirects:
             stem = src.lstrip("/")
@@ -126,7 +134,7 @@ def main(argv: list[str]) -> int:
                 errors.append(f"sitemap lists {path}, which is a redirect source")
         if f"{SITE}/404" in locs:
             errors.append("sitemap must not list the 404 route")
-        for required in ("/", "/dsc", "/dsi", "/audit", "/pluraxis", "/evidence", "/research", "/articles"):
+        for required in ("/", "/dsc", "/dsi", "/audit", "/applications", "/evidence", "/research", "/articles"):
             want = SITE + ("" if required == "/" else required)
             if required == "/":
                 want = SITE + "/"
@@ -156,9 +164,34 @@ def main(argv: list[str]) -> int:
         if "supplied by request" not in s:
             errors.append("audit.html: the evaluation build must state that it is "
                           "supplied by request")
-        if "Current development line" not in s or "unreleased" not in s:
-            errors.append("audit.html: the current development line must be stated "
-                          "separately and marked unreleased")
+        # Option 2: two public identities only. 0.3.0 was an internal predecessor
+        # development line, not the lineage that becomes v1, so it is off the public site.
+        if "DSI v1" not in s or "Forthcoming" not in s:
+            errors.append("audit.html: DSI v1 must be stated separately as forthcoming")
+        for needed, why in (
+            ("separately lineaged", "v1 must be marked separately lineaged"),
+            ("unqualified", "v1 must be marked unqualified"),
+            ("not released and not downloadable", "v1 must be marked unavailable"),
+        ):
+            if needed not in s:
+                errors.append(f"audit.html: {why} ({needed!r} missing)")
+        if "describes <strong>v0.2.1</strong>" not in s:
+            errors.append("audit.html: the site's subordinate pages (installation, "
+                          "deployment, security, release notes) must be stated as "
+                          "describing v0.2.1")
+        # v1 is forthcoming. Availability wording belongs to v0.2.1 and must never
+        # migrate into the v1 definition, which is the subtlest way this could go wrong.
+        fc = re.search(r"<dt>Forthcoming</dt>\s*<dd>(.*?)</dd>", s, re.S)
+        if fc:
+            # "evaluation build" is deliberately NOT here: the v1 entry legitimately
+            # refers to the evaluation build's predecessor when stating its lineage.
+            AVAILABILITY = ("supplied by request", "available for", "download", "obtain")
+            for a in AVAILABILITY:
+                if a in fc.group(1).lower() and a != "download":
+                    errors.append(f"audit.html: the DSI v1 entry carries availability "
+                                  f"wording ({a!r}); v1 is forthcoming and unavailable")
+                elif a == "download" and re.search(r"(?<!not )downloadab", fc.group(1), re.I):
+                    errors.append("audit.html: the DSI v1 entry reads as downloadable")
     else:
         errors.append("audit.html is missing")
 
@@ -166,6 +199,12 @@ def main(argv: list[str]) -> int:
     # prefix would read as a tagged release, and no 0.3.0 release exists: the product
     # repository's newest tag is v0.2.1 while pyproject declares 0.3.0 in development.
     for p, s in text.items():
+        # 0.3.0 is an INTERNAL predecessor development line, not the lineage that becomes
+        # v1. It is off the public site entirely, which also removes any opportunity to
+        # imply that it becomes v1.
+        if re.search(r"\b0\.3\.0\b", s):
+            errors.append(f"{p.relative_to(root)}: 0.3.0 is an internal predecessor "
+                          f"development line and must not appear in published copy")
         if re.search(r"\bv0\.3\.0\b", s):
             errors.append(f"{p.relative_to(root)}: 'v0.3.0' implies a tagged release; "
                           f"no 0.3.0 release exists - the development line is '0.3.0'")
@@ -173,6 +212,11 @@ def main(argv: list[str]) -> int:
                      r"request|evaluation build)\b", s, re.I):
             errors.append(f"{p.relative_to(root)}: 0.3.0 is presented as available; it is "
                           f"an unreleased development line and v0.2.1 is the evaluation build")
+        # 0.3.0 is an internal predecessor line, NOT the lineage that becomes v1. Saying so
+        # publicly would be an unsupported lineage claim, which is why it is off the site.
+        if re.search(r"0\.3\.0[^.]{0,80}?\bv1\b|\bv1\b[^.]{0,80}?0\.3\.0", s, re.I):
+            errors.append(f"{p.relative_to(root)}: implies 0.3.0 becomes v1; they are "
+                          f"separately lineaged and 0.3.0 is not published at all")
 
     # Stacked maturity badges in a register cell need a real row gap, not line-height.
     ev = root / "evidence.html"
@@ -183,40 +227,108 @@ def main(argv: list[str]) -> int:
                               "without .tierstack, so they lose their row gap when they "
                               "wrap onto a second line")
 
-    plx = root / "pluraxis.html"
-    if plx.exists():
-        s = text[plx]
-        if "<title>Pluraxis (target architecture)" not in s:
-            errors.append("pluraxis.html: title must carry the target-architecture tier")
-        if PLURAXIS_WATERMARK not in s:
-            errors.append("pluraxis.html: maturity watermark missing from the image slot")
-        if PLURAXIS_CAPTION not in s:
-            errors.append("pluraxis.html: required diagram caption missing")
-        # the revised diagram must be published, with a text equivalent
-        if "/assets/diagrams/pluraxis-architecture.png" not in s:
-            errors.append("pluraxis.html: revised architecture diagram is not referenced")
-        else:
-            img = re.search(r'<img[^>]*pluraxis-architecture\.png[^>]*>', s)
-            if not img or 'alt="' not in img.group(0) or len(img.group(0)) < 200:
-                errors.append("pluraxis.html: architecture diagram needs a descriptive alt text equivalent")
-        # The unrevised owner-supplied source must never be published. .gitignore is NOT
-        # proof of that: an already-tracked file keeps publishing regardless of ignore rules.
-        # Inspect the actual tracked tree instead.
-        tracked = set()
-        try:
-            out = subprocess.run(["git", "ls-files", "-z", "assets/diagrams"],
-                                 cwd=root, capture_output=True, text=True, timeout=20)
-            # FAIL CLOSED: a nonzero exit must not read as "nothing is tracked".
-            if out.returncode != 0:
-                errors.append(f"git ls-files failed (rc={out.returncode}); cannot prove the "
-                              f"unrevised diagram is untracked: {out.stderr.strip()[:160]}")
-            tracked = {t for t in out.stdout.split("\0") if t}
-        except Exception as exc:                      # never pass silently on an unknown state
-            errors.append(f"could not inspect the tracked tree for assets/diagrams: {exc}")
-        for t in sorted(tracked):
-            if pathlib.PurePosixPath(t).name != "pluraxis-architecture.png":
-                errors.append(f"{t}: tracked in git, but only the revised diagram may be "
-                              f"published (the unrevised source is a build input)")
+    # ---- 5b. the v1 product boundary: no Pluraxis, no GATE -------------------------
+    # These rules previously asserted Pluraxis PRESENCE - watermark, caption, diagram,
+    # alt text, efficacy limitations. Retiring the page made every one of them silently
+    # skip, because they were guarded by `if pluraxis.html exists`. Absence is asserted
+    # directly instead, so the retirement cannot be quietly undone.
+    #
+    # The site is the public account of the DSI v1 product line. Pluraxis and GATE are
+    # listed as deliberately unsupported in v1 (DSI-V1 docs/CLAIM_BOUNDARIES.md); they
+    # remain preserved in the governed repositories, not on the website.
+    if (root / "pluraxis.html").exists():
+        errors.append("pluraxis.html: retired from the published site; it must not return")
+
+    # GATE is matched case-sensitively and word-bounded ON PURPOSE. Ordinary English on
+    # this site contains "gates", "delegated", "request-gated", "investigated" and
+    # "aggregate"; a loose scan would fire on all of them and would be turned off.
+    #
+    # The boundary is CONTEXTUAL, not lexical. An earlier draft of this rule demanded zero
+    # references, which was wrong: deleting a negative finding is itself a claim. Pluraxis
+    # and GATE carry no promotion, navigation, application profile or v1-capability
+    # representation - but they remain permitted as bounded evidence and programme-history
+    # disclosure, because "deliberation-loop efficacy: not established" has to survive.
+    PLURAXIS_RX = re.compile(r"Pluraxis", re.I)
+    GATE_RX = re.compile(r"(?<![\w-])GATE(?![\w-])")
+    DISCLOSURE_PAGES = {"research.html", "evidence.html"}
+    TITLE_RX = re.compile(r"<title>(.*?)</title>", re.S | re.I)
+    META_RX = re.compile(r'<meta[^>]+content="([^"]*)"', re.I)
+    HEAD_RX = re.compile(r"<h[1-3]\b[^>]*>(.*?)</h[1-3]>", re.S | re.I)
+    CARD_RX = re.compile(r'<span class="idx">(.*?)</span>', re.S | re.I)
+
+    for p_, s_ in text.items():
+        name = p_.relative_to(root).as_posix()
+        nav_m = re.search(r'<nav[^>]*class="nav"[^>]*>(.*?)</nav>', s_, re.S)
+        zones = [("primary navigation", nav_m.group(1) if nav_m else ""),
+                 ("page title", " ".join(TITLE_RX.findall(s_))),
+                 ("metadata", " ".join(META_RX.findall(s_))),
+                 ("a heading", " ".join(HEAD_RX.findall(s_))),
+                 ("an application or capability card", " ".join(CARD_RX.findall(s_)))]
+        for rx, what in ((PLURAXIS_RX, "Pluraxis"), (GATE_RX, "GATE")):
+            # (a) never in a promotional / navigational / capability position, any page
+            for zone_name, zone in zones:
+                if zone and rx.search(zone):
+                    errors.append(f"{name}: {what} appears in {zone_name}; the v1 boundary "
+                                  f"permits it only as bounded evidence or programme history")
+            # (b) elsewhere, only on the two disclosure surfaces
+            if name not in DISCLOSURE_PAGES and rx.search(s_):
+                m = rx.search(s_)
+                frag = " ".join(s_[max(0, m.start() - 60):m.end() + 60].split())
+                errors.append(f"{name}: {what} is outside the v1 product boundary. Bounded "
+                              f"disclosure belongs on /research or /evidence: ...{frag}...")
+        if "/pluraxis" in s_:
+            errors.append(f"{name}: links to the retired /pluraxis route")
+
+    # The negative finding must survive the retirement - removing it would itself be a claim.
+    ev_ = root / "evidence.html"
+    if ev_.exists() and "Deliberation-loop efficacy" not in text[ev_]:
+        errors.append("evidence.html: 'Deliberation-loop efficacy' must remain in the "
+                      "register; a not-established finding is not removed with the "
+                      "programme material it came from")
+
+    # The programme history must say the wider work is preserved AND excluded from v1.
+    res_ = root / "research.html"
+    if res_.exists():
+        r_ = text[res_]
+        if "preserved in the governed repositories and excluded from" not in r_:
+            errors.append("research.html: the programme-history section must state that the "
+                          "wider work is preserved in the governed repositories and excluded "
+                          "from DSI v1")
+
+    # Applications took Pluraxis's place in the primary navigation. Assert its presence,
+    # or the promotion could be reverted with no gate objecting - the same silent-skip
+    # failure the retired Pluraxis rules had.
+    NAV_RX = re.compile(r'<nav[^>]*class="nav"[^>]*>(.*?)</nav>', re.S)
+    for p_, s_ in text.items():
+        name = p_.relative_to(root).as_posix()
+        nav = NAV_RX.search(s_)
+        if not nav:
+            errors.append(f"{name}: no primary navigation")
+            continue
+        # The approved sequence encodes the journey: understand -> evaluate -> verify.
+        # Order is asserted, not merely membership - a reordering would change the story
+        # the navigation tells while every link still resolved.
+        seq = re.findall(r'<a href="(/[a-z-]*)"[^>]*>', nav.group(1))
+        if seq != NAV_SEQUENCE:
+            errors.append(f"{name}: primary navigation must be exactly "
+                          f"{' -> '.join(NAV_SEQUENCE)}, found {' -> '.join(seq) or '(empty)'}")
+
+    # The target-architecture diagram must not be in the published asset set at all.
+    # Inspect the tracked tree: an untracked file cannot deploy, but a tracked one does
+    # regardless of any ignore rule.
+    try:
+        out = subprocess.run(["git", "ls-files", "-z", "assets/diagrams"],
+                             cwd=root, capture_output=True, text=True, timeout=20)
+        # FAIL CLOSED: a nonzero exit must not read as "nothing is tracked".
+        if out.returncode != 0:
+            errors.append(f"git ls-files failed (rc={out.returncode}); cannot prove the "
+                          f"target-architecture diagram is unpublished: "
+                          f"{out.stderr.strip()[:160]}")
+        for t in sorted(t for t in out.stdout.split("\0") if t):
+            errors.append(f"{t}: tracked in git, but the target-architecture diagram is "
+                          f"outside the v1 product boundary and must not be published")
+    except Exception as exc:                      # never pass silently on an unknown state
+        errors.append(f"could not inspect the tracked tree for assets/diagrams: {exc}")
 
     # ---- 6. no public-release language for DSI Audit ------------------------------
     # A denial ("there is no publicly downloadable release") is exactly the wording this pack
@@ -274,6 +386,97 @@ def main(argv: list[str]) -> int:
         if "script-src 'none'" in pv and "defence in depth" not in pv:
             errors.append("privacy.html: CSP is defence in depth, not evidence the beacon "
                           "is absent; the page must say so")
+
+    # ---- 6b. surface classes: what a page is FOR decides what it may claim ----------
+    # This replaces an earlier proximity rule that only fired when a withheld capability
+    # sat near the literal string "DSI v1". A page could foreground regression,
+    # fingerprints and comparability from top to bottom and never trip it. The boundary
+    # is structural instead.
+    #
+    #   v1 surfaces        speak for the product. The withheld capabilities are absent,
+    #                      and /dsi must POSITIVELY carry the four authorised ones.
+    #   v0.2.1 surfaces    document the evaluation build. The withheld capabilities are
+    #                      legitimate there, but the page must say so verbatim.
+    #   disclosure         evidence and programme history; governed by their own rules.
+    V1_SURFACES = ("index.html", "dsi.html", "applications.html")
+    V021_SURFACES = ("audit.html", "getting-started.html", "deployment.html",
+                     "security.html", "release-notes.html", "example-audit.html")
+    SCOPE_MARKER = "This page documents the <strong>v0.2.1</strong> evaluation build."
+
+    # Implemented in the evaluation build, NOT in v1. Multi-word where the single word is
+    # ordinary English: "evidence" is fine, "evidence bundle" is a capability claim.
+    WITHHELD = ("regression", "evidence bundle", "fingerprint", "provenance", "replay",
+                "comparability", "readiness", "stateless", "revision", "intervention",
+                "remediation")
+
+    for name in V1_SURFACES:
+        p_ = root / name
+        if not p_.exists():
+            errors.append(f"{name}: v1 surface is missing")
+            continue
+        src = re.sub(r"<(script|style)\b.*?</\1>", " ", text[p_], flags=re.S | re.I)
+
+        # The exception is now keyed to ONE explicitly identified disclosure, and only on
+        # the homepage. Two earlier versions were too broad and each hid a real escape:
+        # exempting whole <section>s hid a capability promoted into a heading, and
+        # exempting any card carrying an ev-* chip hid "a reproducible fingerprint" in the
+        # /applications AI-summary card, because that card also carried an unrelated
+        # application-validity badge. /dsi and /applications now get NO exemption at all.
+        if name == "index.html":
+            src = re.sub(r'<section\b[^>]*id="evidence-status"[^>]*>.*?</section>',
+                         " ", src, flags=re.S)
+
+        # TWO representations. Stripping tags discards metadata attributes, which is how
+        # "provenance and legitimate comparability" survived in the /dsi description, OG
+        # and Twitter cards while the rendered text was clean.
+        visible = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", src)).lower()
+        meta = " ".join(re.findall(r'<meta[^>]+content="([^"]*)"', src, re.I)
+                        + re.findall(r"<title>(.*?)</title>", src, re.S | re.I)
+                        + re.findall(r'<img[^>]+alt="([^"]*)"', src, re.I)).lower()
+        for label, hay in (("visible copy", visible), ("metadata", meta)):
+            for w in WITHHELD:
+                if w in hay:
+                    i = hay.index(w)
+                    errors.append(f"{name}: {w!r} is a v0.2.1 capability and must not appear "
+                                  f"on a v1 surface ({label}): "
+                                  f"...{hay[max(0, i - 60):i + 70]}...")
+
+    for name in V021_SURFACES:
+        p_ = root / name
+        if not p_.exists():
+            errors.append(f"{name}: v0.2.1 surface is missing")
+            continue
+        if SCOPE_MARKER not in text[p_]:
+            errors.append(f"{name}: documents evaluation-build functionality, so it must "
+                          f"carry the scope marker verbatim: {SCOPE_MARKER!r}")
+
+    # /dsi must positively carry v1's authorised capabilities and the governed statuses -
+    # otherwise gutting the page would satisfy the absence rules above.
+    dsi_ = root / "dsi.html"
+    if dsi_.exists():
+        d = text[dsi_]
+        for needed, why in (
+            ("governed reference", "the reference the audit compares against"),
+            ("coverage", "coverage over the applicable counted population"),
+            ("omitted_safety_critical", "the orthogonal safety finding"),
+        ):
+            if needed.lower() not in d.lower():
+                errors.append(f"dsi.html: v1 capability missing - {why} ({needed!r})")
+        # The seven statuses must appear in the CAPABILITY TABLE, not merely somewhere on
+        # the page. Several also occur in the pipeline diagram, so a page-wide search would
+        # still pass after the governed partition itself had been gutted.
+        STATUSES = ("surfaced", "partially surfaced", "omitted", "discouraged", "negated",
+                    "collapsed into other", "warning-required-missing")
+        tbl = re.search(r'<table class="reg">.*?</table>', d, re.S)
+        if not tbl:
+            errors.append("dsi.html: the capability table is missing")
+        else:
+            partition = tbl.group(0).lower()
+            for st in STATUSES:
+                if st.lower() not in partition:
+                    errors.append(f"dsi.html: governed status {st!r} is missing from the "
+                                  f"capability table; the seven-value partition is the "
+                                  f"single authority for trajectory status")
 
     # ---- 7a. in-page anchors must resolve --------------------------------------------
     # check_links.py strips the fragment before resolving, so it proves the PAGE exists
@@ -428,7 +631,9 @@ def main(argv: list[str]) -> int:
     PRODUCT_SURFACES = ("getting-started.html", "example-audit.html", "deployment.html",
                         "security.html", "release-notes.html", "contact.html",
                         "applications.html")
-    BARE_DSI = re.compile(r"(?<![\w-])DSI(?![\w-])(?!\s+Audit\b)")
+    # "DSI Audit" and "DSI v1" are both named product identities and are allowed. Anything
+    # else uppercase and bare is the architecture being used as if it were the executable.
+    BARE_DSI = re.compile(r"(?<![\w-])DSI(?![\w-])(?!\s+(?:Audit|v1)\b)")
     for _name in PRODUCT_SURFACES:
         _p = root / _name
         if not _p.exists():
@@ -533,9 +738,11 @@ def main(argv: list[str]) -> int:
         if a.count('<span class="ev ev-not">Not established</span>') < 2:
             errors.append("applications.html: each illustrative profile must record "
                           "application validity as 'Not established'")
-        if a.count('<span class="tier tier-research">Research implementation</span>') < 4:
+        # three profiles remain: advisory audit and the two illustrative ones. Regression
+        # comparison was removed - it is a v0.2.1 capability, not a v1 application.
+        if a.count('<span class="tier tier-research">Research implementation</span>') < 3:
             errors.append("applications.html: every profile must carry a maturity tier "
-                          "(advisory, regression, and both illustrative profiles)")
+                          "(advisory audit and both illustrative profiles)")
         if "does not establish the completeness or authority of the policy-obligation set" not in a:
             errors.append("applications.html: the policy-assurance illustration must state "
                           "that executing an expected-point comparison does not establish "
@@ -586,22 +793,6 @@ def main(argv: list[str]) -> int:
             errors.append("index.html: stale 'A self-hosted assurance system' metadata is present")
         if "AI can give a good answer and still narrow the decision." not in text[idx]:
             errors.append("index.html: programme-level metadata positioning is missing")
-
-    if plx.exists():
-        s_ = text[plx]
-        # Require the SPECIFIC limitation statements, not merely the words "not established"
-        # somewhere on the page: a page with several such phrases would otherwise still pass
-        # after the load-bearing one was removed.
-        for needed, why in (
-            ("Efficacy: not established", "efficacy badge"),
-            ("effect it may have on decision quality, are <strong>not established</strong>",
-             "decision-quality limitation"),
-            ("its effect on decision quality are not established", "diagram caption limitation"),
-        ):
-            if needed not in s_:
-                errors.append(f"pluraxis.html: {why} is missing ({needed[:52]!r})")
-        if "integrated system" not in s_.lower():
-            errors.append("pluraxis.html: integrated-system limitation is missing")
 
     # ---- report ------------------------------------------------------------------
     if errors:

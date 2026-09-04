@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Applications | Decision-Space Integrity</title>
-<meta name="description" content="Applications of Decision-Space Integrity: auditing an AI answer against a defined set of expected points and reporting what was omitted, with source evidence.">
+<meta name="description" content="Applications of Decision-Space Integrity: auditing an AI answer against a governed reference and reporting which expected points it surfaced and which it omitted.">
 <link rel="canonical" href="https://decisionspaceintegrity.com/applications.html">
 <meta name="author" content="Andrew J Cousins">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Decision-Space Integrity">
 <meta property="og:title" content="Applications | Decision-Space Integrity">
-<meta property="og:description" content="Applications of Decision-Space Integrity: auditing an AI answer against a defined set of expected points and reporting what was omitted, with source evidence.">
+<meta property="og:description" content="Applications of Decision-Space Integrity: auditing an AI answer against a governed reference and reporting which expected points it surfaced and which it omitted.">
 <meta property="og:url" content="https://decisionspaceintegrity.com/applications.html">
 <meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Applications | Decision-Space Integrity">
-<meta name="twitter:description" content="Applications of Decision-Space Integrity: auditing an AI answer against a defined set of expected points and reporting what was omitted, with source evidence.">
+<meta name="twitter:description" content="Applications of Decision-Space Integrity: auditing an AI answer against a governed reference and reporting which expected points it surfaced and which it omitted.">
 <meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
 <meta name="twitter:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
@@ -40,14 +40,12 @@
     <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav id="sitenav" class="nav" aria-label="Site">
-      <a href="/">Home</a>
       <a href="/dsc">DSC</a>
       <a href="/dsi">DSI</a>
       <a href="/audit">DSI Audit</a>
-      <a href="/research">Research</a>
+      <a href="/applications" class="active" aria-current="page">Applications</a>
       <a href="/evidence">Evidence</a>
-      <a href="/articles">Articles</a>
-      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
+      <a href="/research">Research</a>
     </nav>
   </div>
 </header>
@@ -58,7 +56,7 @@
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Application profiles &#183; by maturity</p>
       <h1 style="max-width:14ch;">Applications</h1>
-      <p class="lead" style="max-width:66ch;">DSI Audit audits a supplied AI answer against a defined set of expected points and reports what was omitted, with source evidence and a reproducible fingerprint.</p>
+      <p class="lead" style="max-width:66ch;">DSI Audit audits a supplied AI answer against a defined set of expected points and reports which expected points it surfaced and which it omitted, against a reference governed independently of the response.</p>
     </div>
   </section>
 
@@ -69,7 +67,7 @@
         <h2>AI summary assurance.</h2>
       </div>
       <div class="card" style="max-width:780px;">
-        <p>Compare a generated summary against a defined set of expected points and report the omissions — each with source evidence and a reproducible fingerprint. Under the same configured map, pack, and instrument settings, the same input produces the same report.</p>
+        <p>Compare a generated summary against a defined set of expected points and report which expected points it surfaced and which it omitted, against a reference governed independently of the response.</p>
         <div class="axes">
           <div><span class="k">Underlying comparison</span><span class="tier tier-research">Research implementation</span></div>
           <div><span class="k">Application validity</span><span class="ev ev-not">Not established</span></div>
@@ -89,7 +87,6 @@
       <div class="omr" role="group" aria-label="Example policy omission report">
         <div class="omr-row omr-head">
           <div><span class="omr-k">Coverage</span><span class="omr-cov">83%<small>5 of 6 expected obligations</small></span></div>
-          <div><span class="omr-k">Fingerprint</span><span class="omr-fp">A3F2-71CD</span></div>
           <div><span class="omr-k">Status</span><span class="omr-status">Review recommended</span></div>
         </div>
         <div class="omr-row">
@@ -136,25 +133,12 @@
         <h2>Advisory AI.</h2>
       </div>
       <div class="card" style="max-width:780px;">
-        <p>Audit an advisory model answer against a configured set of expected points and report which were surfaced, which were omitted, and the source evidence. Example domains include career, finance, and relationship decision-support.</p>
+        <p>Audit an advisory model answer against a configured set of expected points and report which were surfaced and which were omitted, under the governed status partition. Example domains include career, finance, and relationship decision-support.</p>
         <p style="margin:18px 0 0;"><span class="tier tier-research">Research implementation</span></p>
       </div>
     </div>
   </section>
 
-  <section class="reveal">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Also supported</p>
-        <h2>Regression comparison.</h2>
-      </div>
-      <div class="card" style="max-width:780px;">
-        <p>Compare two sets of paired outputs — for example a baseline and a candidate over the same prompt set — and report which expected points changed in visibility between them, under one fixed instrument. Useful when a model version, a prompt, or a configuration changes and you want reproducible evidence of what moved.</p>
-        <p style="margin:14px 0 0;">The comparison is <strong>instrument-relative</strong>: it reports a change in expected-path visibility, not that one output set is better, safer, or of higher quality.</p>
-        <p style="margin:18px 0 0;"><span class="tier tier-research">Research implementation</span></p>
-      </div>
-    </div>
-  </section>
 
   <section class="reveal">
     <div class="wrap">
@@ -175,7 +159,7 @@
       </div>
       <div class="claimbox">
         <span class="lbl">Scope</span>
-        <p>The current implementation audits supplied outputs against configured expected points — for advisory answers, and for expected-point documents such as policy summaries — and compares paired outputs under one fixed instrument (Regression Audit). The classifier is challenge-tested; human review is recommended.</p>
+        <p>DSI v1 audits a supplied output against a governed reference — for advisory answers, and for expected-point documents such as policy summaries — and reports which expected items it surfaced and which it omitted. The classifier is challenge-tested; human review is recommended.</p>
         <p style="margin-top:.8em;">This work measures visibility of configured expected paths in model outputs. It does not measure advice quality, factual correctness, user outcomes, or regulatory compliance.</p>
       </div>
     </div>
@@ -188,7 +172,7 @@
     <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
     <div class="row">
       <span>decisionspaceintegrity.com</span>
-      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/articles">Articles</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
       <span class="statusflag">Research &amp; engineering programme</span>
     </div>
   </div>

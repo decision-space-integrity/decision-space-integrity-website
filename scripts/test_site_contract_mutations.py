@@ -15,6 +15,7 @@ Exit 1 if any mutation is NOT caught, 0 if every one is.
 """
 from __future__ import annotations
 
+import hashlib
 import pathlib
 import subprocess
 import sys
@@ -67,13 +68,31 @@ CASES = [
     ("homepage: stale metadata returns", "index.html",
      "AI can give a good answer and still narrow the decision. Decision-Space Integrity measures",
      "A self-hosted assurance system that measures. Decision-Space Integrity measures"),
-    ("pluraxis: watermark removed", "pluraxis.html",
-     "TARGET ARCHITECTURE &#183; UNDER ACTIVE DEVELOPMENT", "PRODUCTION READY"),
-    ("pluraxis: efficacy badge removed", "pluraxis.html",
-     "Efficacy: not established", "Efficacy: established"),
-    ("pluraxis: decision-quality limitation removed", "pluraxis.html",
-     "effect it may have on decision quality, are <strong>not established</strong>",
-     "effect it may have on decision quality, are <strong>well proven</strong>"),
+    # --- v1 product boundary. Pluraxis and GATE are deliberately unsupported in v1
+    # (DSI-V1 docs/CLAIM_BOUNDARIES.md); the site is the account of the product line, not
+    # the programme archive. GATE is matched case-sensitively and word-bounded, so
+    # "request-gated", "delegated" and "Aggregate" stay legal.
+    ("boundary: Pluraxis returns to a page", "dsi.html",
+     "<h1", "<h1 data-note=\"Pluraxis\""),
+    ("boundary: GATE returns to a page", "dsi.html",
+     "Measurement is separate from disposition",
+     "GATE governs disposition. Measurement is separate from disposition"),
+    ("boundary: the retired /pluraxis route is linked again", "index.html",
+     'href="/applications"', 'href="/pluraxis"'),
+    ("boundary: Applications drops out of the primary navigation", "index.html",
+     '<a href="/applications">Applications</a>', ''),
+    # The contextual rule has a POSITIVE side: bounded disclosure must survive. Deleting a
+    # not-established finding along with the programme material would itself be a claim.
+    ("boundary: the not-established deliberation-loop finding is deleted", "evidence.html",
+     "Deliberation-loop efficacy", "Deliberation loop"),
+    ("boundary: programme history stops saying the work is excluded from v1", "research.html",
+     "preserved in the governed repositories and excluded from", "described in"),
+    # a disclosure page may carry the words, but never in a heading
+    ("boundary: Pluraxis promoted into a heading on a disclosure page", "research.html",
+     "<h2>How the work has unfolded.</h2>", "<h2>Pluraxis and how the work has unfolded.</h2>"),
+    # the retired route must land somewhere real
+    ("boundary: the /pluraxis redirect anchor is broken", "research.html",
+     'id="programme-history"', 'id="programme-timeline"'),
     # --- final identity closure: bare uppercase DSI in the main content of a
     # product/runtime surface. These are the exact residuals that survived two
     # amendments because the contract enumerated verbs instead of closing the rule.
@@ -106,20 +125,55 @@ CASES = [
     # unreleased development line and must never read as an available identity.
     ("version: 'advertised build' label returns", "audit.html",
      "<dt>Available evaluation build</dt>", "<dt>Advertised build</dt>"),
+    # --- option 2: two public identities. v0.2.1 available by request; DSI v1
+    # forthcoming, separately lineaged, unqualified, unavailable. 0.3.0 is off the site.
+    ("version: the forthcoming v1 identity disappears", "audit.html",
+     "<dt>Forthcoming</dt>", "<dt>Notes</dt>"),
+    ("version: v1 stops being marked unqualified", "audit.html",
+     "<strong>unqualified</strong>, not released", "ready, not released"),
+    ("version: v1 stops being marked unavailable", "audit.html",
+     "not released and not downloadable", "not yet widely promoted"),
+    ("version: availability wording migrates to v1", "audit.html",
+     "<strong>DSI v1</strong> &#183; separately lineaged",
+     "<strong>DSI v1</strong> &#183; supplied by request, separately lineaged"),
+    ("version: lineage blurred between 0.3.0 and v1", "audit.html",
+     "It inherits the measurand of the evaluation build's predecessor",
+     "It is the 0.3.0 line renamed, and inherits the measurand of the predecessor"),
+    ("version: subordinate pages stop being scoped to v0.2.1", "audit.html",
+     "describes <strong>v0.2.1</strong>", "describes the current product"),
+    # the approved navigation sequence encodes the journey; order is asserted
+    ("nav: primary sequence reordered", "index.html",
+     '<a href="/applications">Applications</a>\n      <a href="/evidence">Evidence</a>',
+     '<a href="/evidence">Evidence</a>\n      <a href="/applications">Applications</a>'),
+    # --- surface classes. A v1 surface may not carry a v0.2.1 capability at all; a
+    # v0.2.1 surface may, but only while it says so; /dsi must positively carry v1's four.
+    ("surface: a v0.2.1 capability appears on a v1 surface", "dsi.html",
+     "<h2>Four capabilities, and their boundaries.</h2>",
+     "<h2>Four capabilities, regression comparison, and their boundaries.</h2>"),
+    ("surface: fingerprints promoted onto /applications", "applications.html",
+     "<h2>AI summary assurance.</h2>",
+     "<h2>AI summary assurance, with a reproducible fingerprint.</h2>"),
+    # --- the two escapes that reached a pushed head. Both were invisible to the checker:
+    # the first because stripping tags discarded metadata, the second because the card
+    # carrying the claim also carried an unrelated application-validity chip.
+    ("escape: a v0.2.1 capability hides in v1 metadata", "dsi.html",
+     'architecture for auditing a supplied response against a governed reference',
+     'architecture for governed structural comparison, provenance and legitimate comparability'),
+    ("escape: a capability claim hides in a card with an evidence chip", "applications.html",
+     "report which expected points it surfaced and which it omitted, against a reference "
+     "governed independently of the response.",
+     "report the omissions — each with source evidence and a reproducible fingerprint."),
+    ("surface: a v0.2.1 page drops its scope marker", "deployment.html",
+     "This page documents the <strong>v0.2.1</strong> evaluation build.",
+     "This page documents the current build."),
+    ("surface: /dsi loses a v1 capability", "dsi.html",
+     "<span class=\"mono\">omitted_safety_critical</span>", "<span class=\"mono\">findings</span>"),
+    ("surface: /dsi loses a governed status", "dsi.html",
+     "negated, collapsed into other", "negated"),
     ("version: 'supplied by request' dropped", "audit.html",
      "&#183; supplied by request. This is the only build available",
      "&#183; the current product version. This is the only build available"),
-    ("version: development line no longer stated", "audit.html",
-     "<dt>Current development line</dt>", "<dt>Notes</dt>"),
-    ("version: development line loses 'unreleased'", "audit.html",
-     "<strong>0.3.0</strong> &#183; unreleased research implementation.",
-     "<strong>0.3.0</strong> &#183; research implementation."),
     # a "v" prefix would imply a tagged release; the newest product tag is v0.2.1
-    ("version: 0.3.0 given a release identity", "audit.html",
-     "<strong>0.3.0</strong>", "<strong>v0.3.0</strong>"),
-    ("version: 0.3.0 presented as downloadable", "audit.html",
-     "No 0.3.0 release exists: it is not published, not downloadable",
-     "0.3.0 is available for download"),
     # stacked maturity badges must keep their row gap when they wrap
     ("badges: evidence tierstack removed", "evidence.html",
      '<span class="tierstack"><span class="tier tier-research">Research implementation</span>'
@@ -189,10 +243,6 @@ CASES = [
      "nothing at all is processed"),
     ("privacy: CSP offered as evidence of absence", "privacy.html",
      "defence in depth", "conclusive proof"),
-    ("pluraxis: diagram caption limitation removed", "pluraxis.html",
-     "Conceptual target architecture. Individual components exist at different maturity levels; "
-     "the integrated system and its effect on decision quality are not established.",
-     "Conceptual target architecture, fully validated end to end."),
 ]
 
 
@@ -202,71 +252,217 @@ def run_check() -> int:
     return r.returncode
 
 
+def _snapshot_tracked():
+    """Bytes of every tracked file, plus the set of paths, taken before any mutation."""
+    r = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, text=True)
+    if r.returncode != 0:
+        return None
+    snap = {}
+    for rel in (x for x in r.stdout.split("\0") if x):
+        f = ROOT / rel
+        if f.is_file():
+            snap[rel] = f.read_bytes()
+    return snap
+
+
+def _restore_snapshot(snap):
+    """Force the tree back to the snapshot and PROVE it. Returns the still-dirty paths."""
+    if snap is None:
+        return ["(snapshot unavailable)"]
+    for rel, data in snap.items():
+        f = ROOT / rel
+        try:
+            if (not f.exists()) or f.read_bytes() != data:
+                f.parent.mkdir(parents=True, exist_ok=True)
+                f.write_bytes(data)
+        except OSError as exc:
+            return [f"{rel}: {exc}"]
+    # verification pass: a write that did not land must not be reported as cleanup
+    stubborn = []
+    for rel, data in snap.items():
+        f = ROOT / rel
+        try:
+            if (not f.exists()) or f.read_bytes() != data:
+                stubborn.append(rel)
+        except OSError as exc:
+            stubborn.append(f"{rel}: {exc}")
+    return stubborn
+
+
+def _digest(path: pathlib.Path):
+    """Content digest, or None when the file is absent. Absence is a real state."""
+    return hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else None
+
+
+def _worktree_state():
+    """The whole working tree as git sees it. Compared before and after the run."""
+    r = subprocess.run(["git", "status", "--porcelain"],
+                       cwd=ROOT, capture_output=True, text=True)
+    return r.returncode, r.stdout
+
+
+def _git(*args) -> tuple[int, str]:
+    r = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
+    return r.returncode, (r.stderr or "").strip()
+
+
 def main() -> int:
     if run_check() != 0:
         print("BASELINE FAIL: the contract does not pass before mutation; fix that first.")
         return 1
-    print(f"baseline clean · {len(CASES) + 1} mutations\n")
+    start_rc, start_state = _worktree_state()
+    if start_rc != 0:
+        print("BASELINE FAIL: could not read the working tree state from git.")
+        return 1
+    baseline_bytes = _snapshot_tracked()
+    if baseline_bytes is None:
+        print("BASELINE FAIL: could not snapshot the tracked tree.")
+        return 1
+    print(f"baseline clean · {len(CASES) + 2} mutations\n")
+    try:
+        return _run(start_state, baseline_bytes)
+    finally:
+        # OUTERMOST cleanup. Per-case restoration is not enough on a filesystem where a
+        # write can be reported as done without landing; this re-writes and re-verifies.
+        stubborn = _restore_snapshot(baseline_bytes)
+        if stubborn:
+            print("\nCLEANUP FAILED - these files could not be restored:")
+            for f_ in stubborn:
+                print(f"  {f_}")
+
+
+def _run(start_state, baseline_bytes) -> int:
 
     missed = []
+    unrestored = []
+
     for name, fname, find, repl in CASES:
         f = ROOT / fname
-        # Restore from the ORIGINAL BYTES, not from decoded text. read_text performs
-        # universal-newline translation, so writing the decoded string back rewrote a
-        # CRLF working copy as LF and left the tree dirty - the suite claims every file
-        # is restored, so it must round-trip exactly. Matching still uses a normalised
-        # view so the "\n"-based anchors work whatever the file's line endings are.
+        # Restore from the ORIGINAL BYTES. read_text performs universal-newline
+        # translation, so writing the decoded string back would rewrite a CRLF working
+        # copy as LF. Matching uses a normalised view so "\n" anchors work regardless.
         raw = f.read_bytes()
+        before = hashlib.sha256(raw).hexdigest()
         original = raw.decode("utf-8").replace("\r\n", "\n")
         if find not in original:
             missed.append((name, "anchor absent - mutation could not be applied"))
             print(f"  ANCHOR?  {name}")
             continue
-        f.write_text(original.replace(find, repl, 1), encoding="utf-8", newline="")
-        rc = run_check()
-        f.write_bytes(raw)
-        if rc == 0:
+        rc = None
+        try:
+            f.write_text(original.replace(find, repl, 1), encoding="utf-8", newline="")
+            rc = run_check()
+        finally:
+            # ALWAYS restore, even if run_check raised. Without this an exception left
+            # the file mutated and the next run started from a corrupted tree.
+            f.write_bytes(raw)
+            if _digest(f) != before:
+                unrestored.append(fname)
+        if rc is None:
+            missed.append((name, "the contract check raised before returning a result"))
+            print(f"  ERROR    {name}")
+        elif rc == 0:
             missed.append((name, "checker passed a broken contract"))
             print(f"  MISSED   {name}")
         else:
             print(f"  caught   {name}")
 
-    # Tracked-tree case: staging the unrevised source must be rejected.
-    # CI checks out only TRACKED files, so the real build input is absent there and
+    # Tracked-tree case: staging ANY diagram must be rejected. Under the v1 product
+    # boundary the target-architecture diagram is outside the published asset set
+    # entirely. CI checks out only tracked files, so the real asset is absent there and
     # this case would be silently skipped - leaving the fail-closed tracked-tree rule
-    # unproven on exactly the runs that gate the branch. Synthesise a stand-in when
-    # the real file is absent so the case is exercised everywhere, then remove it.
-    stray = "assets/diagrams/Pluraxis Architecture.PNG"
+    # unproven on exactly the runs that gate the branch. Synthesise a stand-in.
+    stray = "assets/diagrams/pluraxis-architecture.png"
     stray_path = ROOT / stray
-    created = False
+    created_file = False
+    created_dir = not stray_path.parent.exists()
+    rc_t = None
     if not stray_path.exists():
         stray_path.parent.mkdir(parents=True, exist_ok=True)
         stray_path.write_bytes(bytes([137, 80, 78, 71, 13, 10, 26, 10]) + bytes(32))
-        created = True
+        created_file = True
+    add_rc, add_err = _git("add", "-f", stray)
     try:
-        subprocess.run(["git", "add", "-f", stray], cwd=ROOT, capture_output=True)
-        rc = run_check()
+        if add_rc != 0:
+            missed.append(("tracked target-architecture diagram",
+                           f"could not stage the probe, so the rule was never exercised: {add_err[:120]}"))
+            print("  ERROR    tracked target-architecture diagram (git add failed)")
+        else:
+            rc_t = run_check()
     finally:
-        subprocess.run(["git", "rm", "-q", "--cached", stray], cwd=ROOT, capture_output=True)
-        if created:
+        # unstage unconditionally; an unchecked failure here is how index residue survived
+        rm_rc, rm_err = _git("rm", "-q", "--cached", "--ignore-unmatch", stray)
+        if rm_rc != 0:
+            unrestored.append(f"{stray} (still staged: {rm_err[:100]})")
+        if created_file:
             stray_path.unlink(missing_ok=True)
-    if rc == 0:
-        missed.append(("tracked unrevised diagram", "checker passed a broken contract"))
-        print("  MISSED   tracked unrevised diagram")
+        if created_dir and stray_path.parent.exists():
+            try:
+                stray_path.parent.rmdir()
+            except OSError:
+                pass                      # not empty; leave it rather than delete content
+    if rc_t is not None:
+        if rc_t == 0:
+            missed.append(("tracked target-architecture diagram", "checker passed a broken contract"))
+            print("  MISSED   tracked target-architecture diagram")
+        else:
+            print("  caught   tracked target-architecture diagram"
+                  + (" (synthesised stand-in)" if created_file else ""))
+
+    # The retired page must not return.
+    retired = ROOT / "pluraxis.html"
+    if retired.exists():
+        missed.append(("retired page present", "pluraxis.html exists in the working tree"))
+        print("  ERROR    pluraxis.html is present before the case runs")
     else:
-        print("  caught   tracked unrevised diagram"
-              + (" (synthesised stand-in)" if created else ""))
+        rc_r = None
+        try:
+            retired.write_text("<!doctype html><title>x</title><p>x</p>\n", encoding="utf-8")
+            rc_r = run_check()
+        finally:
+            retired.unlink(missing_ok=True)
+            if retired.exists():
+                unrestored.append("pluraxis.html (probe not removed)")
+        if rc_r is None:
+            missed.append(("retired page restored", "the contract check raised"))
+            print("  ERROR    retired /pluraxis page restored")
+        elif rc_r == 0:
+            missed.append(("retired page restored", "checker passed a broken contract"))
+            print("  MISSED   retired /pluraxis page restored")
+        else:
+            print("  caught   retired /pluraxis page restored")
 
     print()
+    if unrestored:
+        print(f"MUTATION SUITE: FAIL — {len(unrestored)} file(s) not restored byte-exactly")
+        for u in unrestored:
+            print(f"  {u}")
+        return 1
+
+    # The claim is "every file restored", so prove it against git rather than asserting it.
+    stubborn = _restore_snapshot(baseline_bytes)
+    if stubborn:
+        print(f"MUTATION SUITE: FAIL — {len(stubborn)} file(s) could not be restored")
+        for f_ in stubborn:
+            print(f"  {f_}")
+        return 1
+    end_rc, end_state = _worktree_state()
+    if end_rc != 0 or end_state != start_state:
+        print("MUTATION SUITE: FAIL — the working tree did not come back to its starting state")
+        for line in sorted(set(end_state.splitlines()) ^ set(start_state.splitlines())):
+            print(f"  {line}")
+        return 1
+
     if missed:
         print(f"MUTATION SUITE: FAIL — {len(missed)} not caught")
         for n, why in missed:
             print(f"  {n}: {why}")
         return 1
     if run_check() != 0:
-        print("MUTATION SUITE: FAIL — files were not restored cleanly")
+        print("MUTATION SUITE: FAIL — the contract does not pass after restoration")
         return 1
-    print("MUTATION SUITE: PASS — every mutation was rejected and every file restored.")
+    print("MUTATION SUITE: PASS — every mutation was rejected, every file restored "
+          "byte-exactly, and the working tree is unchanged.")
     return 0
 
 

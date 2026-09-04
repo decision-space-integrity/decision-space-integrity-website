@@ -40,14 +40,12 @@
     <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav id="sitenav" class="nav" aria-label="Site">
-      <a href="/">Home</a>
       <a href="/dsc">DSC</a>
       <a href="/dsi">DSI</a>
-      <a href="/audit">DSI Audit</a>
-      <a href="/research">Research</a>
+      <a href="/audit" class="active" aria-current="page">DSI Audit</a>
+      <a href="/applications">Applications</a>
       <a href="/evidence">Evidence</a>
-      <a href="/articles">Articles</a>
-      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
+      <a href="/research">Research</a>
     </nav>
   </div>
 </header>
@@ -59,6 +57,7 @@
       <p class="eyebrow">Example audit</p>
       <h1 style="max-width:20ch;">See DSI Audit work, step by step.</h1>
       <p class="lead" style="max-width:66ch;">DSI Audit does not generate the original answer. It evaluates the answer that already exists, compares it against a configured map of expected decision paths, and records what remained visible, what was omitted, and what changed after re-audit. Below is a single worked audit, end to end.</p>
+      <p class="meta" style="margin-top:14px;">This page documents the <strong>v0.2.1</strong> evaluation build.</p>
       <p class="muted" style="max-width:66ch;">Every value on this page is taken from DSI Audit's finance example bundle (audit <span class="mono">audit_67914c8bf3e23965</span>) — a real prompt, response, classification, and evidence record, not a mock-up.</p>
       <div class="cta-row">
         <a class="btn btn-primary btn-arrow" href="#step1">Start walkthrough</a>
@@ -143,13 +142,13 @@
   <section>
     <div class="wrap" style="display:block;">
       <p class="steptag reveal-up">Step 6</p>
-      <h2 class="reveal-up" style="max-width:26ch;">Optional intervention</h2>
-      <p class="lead reveal-up" style="max-width:64ch;">Coverage is below the configured finance threshold (60%), so a visibility recommendation is generated.</p>
+      <h2 class="reveal-up" style="max-width:26ch;">Operator revision, then re-audit</h2>
+      <p class="lead reveal-up" style="max-width:64ch;">Coverage is below the configured finance threshold (60%), so the audit reports which expected items were not surfaced. DSI Audit performs no revision.</p>
       <div class="callout reveal-up" style="max-width:70ch;">
-        <p style="margin:0 0 .6em;"><strong>Coverage below domain threshold (60%) — control triggered.</strong></p>
-        <p style="margin:0;">Recommendation: <em>surface the materially distinct options that were omitted or weakly covered before giving directional advice.</em></p>
+        <p style="margin:0 0 .6em;"><strong>Coverage below domain threshold (60%) — reported, not acted on.</strong></p>
+        <p style="margin:0;">Reported omissions: <em>the materially distinct options that were not surfaced, or surfaced only partially.</em></p>
       </div>
-      <p class="muted reveal-up" style="max-width:66ch;margin-top:16px;">DSI Audit recommends additional visibility; it does not change the answer. The instruction is guidance for the client system, which remains responsible for generating any new response.</p>
+      <p class="muted reveal-up" style="max-width:66ch;margin-top:16px;">DSI Audit audits a supplied output. If the operator independently revises that output, DSI Audit can re-audit it under the same instrument and report the resulting delta. DSI Audit neither performs the revision nor establishes that it improved anything.</p>
     </div>
   </section>
 
@@ -230,7 +229,7 @@
     <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
     <div class="row">
       <span>decisionspaceintegrity.com</span>
-      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/articles">Articles</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
       <span class="statusflag">DSI Audit v0.2.1 &#183; private evaluation</span>
     </div>
   </div>

@@ -66,14 +66,12 @@
     <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
     <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
     <nav id="sitenav" class="nav" aria-label="Site">
-      <a href="/" class="active" aria-current="page">Home</a>
       <a href="/dsc">DSC</a>
       <a href="/dsi">DSI</a>
       <a href="/audit">DSI Audit</a>
-      <a href="/research">Research</a>
+      <a href="/applications">Applications</a>
       <a href="/evidence">Evidence</a>
-      <a href="/articles">Articles</a>
-      <a href="/pluraxis">Pluraxis <span class="tierlabel">(target architecture)</span></a>
+      <a href="/research">Research</a>
     </nav>
   </div>
 </header>
@@ -82,7 +80,7 @@
 
   <section class="hero" style="padding-bottom:34px;">
     <div class="wrap" style="display:block;">
-      <p class="eyebrow">Research &amp; engineering programme</p>
+      <p class="eyebrow">Measurement and evidence for AI-assisted decisions</p>
       <h1 style="max-width:24ch;">AI can give a good answer and still narrow the decision.</h1>
       <p class="lead" style="max-width:68ch;">Decision-Space Integrity is a research and engineering programme for measuring what remains visible when AI helps people reason, choose and act.</p>
       <div class="cta-row">
@@ -154,7 +152,7 @@
         <li>Governed source structure</li><li class="sep" aria-hidden="true">&#8594;</li>
         <li>Effective expected structure</li><li class="sep" aria-hidden="true">&#8597;</li>
         <li>Observed structure</li><li class="sep" aria-hidden="true">&#8594;</li>
-        <li>Loss &#183; addition &#183; distortion</li><li class="sep" aria-hidden="true">&#8594;</li>
+        <li>Surfaced &#183; partially surfaced &#183; omitted &#183; discouraged &#183; negated &#183; collapsed into other</li><li class="sep" aria-hidden="true">&#8594;</li>
         <li class="out">Evidence</li>
       </ul>
       <p style="max-width:72ch;"><strong>Compression is not automatically pathological collapse.</strong> Shortening an answer is normal; a transformation only creates the opportunity for loss. What DSI measures is whether structure a governed reference says should remain visible actually did.</p>
@@ -169,7 +167,7 @@
         <h2>If the ruler changes, what does the number mean?</h2>
       </div>
       <p class="lead" style="max-width:70ch;">If the reference, population or evaluator changes, did the system improve &mdash; or did the ruler change?</p>
-      <p style="max-width:72ch;">Building the instrument surfaced a second problem underneath the first: a change to admission, reference construction, sensors or authority can alter what a metric means without altering the number. That is why measurement identity and comparability are governed separately.</p>
+      <p style="max-width:72ch;">Building the instrument surfaced a second problem underneath the first: a change to admission, reference construction, sensors or authority can alter what a metric means without altering the number. That finding is why the measurement contract is written down and frozen before anything is measured against it.</p>
       <div class="cta-row">
         <a class="btn btn-ghost" href="/articles/who-decides-whether-the-goalposts-moved">Essay: Who Decides Whether the Goalposts Moved?</a>
         <a class="btn btn-ghost" href="/research">The research story</a>
@@ -189,36 +187,13 @@
           <span class="tier tier-research">Private evaluation access</span>
         </div>
         <p><strong>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</strong></p>
-        <dl>
-          <dt>Available evaluation build</dt><dd><strong>v0.2.1</strong> &#183; supplied by request.</dd>
-          <dt>Current development line</dt><dd><strong>0.3.0</strong> &#183; unreleased research implementation. Not available and not downloadable.</dd>
-          <dt>Access</dt><dd>Request-gated. There is no self-service public repository and no publicly downloadable release.</dd>
-          <dt>Development</dt><dd>Development has progressed beyond that version; research capabilities are not attributable to the evaluation build.</dd>
-        </dl>
       </div>
       <p><a href="/audit">What it does, and what it does not &#8594;</a></p>
     </div>
   </section>
 
-  <section class="reveal">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Where this is going</p>
-        <h2>Explore, measure, then decide &mdash; separately.</h2>
-      </div>
-      <div class="grid grid-3">
-        <div class="card"><span class="idx">PLURAXIS &nbsp; <span class="tier tier-target">Target architecture</span></span>
-          <p style="margin-top:12px;">A research implementation within a broader target architecture, designed to explore options before narrowing.</p></div>
-        <div class="card"><span class="idx">GATE &nbsp; <span class="tier tier-research">Research implementation</span></span>
-          <p style="margin-top:12px;">Research-stage authority and controlled-execution infrastructure that keeps measurement separate from disposition.</p></div>
-        <div class="card"><span class="idx">INTEGRATED OPERATION &nbsp; <span class="tier tier-target">Target architecture</span></span>
-          <p style="margin-top:12px;">Pluraxis, DSI and GATE working as one system remains <strong>target architecture &#183; under active development</strong>. Its effect on decision quality is not established.</p></div>
-      </div>
-      <p><a href="/pluraxis">Pluraxis (target architecture) &#8594;</a></p>
-    </div>
-  </section>
 
-  <section class="reveal">
+  <section class="reveal" id="evidence-status">
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Evidence status</p>

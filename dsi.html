@@ -56,6 +56,7 @@
     <nav id="sitenav" class="nav" aria-label="Site">
       <a href="/dsc">DSC</a>
       <a href="/dsi" class="active" aria-current="page">DSI</a>
+      <a href="/demo">Demo</a>
       <a href="/audit">DSI Audit</a>
       <a href="/applications">Applications</a>
       <a href="/evidence">Evidence</a>
@@ -98,7 +99,7 @@
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Capabilities and their maturity</p>
-        <h2>Four capabilities, and their boundaries.</h2>
+        <h2>Six capabilities, and their boundaries.</h2>
         <p>No component inherits maturity from the programme as a whole.</p>
       </div>
       <div class="regwrap">
@@ -109,6 +110,8 @@
           <tr><td class="claim">Audit a supplied response against a governed reference</td><td><span class="tier tier-research">Research implementation</span></td><td>The reference is supplied and governed independently of the response. Implemented in DSI v1; <strong>unqualified</strong>.</td></tr>
           <tr><td class="claim">The governed status partition</td><td><span class="tier tier-research">Research implementation</span></td><td>Seven values, one authority: surfaced, partially surfaced, omitted, discouraged, negated, collapsed into other, warning-required-missing.</td></tr>
           <tr><td class="claim">Coverage over the applicable counted population</td><td><span class="tier tier-research">Research implementation</span></td><td>Produced once by the canonical counting authority. Coverage is <strong>not</strong> &ldquo;required coverage&rdquo;, and means nothing without its denominator.</td></tr>
+          <tr><td class="claim">Content-bound measurement identity</td><td><span class="tier tier-research">Research implementation</span></td><td>Each result is bound to the definition that produced it, across fourteen components, derived from content rather than from a label. Implemented in DSI v1; <strong>unqualified</strong>.</td></tr>
+          <tr><td class="claim">Three-state comparison of two audits</td><td><span class="tier tier-research">Research implementation</span></td><td>Compatible, incompatible, or not established &mdash; and the component that differs is named. Implemented in DSI v1; <strong>unqualified</strong>. <a href="/demo">Worked example</a>.</td></tr>
           <tr><td class="claim">The <span class="mono">omitted_safety_critical</span> finding</td><td><span class="tier tier-research">Research implementation</span></td><td>Orthogonal to coverage: a categorical finding, never a percentage contribution. Not a safety or regulatory conclusion.</td></tr>
         </tbody>
       </table>
@@ -116,6 +119,31 @@
     </div>
   </section>
 
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Comparing two results</p>
+        <h2 id="three-answers">Three answers, not two</h2>
+        <p>A measurement result carries the definition that produced it. When two results are compared, DSI v1 answers in one of three ways.</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <p class="demo-status demo-status-ok">COMPARABLE</p>
+          <p>DSI v1 established that the two measurement definitions are compatible for direct comparison.</p>
+        </div>
+        <div class="card">
+          <p class="demo-status">NOT COMPARABLE</p>
+          <p>DSI v1 established an incompatibility between the two measurement definitions, and reports which component differs.</p>
+        </div>
+        <div class="card">
+          <p class="demo-status demo-status-unknown">COMPARABILITY UNKNOWN</p>
+          <p>DSI v1 could not establish whether the two measurements are comparable. That is a different statement from establishing that they disagree, and the two are never merged.</p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:18px;">Under an established incompatibility a signed improvement figure is not presented as ordinary evidence of change: the raw measurement information still exists, but the difference between two rulers is not a result. Seeing a number and treating it as evidence are different things. <a href="/demo">See the worked example &#8594;</a></p>
+    </div>
+  </section>
 
   <section class="reveal">
     <div class="wrap">

@@ -31,13 +31,37 @@ imply availability.
 | Governed status partition (§4) | yes | yes | The single authority for trajectory status |
 | Coverage over the applicable counted population | yes | yes | §5. **Not** "required coverage" — never present a figure without its denominator and applicability legend |
 | `omitted_safety_critical` finding | yes | yes | §6. Orthogonal to coverage; a finding, not a percentage. Not a safety or regulatory conclusion |
-| Regression comparison between runs | yes | **no** | v1 `compare` unimplemented; comparability §9 defined not built |
-| Evidence generation, fingerprints, provenance, replay | yes | **no** | v1 identity §7 and evidence unimplemented |
-| Comparability determination | yes | **no** | `COMPARABILITY_UNKNOWN` is not a soft yes |
-| Local, stateless operation; readiness checks | yes | **no** | v1 CLI unimplemented |
+| Regression comparison between runs | yes | **implemented, unqualified** | `dsi compare` landed at `5493dbe5` (DSI-COMM-PACKAGE-2-LAND-1). Three-state verdict with the differing component named |
+| Evidence generation, fingerprints, provenance, replay | yes | **implemented, unqualified** | Portable Audit records with integrity verification; identity bindings; `dsi verify --reproduce`. `INTEGRITY_VERIFIED` and `REPRODUCTION_VERIFIED` stay distinct, and `REPRODUCTION_UNAVAILABLE` is never a pass |
+| Comparability determination | yes | **implemented, unqualified** | Three states over a fourteen-component identity surface. `COMPARABILITY_UNKNOWN` is still not a soft yes, and is never collapsed into `NOT_COMPARABLE` |
+| Local CLI operation | yes | **implemented, unqualified** | `author` / `admit` / `audit` / `verify` / `compare` / `demo` / `report`. Runs locally with no server and no network call |
+| Readiness checks | yes | **no** | Not a v1 verb. The paired row was corrected by halves: the CLI is real, readiness is not |
 | Handoff integrity · retrieval/RAG integrity | no | **no** | Never implemented. Removed from the site |
 | Revision, recovery, remediation, intervention | no | **no** | `CLAIM_BOUNDARIES`: deliberately unsupported |
 | Pluraxis · GATE · integrated operation | no | **no** | `CLAIM_BOUNDARIES`: deliberately unsupported |
+
+
+## Correction — DSI-WEB-1
+
+Owner ruling `DSI_V1_COMPARABILITY_IS_CURRENT_PRODUCT_CAPABILITY`, applied prospectively against
+the landed product at `5493dbe5d16e3ac72670a4e1d1b80fc6356bd5f8`
+(`DSI_COMMERCIAL_PACKAGE_LANDED`, 428 tests passing).
+
+Four rows above were stale. Each correction was verified against the product source, not against
+the website's prior copy:
+
+- comparison and comparability — `src/dsi/comparison.py`, `dsi compare`;
+- evidence, fingerprints, provenance, replay — `evidence_record.py`, `identity.py`,
+  `reproduction.py`, `dsi verify --reproduce`;
+- local CLI operation — the seven verbs above.
+
+**Readiness checks were NOT corrected.** They shared a row with local operation, and only half of
+that row had become true. Correcting the row wholesale would have added a capability that does not
+exist.
+
+This is a ruling about CAPABILITY, not availability. DSI v1 remains forthcoming, separately
+lineaged, unqualified, and not released and not downloadable. No availability wording moves from
+v0.2.1 to v1 as a result of this correction.
 
 ## The frozen findings vocabulary (§4)
 

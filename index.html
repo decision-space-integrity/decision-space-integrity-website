@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Decision-Space Integrity — Measuring What's Preserved. Governing What Changes.</title>
-<meta name="description" content="AI can give a good answer and still narrow the decision. Decision-Space Integrity measures what remains visible through AI-assisted decisions.">
+<title>Decision-Space Integrity — Know when your AI evaluations are actually comparable.</title>
+<meta name="description" content="Your AI score improved. Did the system improve, or did the measurement change? Decision-Space Integrity measures what an AI output made visible against a governed reference, and governs whether two measurements may be compared as evidence of change.">
 <link rel="canonical" href="https://decisionspaceintegrity.com/">
 <meta name="author" content="Andrew J Cousins">
 <meta property="og:type" content="website">
@@ -68,6 +68,7 @@
     <nav id="sitenav" class="nav" aria-label="Site">
       <a href="/dsc">DSC</a>
       <a href="/dsi">DSI</a>
+      <a href="/demo">Demo</a>
       <a href="/audit">DSI Audit</a>
       <a href="/applications">Applications</a>
       <a href="/evidence">Evidence</a>
@@ -81,15 +82,48 @@
   <section class="hero" style="padding-bottom:34px;">
     <div class="wrap" style="display:block;">
       <p class="eyebrow">Measurement and evidence for AI-assisted decisions</p>
-      <h1 style="max-width:24ch;">AI can give a good answer and still narrow the decision.</h1>
-      <p class="lead" style="max-width:68ch;">Decision-Space Integrity is a research and engineering programme for measuring what remains visible when AI helps people reason, choose and act.</p>
+      <h1 style="max-width:26ch;">Know when your AI evaluations are actually comparable.</h1>
+      <p class="lead" style="max-width:68ch;">Your AI score improved. Did the system improve &mdash; or did the measurement change? Decision-Space Integrity measures what an AI output made visible against a governed reference, and governs whether two of those measurements may be compared as evidence of change.</p>
       <div class="cta-row">
-        <a class="btn btn-primary btn-arrow" href="/dsc">Explore Decision-Space Collapse</a>
-        <a class="btn btn-ghost" href="/dsi">See how DSI works</a>
+        <a class="btn btn-primary btn-arrow" href="/demo">See the worked example</a>
+        <a class="btn btn-ghost" href="/dsi">How it works</a>
       </div>
     </div>
   </section>
 
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The problem</p>
+        <h2 id="why-scores-move">A higher score does not always mean a better system</h2>
+      </div>
+      <p class="lead" style="max-width:70ch;">An evaluation result can move because the thing being evaluated changed. It can also move because the way you measured it changed:</p>
+      <ul style="max-width:70ch;">
+        <li>the evaluator logic changed;</li>
+        <li>the rubric or criteria changed;</li>
+        <li>the evaluation population changed;</li>
+        <li>the scoring or aggregation changed.</li>
+      </ul>
+      <p style="max-width:70ch;">Nothing in the two numbers tells you which happened. A version label does not settle it either: a label is something a person has to remember to change, and the measurement can move without it.</p>
+
+      <div class="card" style="margin-top:24px;">
+        <p class="eyebrow">One worked example</p>
+        <div class="grid grid-2" style="margin-top:6px;">
+          <div>
+            <p class="demo-figure">2 of 5 counted items surfaced</p>
+            <p class="demo-score">40.0%</p>
+          </div>
+          <div>
+            <p class="demo-figure">2 of 3 counted items surfaced</p>
+            <p class="demo-score">66.7%</p>
+          </div>
+        </div>
+        <p>The answer did not change between those two measurements, and it surfaced the same two items both times. Only the counted population changed. Read as an ordinary score movement that is <strong>+26.7 points</strong>.</p>
+        <p style="margin-bottom:0;"><span class="demo-status">NOT COMPARABLE</span><br>The counted evaluation population changed. <a href="/demo">Walk through the whole example &#8594;</a></p>
+      </div>
+    </div>
+  </section>
   <section class="reveal">
     <div class="wrap">
       <div class="section-head">

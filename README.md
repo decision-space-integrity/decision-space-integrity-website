@@ -8,8 +8,9 @@ A static site: plain HTML + one CSS file. **No frameworks, no build step; one pr
 
 ```
 index.html                                 Home (Product Status panel + Why it matters)
-what-is-decision-space-integrity.html      Canonical explainer ("What is DSI?") + FAQPage
-product.html                               Product (Audit · Regression Audit · Evidence)
+dsi.html                                   How it works: identity, comparison, the three states
+audit.html                                 DSI Audit — version identities and availability
+demo.html                                  Reference demonstration (comparison drift; the 40.0% -> 66.7% example)
 getting-started.html                       Getting started — the evaluator install path
 deployment.html                            Deployment profiles (core · API · dashboard · Docker)
 security.html                              Security & operations

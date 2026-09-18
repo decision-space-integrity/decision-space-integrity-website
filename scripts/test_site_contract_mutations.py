@@ -30,6 +30,30 @@ CHECK = ROOT / "scripts" / "check_site_contract.py"
 
 # (name, file, find, replace)
 CASES = [
+    # --- DSI-WEB-1: the demo surface and the commercial claim boundary
+    ("demo: a numeral drifts away from the implementation", "demo.html",
+     '<span data-demo="drift-denominator">3</span>',
+     '<span data-demo="drift-denominator">4</span>'),
+    ("demo: the numerators stop matching", "demo.html",
+     '<span data-demo="drift-numerator">2</span>',
+     '<span data-demo="drift-numerator">3</span>'),
+    ("demo: a figure loses its structural tag", "demo.html",
+     '<span data-demo="baseline-denominator">5</span>', '<span>5</span>'),
+    ("demo: the status is softened", "demo.html",
+     '<p class="demo-status" data-demo="status">NOT COMPARABLE</p>',
+     '<p class="demo-status" data-demo="status">NEEDS REVIEW</p>'),
+    ("demo: a mock override control appears", "demo.html",
+     '<p class="muted" style="margin-top:18px;">DSI v1 does not claim',
+     '<button type="button">Override anyway</button><p class="muted" style="margin-top:18px;">DSI v1 does not claim'),
+    ("claim: uniqueness on the homepage", "index.html",
+     'A higher score does not always mean a better system',
+     'The only product that catches this'),
+    ("claim: an override workflow is implied", "demo.html",
+     'DSI v1 reports the incompatibility and declines to present the movement as a delta.',
+     'DSI v1 blocks invalid comparisons unless overridden.'),
+    ("claim: overclaim hidden in metadata", "demo.html",
+     '<meta property="og:description" content="One unchanged answer, measured twice.',
+     '<meta property="og:description" content="The first product to catch this. One unchanged answer, measured twice.'),
     ("verb: bare DSI installs (visible copy)", "getting-started.html",
      "DSI Audit installs as an ordinary Python package", "DSI installs as an ordinary Python package"),
     ("verb: bare DSI audits (visible copy)", "security.html",
@@ -66,8 +90,8 @@ CASES = [
     ("chip: Audit-surface chip removed", "audit.html",
      "DSI Audit v0.2.1 &#183; private evaluation", "Research &amp; engineering programme"),
     ("homepage: stale metadata returns", "index.html",
-     "AI can give a good answer and still narrow the decision. Decision-Space Integrity measures",
-     "A self-hosted assurance system that measures. Decision-Space Integrity measures"),
+     "Your AI score improved. Did the system improve, or did the measurement change?",
+     "A self-hosted assurance system. Did the system improve, or did the measurement change?"),
     # --- v1 product boundary. Pluraxis and GATE are deliberately unsupported in v1
     # (DSI-V1 docs/CLAIM_BOUNDARIES.md); the site is the account of the product line, not
     # the programme archive. GATE is matched case-sensitively and word-bounded, so
@@ -148,21 +172,21 @@ CASES = [
     # --- surface classes. A v1 surface may not carry a v0.2.1 capability at all; a
     # v0.2.1 surface may, but only while it says so; /dsi must positively carry v1's four.
     ("surface: a v0.2.1 capability appears on a v1 surface", "dsi.html",
-     "<h2>Four capabilities, and their boundaries.</h2>",
-     "<h2>Four capabilities, regression comparison, and their boundaries.</h2>"),
-    ("surface: fingerprints promoted onto /applications", "applications.html",
+     "<h2>Six capabilities, and their boundaries.</h2>",
+     "<h2>Six capabilities, readiness checks, and their boundaries.</h2>"),
+    ("surface: a withheld capability promoted onto /applications", "applications.html",
      "<h2>AI summary assurance.</h2>",
-     "<h2>AI summary assurance, with a reproducible fingerprint.</h2>"),
+     "<h2>AI summary assurance, with readiness checks.</h2>"),
     # --- the two escapes that reached a pushed head. Both were invisible to the checker:
     # the first because stripping tags discarded metadata, the second because the card
     # carrying the claim also carried an unrelated application-validity chip.
     ("escape: a v0.2.1 capability hides in v1 metadata", "dsi.html",
      'architecture for auditing a supplied response against a governed reference',
-     'architecture for governed structural comparison, provenance and legitimate comparability'),
+     'architecture for governed structural comparison, with readiness checks'),
     ("escape: a capability claim hides in a card with an evidence chip", "applications.html",
      "report which expected points it surfaced and which it omitted, against a reference "
      "governed independently of the response.",
-     "report the omissions — each with source evidence and a reproducible fingerprint."),
+     "report the omissions, each with a readiness check and an intervention."),
     ("surface: a v0.2.1 page drops its scope marker", "deployment.html",
      "This page documents the <strong>v0.2.1</strong> evaluation build.",
      "This page documents the current build."),

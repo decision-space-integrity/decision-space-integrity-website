@@ -38,7 +38,7 @@ SITE = "https://decisionspaceintegrity.com"
 
 # Approved primary navigation: understand -> evaluate -> verify.
 # Home is provided by the site mark; Articles is footer material.
-NAV_SEQUENCE = ["/dsc", "/dsi", "/audit", "/applications", "/evidence", "/research"]
+NAV_SEQUENCE = ["/dsc", "/dsi", "/demo", "/audit", "/applications", "/evidence", "/research"]
 
 C001 = ("DSI is a local, stateless assurance sidecar. It audits a supplied response; it does not "
         "generate one. It measures configured expected-path visibility")
@@ -134,7 +134,7 @@ def main(argv: list[str]) -> int:
                 errors.append(f"sitemap lists {path}, which is a redirect source")
         if f"{SITE}/404" in locs:
             errors.append("sitemap must not list the 404 route")
-        for required in ("/", "/dsc", "/dsi", "/audit", "/applications", "/evidence", "/research", "/articles"):
+        for required in ("/", "/dsc", "/dsi", "/demo", "/audit", "/applications", "/evidence", "/research", "/articles"):
             want = SITE + ("" if required == "/" else required)
             if required == "/":
                 want = SITE + "/"
@@ -405,8 +405,20 @@ def main(argv: list[str]) -> int:
 
     # Implemented in the evaluation build, NOT in v1. Multi-word where the single word is
     # ordinary English: "evidence" is fine, "evidence bundle" is a capability claim.
-    WITHHELD = ("regression", "evidence bundle", "fingerprint", "provenance", "replay",
-                "comparability", "readiness", "stateless", "revision", "intervention",
+    # DSI-WEB-1, owner ruling DSI_V1_COMPARABILITY_IS_CURRENT_PRODUCT_CAPABILITY.
+    # Five capabilities left this list because they LANDED in v1 at
+    # 5493dbe5d16e3ac72670a4e1d1b80fc6356bd5f8 (DSI_COMMERCIAL_PACKAGE_LANDED), each
+    # verified against the product source rather than against the website's own copy:
+    #   comparability, regression  three-state compare + `dsi compare` (src/dsi/comparison.py)
+    #   fingerprint, provenance    identity bindings and the Audit record (identity.py,
+    #                              evidence_record.py)
+    #   replay                     `dsi verify --reproduce` (reproduction.py)
+    # The rest stay withheld because they are STILL not implemented in v1. In particular
+    # `readiness` is not a CLI verb, and the capability row that paired it with local
+    # operation was corrected by halves rather than wholesale: the CLI is real, readiness
+    # is not. This is a capability ruling only -- v1 remains unreleased, and the
+    # availability rules in section 5 are untouched.
+    WITHHELD = ("evidence bundle", "readiness", "stateless", "revision", "intervention",
                 "remediation")
 
     for name in V1_SURFACES:
@@ -793,6 +805,81 @@ def main(argv: list[str]) -> int:
             errors.append("index.html: stale 'A self-hosted assurance system' metadata is present")
         if "AI can give a good answer and still narrow the decision." not in text[idx]:
             errors.append("index.html: programme-level metadata positioning is missing")
+
+    # ---- 10. commercial claim boundary and demo integrity (DSI-WEB-1) ----------------
+    # The claim-discipline scanner covers README + docs and a different claim family. These
+    # are the commercial overclaims the product contract forbids, and they are scanned in
+    # RENDERED <main> text plus metadata, because a forbidden claim in an OG description is
+    # still published. Negation is honoured with the same window the rest of the file uses,
+    # so "not unique" and "does not block" pass while the bare claim fails.
+    COMMERCIAL_FORBIDDEN = (
+        (re.compile(r"\b(?:the\s+)?only\s+(?:product|tool|system|platform)\b", re.I), "only product"),
+        (re.compile(r"\bfirst\s+(?:product|tool|system|platform)\s+to\b", re.I), "first to"),
+        (re.compile(r"\bunique(?:ly)?\s+(?:able|positioned|capable)\b", re.I), "uniquely able"),
+        (re.compile(r"\bpatent(?:able|ed|-pending)\b", re.I), "patent"),
+        (re.compile(r"\bdefensible\s+moat\b|\bcompetitive\s+moat\b", re.I), "moat"),
+        (re.compile(r"\bblocks?\s+invalid\s+comparisons?\b", re.I), "blocks invalid comparisons"),
+        (re.compile(r"\bunless\s+overridden\b", re.I), "override workflow implied"),
+        (re.compile(r"\bcustomers?\s+(?:want|demand|need)\s+this\b", re.I), "demand established"),
+        (re.compile(r"\bnobody\s+else\s+does\b", re.I), "nobody else"),
+    )
+    # A TIGHT preceding negation only. The wide context window the other scanners use is
+    # wrong here: this copy legitimately contains "does not", "never" and "unestablished"
+    # all over the surrounding prose, and a 140-character window let "the only product",
+    # "blocks invalid comparisons unless overridden" and a metadata overclaim all pass
+    # while the mutation suite said they should not. These claims have no legitimate
+    # negated form on this site beyond an immediate "not"/"never" directly in front.
+    CLAIM_NEGATION = re.compile(
+        r"(?:\bnot\b|\bnever\b|\bno\b|\bisn't\b|\bnor\b)\W{0,12}$", re.I)
+    for p_, s_ in text.items():
+        name = p_.relative_to(root).as_posix()
+        m_ = MAIN_RX.search(s_)
+        hay_parts = []
+        if m_:
+            hay_parts.append(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", m_.group(1))))
+        hay_parts += re.findall(r'<meta[^>]+content="([^"]*)"', s_, re.I)
+        hay_parts += re.findall(r"<title>(.*?)</title>", s_, re.S | re.I)
+        hay = " ".join(hay_parts)
+        for rx, label in COMMERCIAL_FORBIDDEN:
+            for hit in rx.finditer(hay):
+                preceding = hay[max(0, hit.start() - 30): hit.start()]
+                if not CLAIM_NEGATION.search(preceding):
+                    window = hay[max(0, hit.start() - 90): hit.end() + 60]
+                    errors.append(f"{name}: forbidden commercial claim ({label}): "
+                                  f"...{window.strip()[:150]}...")
+
+    # The demo page's numerals are the product's numbers. They are checked STRUCTURALLY,
+    # against tagged elements, so that editing the prose around them cannot silently make
+    # the page disagree with the implementation it describes.
+    demo_ = root / "demo.html"
+    if not demo_.exists():
+        errors.append("demo.html is missing: the reference demonstration is a required surface")
+    else:
+        d_ = text[demo_]
+        EXPECTED_DEMO = {
+            "baseline-numerator": "2", "baseline-denominator": "5",
+            "drift-numerator": "2", "drift-denominator": "3",
+            "baseline-score": "40.0%", "drift-score": "66.7%",
+            "status": "NOT COMPARABLE",
+        }
+        for key, want in EXPECTED_DEMO.items():
+            m2 = re.search(r'data-demo="%s"[^>]*>([^<]*)<' % re.escape(key), d_)
+            if not m2:
+                errors.append(f"demo.html: no element carries data-demo={key!r}; the demo "
+                              f"figures must stay structurally identifiable")
+            elif m2.group(1).strip() != want:
+                errors.append(f"demo.html: data-demo={key!r} reads {m2.group(1).strip()!r}, "
+                              f"expected {want!r} from the landed implementation")
+        # The numerator is the whole point: it must be identical on both sides.
+        nb = re.search(r'data-demo="baseline-numerator"[^>]*>([^<]*)<', d_)
+        nd = re.search(r'data-demo="drift-numerator"[^>]*>([^<]*)<', d_)
+        if nb and nd and nb.group(1).strip() != nd.group(1).strip():
+            errors.append("demo.html: the two numerators differ; the demonstration depends on "
+                          "the answer having surfaced the same items both times")
+        # No mock override control may appear on the demo surface.
+        if re.search(r"<button[^>]*>[^<]*overrid", d_, re.I):
+            errors.append("demo.html: an override control is rendered; a governed override "
+                          "workflow is not implemented and must not be mocked up")
 
     # ---- report ------------------------------------------------------------------
     if errors:

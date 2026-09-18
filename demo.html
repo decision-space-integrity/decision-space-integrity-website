@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo — the score went up and nothing improved | Decision-Space Integrity</title>
+<meta name="description" content="A deterministic worked example: one unchanged answer, measured twice. The score rises from 40.0% to 66.7% because the counted population changed. DSI v1 reports the two measurements as not comparable.">
+<link rel="canonical" href="https://decisionspaceintegrity.com/demo">
+<meta name="author" content="Andrew J Cousins">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Decision-Space Integrity">
+<meta property="og:title" content="Demo — the score went up and nothing improved">
+<meta property="og:description" content="One unchanged answer, measured twice. 40.0% becomes 66.7% because the counted population changed, not because the answer did.">
+<meta property="og:url" content="https://decisionspaceintegrity.com/demo">
+<meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Demo — the score went up and nothing improved">
+<meta name="twitter:description" content="One unchanged answer, measured twice. 40.0% becomes 66.7% because the counted population changed, not because the answer did.">
+<meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
+<meta name="twitter:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/icons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/icons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&amp;family=Hanken+Grotesk:wght@380;480;560;620&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
+    <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
+    <nav id="sitenav" class="nav" aria-label="Site">
+      <a href="/dsc">DSC</a>
+      <a href="/dsi">DSI</a>
+      <a href="/demo" class="active" aria-current="page">Demo</a>
+      <a href="/audit">DSI Audit</a>
+      <a href="/applications">Applications</a>
+      <a href="/evidence">Evidence</a>
+      <a href="/research">Research</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Worked example</p>
+      <h1 style="max-width:26ch;">The score went up. Nothing improved.</h1>
+      <p class="lead" style="max-width:68ch;">One answer, measured twice. The answer does not change between the two measurements &mdash; not a word of it. What changes is which expected items are counted. The score rises by more than twenty-six points.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The two measurements</p>
+        <h2 id="the-two-measurements">Same answer, two definitions</h2>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <p class="eyebrow">Baseline</p>
+          <p class="demo-figure"><span data-demo="baseline-numerator">2</span> of <span data-demo="baseline-denominator">5</span> counted items surfaced</p>
+          <p class="demo-score" data-demo="baseline-score">40.0%</p>
+          <p class="muted">The answer surfaced <code>change_role</code> and <code>stay_and_adjust</code>.</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">After the measurement definition changed</p>
+          <p class="demo-figure"><span data-demo="drift-numerator">2</span> of <span data-demo="drift-denominator">3</span> counted items surfaced</p>
+          <p class="demo-score" data-demo="drift-score">66.7%</p>
+          <p class="muted">The answer surfaced <code>change_role</code> and <code>stay_and_adjust</code> &mdash; the same two.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:22px;">
+        <h3 style="margin-top:0;">What actually moved</h3>
+        <p>The number of things the answer did is <strong>the same in both measurements</strong>. The numerator is <strong>2</strong> either way, and the two items are the same two items. What changed is the denominator: the counted population went from five items to three.</p>
+        <p>Read as an ordinary score movement, that is <strong data-demo="apparent-delta">+26.7 points</strong>. Read as evidence that the answer got better, it is worth nothing at all.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The two readings</p>
+        <h2 id="two-readings">An ordinary tool, and DSI v1</h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <p class="eyebrow">Ordinary conclusion</p>
+          <p class="demo-score">+26.7 points</p>
+          <p class="muted">Two scores, one chart, an upward line. Nothing in the numbers themselves says the ruler changed.</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">DSI v1</p>
+          <p class="demo-status" data-demo="status">NOT COMPARABLE</p>
+          <p data-demo="reason">The counted evaluation population changed.</p>
+          <p class="muted">The two measurements were not produced under the same measurement definition, so the difference between them is not evidence of change.</p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:18px;">DSI v1 does not claim the second answer is worse, or better. It claims only that the comparison cannot carry that conclusion.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Run it yourself</p>
+        <h2 id="run-it">The command, and its real output</h2>
+      </div>
+      <p>The demonstration ships with DSI v1 and is deterministic. It calls no model: the answer is a fixed string and the observer is lexical. The output below is the command's actual output, captured from the landed implementation, not a mock-up.</p>
+      <pre class="code" data-demo="cli"><code>$ dsi demo comparison-drift
+
+DSI reference demo -- comparison drift
+
+The response being measured is identical in both measurements.
+
+  baseline   coverage 0.4      (2 of 5 counted items surfaced)
+  drifted    coverage 0.6667   (2 of 3 counted items surfaced)
+
+  surfaced, baseline : change_role, stay_and_adjust
+  surfaced, drifted  : change_role, stay_and_adjust
+
+  The response surfaced exactly the same items both times. The score moved because
+  fewer items were counted, not because the answer got better.
+
+Read as an ordinary score movement, that is +26.7 points.
+
+What DSI says about it
+
+  same measurement definition:           COMPARABLE
+  drifted measurement definition:        NOT_COMPARABLE
+  record that cannot vouch for itself:   COMPARABILITY_UNKNOWN</code></pre>
+
+      <p>Comparing the two audit records directly reports the incompatibility and names each component that moved:</p>
+      <pre class="code"><code>$ dsi compare baseline.audit.json drifted.audit.json
+
+NOT_COMPARABLE
+  - COUNTS_FOR_COVERAGE_PARTITION_MISMATCH: input component
+    'counts_for_coverage_partition' differs between the audits
+  evidential status: NOT COMPARABLE -- the measurement definition
+  differs, so this is not evidence of change</code></pre>
+      <p class="muted">Six components are reported in full; the counted population is the one that carries this example. Under <code>COMPARABLE</code> the signed delta is shown as usual. Under <code>NOT_COMPARABLE</code> it is not presented as an ordinary improvement figure, because the thing that moved was the measurement.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Three answers, not two</p>
+        <h2 id="three-states">Compatible, incompatible, and not established</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <p class="demo-status demo-status-ok">COMPARABLE</p>
+          <p>DSI v1 established that the two measurement definitions are compatible for direct comparison.</p>
+        </div>
+        <div class="card">
+          <p class="demo-status">NOT COMPARABLE</p>
+          <p>DSI v1 established an incompatibility between the two measurement definitions, and reports which component differs.</p>
+        </div>
+        <div class="card">
+          <p class="demo-status demo-status-unknown">COMPARABILITY UNKNOWN</p>
+          <p>DSI v1 could not establish whether the two measurements are comparable. That is a different statement from establishing that they disagree, and it is never reported as either.</p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:18px;">The third state is the one most systems do not have. Collapsing it into the second would report a finding that was never made.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="card">
+        <h3 style="margin-top:0;">What this demonstration does not show</h3>
+        <p>DSI v1 reports the incompatibility and declines to present the movement as a delta. It does <strong>not</strong> withhold the comparison, and there is no override to record: a governed override workflow is not implemented, and nothing on this page is a mock-up of one.</p>
+        <p class="muted">DSI v1 is forthcoming, separately lineaged, unqualified, and not released and not downloadable. This page describes what the implementation does, not a product you can obtain. <a href="/audit">Version identities and availability &#8594;</a></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="row">
+      <span>decisionspaceintegrity.com</span>
+      <span><a href="/dsc">DSC</a> &middot; <a href="/dsi">DSI</a> &middot; <a href="/demo">Demo</a> &middot; <a href="/audit">DSI Audit</a> &middot; <a href="/evidence">Evidence</a> &middot; <a href="/paper">Paper</a> &middot; <a href="/reading">Reading</a> &middot; <a href="/contact">Contact</a> &middot; <a href="/privacy">Privacy</a></span>
+      <span class="statusflag">Research &amp; engineering programme</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

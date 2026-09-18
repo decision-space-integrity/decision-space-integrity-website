@@ -42,6 +42,7 @@
     <nav id="sitenav" class="nav" aria-label="Site">
       <a href="/dsc">DSC</a>
       <a href="/dsi">DSI</a>
+      <a href="/demo">Demo</a>
       <a href="/audit">DSI Audit</a>
       <a href="/applications">Applications</a>
       <a href="/evidence" class="active" aria-current="page">Evidence</a>
@@ -132,6 +133,29 @@
         </tbody>
       </table>
       </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Comparison admissibility</p>
+        <h2 id="comparison-evidence">What has actually been tested.</h2>
+      </div>
+
+      <h3>The technical test</h3>
+      <p style="max-width:74ch;">A frozen shell measured one unchanged set of artefacts under deliberately perturbed measurement definitions. Changing the evaluator logic, the criteria or the counted population moved the reported figure while the declared version string stayed the same, so a check based on that string admitted the comparison. The strongest case moved a rate from 0.425 to 0.667 with the artefacts untouched. The same check also refused a comparison whose measurement had not changed at all &mdash; it fails in both directions.</p>
+
+      <h3>The market test</h3>
+      <p style="max-width:74ch;">The same five perturbations were expressed on four evaluation platforms, using ordinary Python evaluators and no model calls, and each platform's own comparison workflow was then exercised.</p>
+      <p style="max-width:74ch;"><strong>Across the tested versions, configurations, surfaces and perturbation cases of LangSmith, Braintrust, Arize Phoenix and W&amp;B Weave, no platform withheld an identity-incompatible comparison or required an explicit override.</strong></p>
+      <p class="muted" style="max-width:74ch;">That sentence carries its scope deliberately. It describes four named platforms, on the versions and surfaces tested on one date, under five frozen cases; the Phoenix surface tested was the open-source one. It is not a claim about those products in general, nor about anything untested, and it is not a claim to be first, only or unique.</p>
+
+      <h3>Two findings worth stating plainly</h3>
+      <p style="max-width:74ch;">In our tested Weave surface, content and version changes <em>were</em> detected and an inconsistency warning was shown at comparison &mdash; and the score delta was still calculated and presented. That is the most useful result in the set: it shows that detecting a measurement change and governing what may be concluded from it are two different things.</p>
+      <p style="max-width:74ch;">In our tested Braintrust case, shared-input matching avoided one misleading population comparison by restricting the comparison to shared rows. That is an aggregation behaviour rather than measurement-identity-based comparison admissibility, and it is recorded because it does not fit the pattern.</p>
+
+      <p class="muted" style="max-width:74ch;">Neither test establishes customer demand, defensibility or novelty, none of which has been tested. <a href="/demo">The worked example &#8594;</a></p>
     </div>
   </section>
 

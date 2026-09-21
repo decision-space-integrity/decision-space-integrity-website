@@ -847,8 +847,36 @@ def main(argv: list[str]) -> int:
         (re.compile(r"\bunique(?:ly)?\s+(?:able|positioned|capable)\b", re.I), "uniquely able"),
         (re.compile(r"\bpatent(?:able|ed|-pending)\b", re.I), "patent"),
         (re.compile(r"\bdefensible\s+moat\b|\bcompetitive\s+moat\b", re.I), "moat"),
+        # STAYS FORBIDDEN. DSI marks a comparison inadmissible; it blocks nothing, and
+        # governed-visible is the whole design. Implementing an override changed what may
+        # be said about disposition, not about blocking.
         (re.compile(r"\bblocks?\s+invalid\s+comparisons?\b", re.I), "blocks invalid comparisons"),
-        (re.compile(r"\bunless\s+overridden\b", re.I), "override workflow implied"),
+        # `unless overridden` is NO LONGER forbidden. It was banned because it implied a
+        # workflow that did not exist; DSI-COMP-GOV-1 implemented one, qualified at
+        # DSI-RELEASE-2, so the phrase now describes shipped behaviour and banning it
+        # would force the site to under-describe the product. The release is deliberately
+        # narrow: this one phrase, not "override" and not governance vocabulary generally.
+        # The claims an override could be inflated into are each forbidden separately
+        # below, and the demo-surface rule still rejects an override control outright.
+        (re.compile(r"\boverride\s+(?:makes|renders)\b.{0,40}\bcomparable\b", re.I),
+         "override claimed to confer comparability"),
+        (re.compile(r"\bautomatic(?:ally)?\s+overrid", re.I), "automatic override"),
+        (re.compile(r"\bno\s+reason\s+(?:is\s+)?required\b", re.I),
+         "override without a reason"),
+        # These must match an AFFIRMATIVE claim only. Two earlier attempts failed on true
+        # copy: an unscoped RBAC pattern fired on deployment.html, which lists RBAC among
+        # things DSI does NOT provide, and a proximity pattern then fired on demo.html's
+        # "there is no approval chain and no roles" -- catching the denial as though it
+        # were the claim. Proximity to "override" is not enough, because the sentences
+        # that mention both are usually the ones ruling it out. Match the affirmative
+        # constructions instead; a denial cannot accidentally take this shape.
+        (re.compile(r"\b(?:requires?|needs?|subject\s+to)\s+(?:\w+\s+){0,3}"
+                    r"(?:manager|management|supervisor|organisational|organizational)?"
+                    r"\s*approval\b", re.I), "override approval chain implied"),
+        (re.compile(r"\b(?:must|has\s+to)\s+be\s+approved\b", re.I),
+         "override approval chain implied"),
+        (re.compile(r"\boverrid\w*\s+(?:is|are)\s+(?:role[-\s]based|RBAC)\b", re.I),
+         "override RBAC implied"),
         (re.compile(r"\bcustomers?\s+(?:want|demand|need)\s+this\b", re.I), "demand established"),
         (re.compile(r"\bnobody\s+else\s+does\b", re.I), "nobody else"),
         # DSI-DIST-1. The site now says a Commercial Preview EXISTS and is supplied to
@@ -920,10 +948,60 @@ def main(argv: list[str]) -> int:
         if nb and nd and nb.group(1).strip() != nd.group(1).strip():
             errors.append("demo.html: the two numerators differ; the demonstration depends on "
                           "the answer having surfaced the same items both times")
-        # No mock override control may appear on the demo surface.
+        # RETAINED, with its reason updated. The override now exists in the PRODUCT; it
+        # does not exist on the WEBSITE, and must not appear to. The site explains the
+        # behaviour, it is not the DSI execution interface.
         if re.search(r"<button[^>]*>[^<]*overrid", d_, re.I):
-            errors.append("demo.html: an override control is rendered; a governed override "
-                          "workflow is not implemented and must not be mocked up")
+            errors.append("demo.html: an override control is rendered; the override is a "
+                          "CLI capability and the public site is not an execution "
+                          "interface for it")
+        # DSI-WEB-GOV-1. The demo surface must now carry the governed-visible account,
+        # because its absence is what made the previous copy false. Each element is
+        # required on its own: a page could state the disposition while dropping the
+        # status-preservation clause, which is the half a reader most needs.
+        d_text = re.sub(r"\s+", " ", rendered(d_))
+        for needed, why in (
+            ("evidence disposition", "disposition must be named as a distinct field"),
+            ("reason", "an override requires a reason"),
+            ("records", "the override is recorded"),
+        ):
+            if needed.lower() not in d_text.lower():
+                errors.append(f"demo.html: governed-visible account incomplete "
+                              f"({needed!r} missing): {why}")
+        # The MAPPING must be stated correctly, pair by pair. Checking only that the word
+        # INADMISSIBLE appears somewhere was too weak: a mutation that reassigned
+        # COMPARABILITY UNKNOWN to INADMISSIBLE left every required word present and
+        # passed, while saying something false. Each pair is therefore asserted on its
+        # own, and the first uses a negative lookbehind so "NOT COMPARABLE is
+        # INADMISSIBLE" cannot satisfy the COMPARABLE row.
+        for pattern, pair in (
+            (r"(?<!NOT )\bCOMPARABLE\s+is\s+ADMISSIBLE\b", "COMPARABLE -> ADMISSIBLE"),
+            (r"\bNOT\s+COMPARABLE\s+is\s+INADMISSIBLE\b",
+             "NOT COMPARABLE -> INADMISSIBLE"),
+            (r"\bCOMPARABILITY\s+UNKNOWN\s+is\s+ADMISSIBILITY\s+UNKNOWN\b",
+             "COMPARABILITY UNKNOWN -> ADMISSIBILITY UNKNOWN"),
+        ):
+            if not re.search(pattern, d_text, re.I):
+                errors.append(f"demo.html: the disposition mapping is not stated "
+                              f"correctly ({pair} missing)")
+        # And the demonstrated comparison must itself be called inadmissible. Without
+        # this the page can describe the mapping in the abstract while declining to
+        # apply it to the example the reader is looking at.
+        if not re.search(r"comparison above is\s+INADMISSIBLE", d_text, re.I):
+            errors.append("demo.html: the demonstrated comparison must be stated as "
+                          "INADMISSIBLE, not only defined in the abstract")
+        # The load-bearing sentence. An override must never read as repairing the
+        # comparison, and the page must say what it leaves alone.
+        if not re.search(r"comparison status does not move|still\s+<span[^>]*>NOT COMPARABLE",
+                         d_, re.I):
+            errors.append("demo.html: the page must state that an override leaves the "
+                          "comparison status unchanged")
+        # The absence that used to be stated as fact is now false and must be gone.
+        for stale in ("there is no override to record",
+                      "governed override workflow is not implemented"):
+            if stale.lower() in rendered(d_).lower():
+                errors.append(f"demo.html: stale claim present: {stale!r} -- an override "
+                              f"workflow is implemented and qualified")
 
     # ---- report ------------------------------------------------------------------
     if errors:

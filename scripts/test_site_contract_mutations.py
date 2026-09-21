@@ -153,10 +153,18 @@ CASES = [
     # forthcoming, separately lineaged, unqualified, unavailable. 0.3.0 is off the site.
     ("version: the forthcoming v1 identity disappears", "audit.html",
      "<dt>Forthcoming</dt>", "<dt>Notes</dt>"),
+    # DSI-DIST-1 retargeted these two rather than deleting them. The wording they pinned
+    # changed when "not released and not downloadable" was split, but the rules they test
+    # did not: v1 must still be marked unqualified, and must still be marked unavailable.
     ("version: v1 stops being marked unqualified", "audit.html",
-     "<strong>unqualified</strong>, not released", "ready, not released"),
+     "<strong>unqualified</strong>, not generally available", "ready, not generally available"),
     ("version: v1 stops being marked unavailable", "audit.html",
-     "not released and not downloadable", "not yet widely promoted"),
+     "not generally available and not downloadable", "not yet widely promoted"),
+    # the split is itself load-bearing: neither half may quietly vanish on its own
+    ("version: v1 stops being marked not-downloadable", "audit.html",
+     "not generally available and not downloadable", "not generally available"),
+    ("version: v1 acquires general availability", "audit.html",
+     "not generally available and not downloadable", "generally available soon"),
     ("version: availability wording migrates to v1", "audit.html",
      "<strong>DSI v1</strong> &#183; separately lineaged",
      "<strong>DSI v1</strong> &#183; supplied by request, separately lineaged"),
@@ -195,8 +203,36 @@ CASES = [
     ("surface: /dsi loses a governed status", "dsi.html",
      "negated, collapsed into other", "negated"),
     ("version: 'supplied by request' dropped", "audit.html",
-     "&#183; supplied by request. This is the only build available",
-     "&#183; the current product version. This is the only build available"),
+     "<strong>v0.2.1</strong> &#183; supplied by request.",
+     "<strong>v0.2.1</strong> &#183; the current product version."),
+    # --- DSI-DIST-1: the request-gated preview boundary. The site may now say a preview
+    # EXISTS and is supplied to selected evaluators. These are the ways that narrow claim
+    # could widen into one nothing supports.
+    ("preview: a public download offer appears", "audit.html",
+     "Not publicly downloadable, and not a general release.",
+     "Download DSI now from the link below."),
+    ("preview: preview becomes publicly available", "audit.html",
+     "proprietary and evaluation-only",
+     "publicly available and evaluation-only"),
+    ("preview: general availability claimed", "audit.html",
+     "No general-availability release date has been announced.",
+     "DSI is generally available."),
+    ("preview: production readiness claimed", "audit.html",
+     "proprietary and evaluation-only",
+     "proprietary and production-ready"),
+    ("preview: audience restriction removed", "audit.html",
+     "supplied directly to selected evaluators",
+     "available to anyone who wants it"),
+    ("preview: the Commercial Preview entry disappears", "audit.html",
+     "<dt>Commercial Preview</dt>", "<dt>Notes</dt>"),
+    ("preview: preview stops being marked proprietary", "audit.html",
+     "proprietary and evaluation-only", "free and evaluation-only"),
+    ("preview: preview stops being marked not-publicly-downloadable", "audit.html",
+     "Not publicly downloadable, and not a general release.",
+     "Not a general release."),
+    ("preview: the Class A public-download statement is weakened", "audit.html",
+     "There is no self-service public repository and no publicly downloadable release.",
+     "A public download will follow shortly."),
     # a "v" prefix would imply a tagged release; the newest product tag is v0.2.1
     # stacked maturity badges must keep their row gap when they wrap
     ("badges: evidence tierstack removed", "evidence.html",

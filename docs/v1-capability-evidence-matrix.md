@@ -60,8 +60,12 @@ that row had become true. Correcting the row wholesale would have added a capabi
 exist.
 
 This is a ruling about CAPABILITY, not availability. DSI v1 remains forthcoming, separately
-lineaged, unqualified, and not released and not downloadable. No availability wording moves from
+lineaged, unqualified, and not generally available. No availability wording moves from
 v0.2.1 to v1 as a result of this correction.
+
+**Updated by DSI-DIST-1.** DSI 1.0.0a1 is now supplied to selected evaluators as a proprietary,
+request-gated Commercial Preview. That does not change the capability ruling above, and it does
+not make DSI publicly downloadable.
 
 ## The frozen findings vocabulary (§4)
 
@@ -105,7 +109,9 @@ The site publishes **two** identities, and `0.3.0` is not one of them:
 
 - **`v0.2.1`** — the evaluation build, supplied by request. Every subordinate page
   (installation, deployment, security, release notes, worked example) documents *this*.
-- **`DSI v1`** — separately lineaged, unqualified, not released and not downloadable.
+- **`DSI v1`** — separately lineaged, unqualified, not generally available and not downloadable.
+- **`DSI 1.0.0a1`** — the proprietary Commercial Preview, supplied directly to selected
+  evaluators under the DSI Commercial Preview Evaluation Licence. Not publicly downloadable.
 
 `0.3.0` is removed from published copy entirely. It was an internal predecessor development
 line, **not** the lineage that becomes v1, and publishing it beside v1 invited exactly the

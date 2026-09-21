@@ -168,13 +168,42 @@ def main(argv: list[str]) -> int:
         # development line, not the lineage that becomes v1, so it is off the public site.
         if "DSI v1" not in s or "Forthcoming" not in s:
             errors.append("audit.html: DSI v1 must be stated separately as forthcoming")
+        # DSI-DIST-1 split this requirement. It used to demand the literal phrase "not
+        # released and not downloadable", which bundled two claims into one string. Once
+        # the Commercial Preview is supplied to a selected evaluator, "not released"
+        # stops being true while "not downloadable" stays true, so a contract that can
+        # only demand them together would force the site to keep a false sentence in
+        # order to keep a true one. The two are now required SEPARATELY, and the
+        # downloadable half is not weakened.
         for needed, why in (
             ("separately lineaged", "v1 must be marked separately lineaged"),
             ("unqualified", "v1 must be marked unqualified"),
-            ("not released and not downloadable", "v1 must be marked unavailable"),
+            ("not generally available", "v1 must be marked not generally available"),
+            ("not downloadable", "v1 must be marked not downloadable"),
         ):
             if needed not in s:
                 errors.append(f"audit.html: {why} ({needed!r} missing)")
+        # DSI-DIST-1. The preview is REQUEST-GATED, and the thing that makes that visible
+        # is the audience restriction. If "selected evaluators" is replaced by an
+        # unrestricted audience, the page still reads plausibly while describing a
+        # different distribution model -- so its presence is required, not merely its
+        # absence policed.
+        if "Commercial Preview" not in s:
+            errors.append("audit.html: the Commercial Preview identity must be stated")
+        if "selected evaluators" not in s:
+            errors.append("audit.html: preview distribution must be stated as restricted "
+                          "to selected evaluators ('selected evaluators' missing)")
+        pv = re.search(r"<dt>Commercial Preview</dt>\s*<dd>(.*?)</dd>", s, re.S)
+        if pv:
+            body = pv.group(1)
+            if "proprietary" not in body.lower():
+                errors.append("audit.html: the Commercial Preview entry must state that "
+                              "it is proprietary")
+            if not re.search(r"not\s+publicly\s+downloadable", body, re.I):
+                errors.append("audit.html: the Commercial Preview entry must state that "
+                              "it is not publicly downloadable")
+        else:
+            errors.append("audit.html: the Commercial Preview entry is missing")
         if "describes <strong>v0.2.1</strong>" not in s:
             errors.append("audit.html: the site's subordinate pages (installation, "
                           "deployment, security, release notes) must be stated as "
@@ -822,6 +851,21 @@ def main(argv: list[str]) -> int:
         (re.compile(r"\bunless\s+overridden\b", re.I), "override workflow implied"),
         (re.compile(r"\bcustomers?\s+(?:want|demand|need)\s+this\b", re.I), "demand established"),
         (re.compile(r"\bnobody\s+else\s+does\b", re.I), "nobody else"),
+        # DSI-DIST-1. The site now says a Commercial Preview EXISTS and is supplied to
+        # selected evaluators. That is a narrow claim, and these are the ways it could
+        # widen into a claim nothing supports. Each is negatable by the tight window
+        # below, which is what lets the true copy say "not generally available" and
+        # "Not publicly downloadable" while the unqualified forms stay forbidden.
+        (re.compile(r"\bdownload\s+DSI\b", re.I), "download offer"),
+        (re.compile(r"\bpublicly\s+available\b", re.I), "publicly available"),
+        (re.compile(r"\bgenerally\s+available\b", re.I), "generally available"),
+        (re.compile(r"\bgeneral\s+availability\b(?!\s+release\s+date\s+has\s+been)",
+                    re.I), "general availability"),
+        (re.compile(r"\bproduction[-\s]ready\b", re.I), "production ready"),
+        (re.compile(r"\bproduction[-\s]supported\b", re.I), "production supported"),
+        (re.compile(r"\bavailable\s+to\s+(?:the\s+)?(?:public|anyone)\b", re.I),
+         "available to anyone"),
+        (re.compile(r"\bfree\s+to\s+download\b", re.I), "free to download"),
     )
     # A TIGHT preceding negation only. The wide context window the other scanners use is
     # wrong here: this copy legitimately contains "does not", "never" and "unestablished"

@@ -304,6 +304,14 @@ ul.clean li strong { display:inline; }
 .article .disclaimer { margin:30px 0 0; padding:16px 20px; border-left:3px solid var(--line-2); background:var(--panel); border-radius:0 10px 10px 0; }
 .article .disclaimer p { margin:0; font-style:italic; color:var(--muted); font-size:14px; max-width:none; }
 .article .back { display:inline-block; margin-top:38px; font-family:var(--mono); font-size:13px; }
+/* research article pages (/research/*): headings, lists and results tables inside the article body */
+.research-article .body h2 { font-size:1.45rem; margin:1.6em 0 .5em; }
+.research-article .body ul { margin:0 0 1.25em; padding-left:1.2em; }
+.research-article .body li { margin:0 0 .55em; }
+.research-article .body table { width:100%; border-collapse:collapse; margin:0 0 1.5em; font-size:.98rem; }
+.research-article .body th, .research-article .body td { text-align:left; padding:.55em .6em; border-bottom:1px solid var(--line-2); vertical-align:top; }
+.research-article .body th { font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:500; }
+.research-article .body td { font-variant-numeric:tabular-nums; }
 
 /* article index cards */
 .artlist { display:grid; gap:22px; max-width:880px; }

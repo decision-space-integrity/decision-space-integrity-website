@@ -6,3 +6,6 @@
 /product.html                          /audit   301
 /pluraxis                              /research#programme-history  301
 /pluraxis.html                         /research#programme-history  301
+# Paper PDF (DSc provenance repair, 2026-10-04): the unversioned URL served the v1.2 content
+# labelled v1.1 until 4 Oct 2026; it now aliases the current expanded version (302, not permanent).
+/assets/papers/decision-space-collapse-preprint.pdf /assets/papers/decision-space-collapse-preprint-v1.2.pdf 302

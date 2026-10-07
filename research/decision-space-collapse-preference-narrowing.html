@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Generated offline from WEBSITE-SUMMARY-RELEASE.md sha256 95e061a03477507d3a73d500a6f80d6e4d8df49bfdf2f63d15ab263ffc559993 by tools/build_research_html.py. Do not edit by hand; edit the approved Markdown and regenerate. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which options stay visible? Decision-Space Collapse and preference narrowing | Decision-Space Integrity</title>
+<meta name="description" content="Two separate studies looked at the options a language model&#x27;s answer leaves out. Decision-Space Collapse (our own preprint, June 2026) checked whether advisory answers kept a configured set of reasonable paths visible. PRISK (Wang et al., August 2026) checked what happens to the useful options in an answer when the model is given a user profile or retrieved memories. Are these the same finding? If not, how are they related?">
+<link rel="canonical" href="https://decisionspaceintegrity.com/research/decision-space-collapse-preference-narrowing">
+<meta name="author" content="Andrew J. Cousins">
+<meta name="citation_title" content="Decision-Space Collapse and Preference Narrowing in Personalized Language Models">
+<meta name="citation_author" content="Cousins, Andrew J.">
+<meta name="citation_publication_date" content="PUBDATE-TBD">
+<meta name="citation_doi" content="10.5281/zenodo.23224092">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Decision-Space Integrity">
+<meta property="og:title" content="Which options stay visible? Decision-Space Collapse and preference narrowing">
+<meta property="og:description" content="Two separate studies looked at the options a language model&#x27;s answer leaves out. Decision-Space Collapse (our own preprint, June 2026) checked whether advisory answers kept a configured set of reasonable paths visible. PRISK (Wang et al., August 2026) checked what happens to the useful options in an answer when the model is given a user profile or retrieved memories. Are these the same finding? If not, how are they related?">
+<meta property="og:url" content="https://decisionspaceintegrity.com/research/decision-space-collapse-preference-narrowing">
+<meta property="og:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
+<meta property="article:author" content="Andrew J. Cousins">
+<meta property="article:published_time" content="PUBDATE-TBD">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Which options stay visible? Decision-Space Collapse and preference narrowing">
+<meta name="twitter:description" content="Two separate studies looked at the options a language model&#x27;s answer leaves out. Decision-Space Collapse (our own preprint, June 2026) checked whether advisory answers kept a configured set of reasonable paths visible. PRISK (Wang et al., August 2026) checked what happens to the useful options in an answer when the model is given a user profile or retrieved memories. Are these the same finding? If not, how are they related?">
+<meta name="twitter:image" content="https://decisionspaceintegrity.com/assets/og/dsi-og-image.png">
+<meta name="twitter:image:alt" content="Decision-Space Integrity card: Measuring What's Preserved. Governing What Changes.">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/icons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/icons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,540;9..144,600&amp;family=Hanken+Grotesk:wght@380;480;560;620&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "Decision-Space Collapse and Preference Narrowing in Personalized Language Models",
+  "name": "Which options stay visible? Decision-Space Collapse and preference narrowing",
+  "description": "Two separate studies looked at the options a language model's answer leaves out. Decision-Space Collapse (our own preprint, June 2026) checked whether advisory answers kept a configured set of reasonable paths visible. PRISK (Wang et al., August 2026) checked what happens to the useful options in an answer when the model is given a user profile or retrieved memories. Are these the same finding? If not, how are they related?",
+  "author": {
+    "@type": "Person",
+    "name": "Andrew J. Cousins",
+    "sameAs": "https://orcid.org/0009-0005-5434-1630"
+  },
+  "datePublished": "PUBDATE-TBD",
+  "version": "1.0",
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "DOI",
+    "value": "10.5281/zenodo.23224092"
+  },
+  "sameAs": "https://doi.org/10.5281/zenodo.23224092",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "mainEntityOfPage": "https://decisionspaceintegrity.com/research/decision-space-collapse-preference-narrowing"
+}
+</script>
+</head>
+<body>
+
+
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><b>DSI</b> <span class="dot">·</span> decision-space integrity</a>
+    <input type="checkbox" id="navtoggle" class="nav-toggle" aria-label="Open navigation menu" aria-controls="sitenav">
+    <label for="navtoggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
+    <nav id="sitenav" class="nav" aria-label="Site">
+      <a href="/dsc">DSC</a>
+      <a href="/dsi">DSI</a>
+      <a href="/demo">Demo</a>
+      <a href="/audit">DSI Audit</a>
+      <a href="/applications">Applications</a>
+      <a href="/evidence">Evidence</a>
+      <a href="/research">Research</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" style="padding-bottom:24px;">
+    <div class="wrap" style="display:block;">
+      <div class="article">
+        <p class="eyebrow">Published research · Research note · synthesis · no new experiment</p>
+        <h1>Which options stay visible? Decision-Space Collapse and preference narrowing</h1>
+        <p class="meta">PUBDATE-TBD · Andrew J. Cousins · v1.0 · DOI <a href="https://doi.org/10.5281/zenodo.23224092">10.5281/zenodo.23224092</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" style="padding-top:10px;">
+    <div class="wrap" style="display:block;">
+      <div class="article research-article">
+        <div class="body">
+          <h2>What we asked</h2>
+          <p>Two separate studies looked at the options a language model's answer leaves out. Decision-Space Collapse (our own preprint, June 2026) checked whether advisory answers kept a configured set of reasonable paths visible. PRISK (Wang et al., August 2026) checked what happens to the useful options in an answer when the model is given a user profile or retrieved memories. Are these the same finding? If not, how are they related?</p>
+          <h2>What we found</h2>
+          <ul>
+          <li><strong>The common object is option visibility, not narrowing itself.</strong> Both studies score an answer against a reference set of options and count what is missing.</li>
+          <li><strong>Two points converge.</strong> Answers leave out part of a reference option set even at baseline. What is surfaced also changes with what accompanies the request.</li>
+          <li><strong>The direction does not converge.</strong> In our study, the main reframing <em>raised</em> coverage, from 0.6770 to 0.7885. In PRISK, personal context <em>lowered</em> useful-option recall for every model evaluated: on average by 41.7 percentage points with profile and memory together.</li>
+          <li><strong>So context can broaden or narrow what an answer shows.</strong> The open question is which kinds of conditioning change visibility, in which direction, and when the change is warranted.</li>
+          </ul>
+          <h2>What we did not find, and do not claim</h2>
+          <ul>
+          <li>This is not a replication. The studies use different reference sets, detectors, metrics and manipulations.</li>
+          <li>PRISK does not validate our instrument, maps or numbers. Those rest on the original study's own evidence.</li>
+          <li>We do not claim that personalisation is harmful. Some narrowing is exactly what a user asked for.</li>
+          <li>We do not claim that an omission harmed anyone or made the advice bad. Neither study measured outcomes for users.</li>
+          <li>We do not claim priority. Our preprint was public before PRISK, but publication order shows neither influence nor priority, and concern about narrowing is much older.</li>
+          <li>We have not measured Decision-Space Drift. Drift is a proposed longitudinal construct: at each point in time, compare what a system surfaces with its accumulated state about a user against a matched clean condition with the same current circumstances, and ask how that difference changes over time. No result is reported.</li>
+          </ul>
+          <h2>Terms</h2>
+          <ul>
+          <li><strong>Decision space:</strong> the courses of action relevant to a decision. It is not measured directly.</li>
+          <li><strong>Decision-Space Collapse (DSc):</strong> in a single advisory answer, configured plausible paths are not surfaced.</li>
+          <li><strong>Decision-Space Integrity (DSI):</strong> the measurement framework, not the phenomenon.</li>
+          <li><strong>Decision-Space Drift (DSD):</strong> a prospective construct, not yet measured: change over time in the effect of accumulated state on what is surfaced, measured against a matched clean condition.</li>
+          </ul>
+          <h2>How much to trust it</h2>
+          <ul>
+          <li>The DSc numbers come from the original historical study. They have not been rescored, and its scorer cannot be bound to a source commit; see the revision notice on the paper page.</li>
+          <li>The DSc instrument was challenge-tested, not human-validated.</li>
+          <li>PRISK's usefulness judgements come from an LLM, with a small human check.</li>
+          <li>This note is a synthesis. It reports no new data.</li>
+          </ul>
+          <h2>Status</h2>
+          <p>Released research note, v1.0. Archived on Zenodo as a preprint: DOI <a href="https://doi.org/10.5281/zenodo.23224092">10.5281/zenodo.23224092</a>.</p>
+        </div>
+
+        <div class="disclaimer">
+          <p>Cite the archived version: Cousins, Andrew J. (2026). <em>Decision-Space Collapse and Preference Narrowing in Personalized Language Models</em>. Version v1.0. Zenodo. <a href="https://doi.org/10.5281/zenodo.23224092">https://doi.org/10.5281/zenodo.23224092</a>. Text licensed CC BY 4.0.</p>
+        </div>
+
+        <a class="back" href="/research#publications">&#8592; All research publications</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="claim"><em>DSI Audit is the current local implementation of Decision-Space Integrity. It audits supplied outputs; it does not generate them.</em></p>
+    <div class="row">
+      <span>decisionspaceintegrity.com</span>
+      <span><a href="/dsc">DSC</a> · <a href="/dsi">DSI</a> · <a href="/audit">DSI Audit</a> · <a href="/evidence">Evidence</a> · <a href="/articles">Articles</a> · <a href="/paper">Paper</a> · <a href="/reading">Reading</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a></span>
+      <span class="statusflag">Research &amp; engineering programme</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

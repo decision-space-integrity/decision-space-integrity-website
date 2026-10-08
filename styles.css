@@ -491,6 +491,7 @@ main section[id] { scroll-margin-top:84px; }
 .ev-active      { color:var(--authority); }
 .ev-not         { color:var(--muted); }
 .ev-withheld    { color:var(--warn); border-style:solid; }
+.ev-synthesis   { color:var(--ink-dim); border-style:dotted; }
 
 .status-public   { border-left-color:var(--accent-deep); }
 .status-research { border-left-color:var(--measure-deep); }
